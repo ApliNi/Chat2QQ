@@ -1,39 +1,36 @@
-# Chat2QQ
-适用于Minecraft服务端的QQ群聊天插件
+## Chat2QQ+
+仅用于添加开发者不接受的功能, 您可以点击右侧 `Releases` 按钮下载jar文件. 对于新添加的功能请在这里提问(而不是Chat2QQ). 
 
-## 介绍
-Chat2QQ 是一个基于[MiraiMC](https://github.com/DreamVoid/MiraiMC)的插件，能够让你在Minecraft服务器上与QQ群的玩家聊天，也能在QQ群上与Minecraft服务器的玩家聊天。
+---
 
-## 下载
-* 稳定版本
-  * [Github 发布页](https://github.com/DreamVoid/Chat2QQ/releases)
-  * [Gitee 发布页](https://gitee.com/dreamvoid/Chat2QQ/releases) (中国)
-  * [MCBBS](https://www.mcbbs.net/thread-1231009-1-1.html) (中国)
-    * [MCBBS V4](https://beta.mcbbs.net/resource/servermod/5ttwt4nm) (中国)
-    * [基岩版](https://www.mcbbs.net/thread-1260492-1-1.html) (中国)
-* 开发版本
-    * [GitHub Actions CI](https://github.com/DreamVoid/Chat2QQ/actions/workflows/maven.yml?query=is%3Asuccess)
-
-## 开始使用
-* 下载插件，并将插件文件放入plugins文件夹
-* 下载[MiraiMC](https://github.com/DreamVoid/MiraiMC)插件（如果尚未下载），并将插件文件放入plugins文件夹
-* 启动服务端（如果尚未启动）或使用诸如PlugMan的插件加载插件
-* 使用指令“**/mirai login <账号> <密码>**”登录你的机器人账号
-* 调整插件的配置文件
-* 以管理员或控制台身份输入指令“**/chat2qq reload**”
-* 享受优雅的QQ机器人服务！
-
-## 指令和权限
-### 指令
-| 命令              | 描述         | 权限                      |
-|-----------------|------------|-------------------------|
-| /chat2qq reload | 重新加载插件配置   | miraimc.command.chat2qq |
-| /qchat <消息>     | 向QQ群发送聊天消息 | miraimc.command.qchat   |
-
-### 权限
-| 权限节点                    | 描述            | 默认  |
-|-------------------------|---------------|-----|
-| miraimc.command.chat2qq | 允许使用 /chat2qq | OP  |
-| miraimc.command.qchat   | 允许使用 /qchat   | YES |
-| chat2qq.join.silent     | 静默加入服务器       | NO  |
-| chat2qq.quit.silent     | 静默退出服务器       | NO  |
+**功能列表**
+- 执行指令
+```yaml
+  # 在QQ群中运行指令
+  run-command:
+    # 不使用时请关闭
+    enabled: false
+    # 启用此功能的QQ群, 需要同时设置在 bot.group-ids
+    qq-group:
+      - 1000001
+    # 指令前缀, 可以是多个字符, 比如 "~$"
+    prefix: "/"
+    # 指令最大长度 (不包括指令前缀)
+    command-max-length: 255
+    # 是否发送指令的输出, 关闭可提高性能或解决一些兼容性问题
+    return: true
+    # 等待指令运行多长时间再处理输出 (毫秒), 需要开启 return
+    sleep: 500
+    # 运行无返回指令的消息
+    message-no-out: "运行无返回指令"
+    # 设置各组可执行的指令
+    # 消息以设定的指令开头则作为指令运行, 因此可以精确到指令参数
+    # 权限更高的用户将可以使用更低的用户的指令
+    group:
+      OWNER: # 群主
+        - 指令
+      ADMINISTRATOR: # 管理员
+        - 指令
+      MEMBER: # 成员 (默认组)
+        - 指令
+```
