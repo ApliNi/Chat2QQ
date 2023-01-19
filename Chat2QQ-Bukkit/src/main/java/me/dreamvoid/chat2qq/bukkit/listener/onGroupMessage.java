@@ -107,8 +107,11 @@ public class onGroupMessage implements Listener {
                                     if(! plugin.getConfig().getBoolean("general.run-command.also-as-message",true)){
                                         return;
                                     }
+
+                                    break;
                                 }
                             }
+                            if(runOK) break;
                         }
 
                         // 指令没有运行成功 && 设置了未命中消息
