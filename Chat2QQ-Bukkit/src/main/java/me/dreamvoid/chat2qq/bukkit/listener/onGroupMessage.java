@@ -55,11 +55,12 @@ public class onGroupMessage implements Listener {
                     Matcher matcher = Pattern.compile(plugin.getConfig().getString("general.run-command.regex-command-main")).matcher(command);
                     if(matcher.find()){
                         String commandMain = matcher.group(1);
+                        boolean runOK = false;  // 指令是否运行成功
                         // 遍历所有小于等于自己权限数值的组
                         for(int permission_int = e.getSenderPermission(); permission_int >= 0; permission_int --){
                             for(String list1 : plugin.getConfig().getStringList("general.run-command.group.permission_"+ permission_int)){
-                                //
-                                if(Objects.equals(commandMain, list1)){
+                                // ___ALL_COMMAND___ 表示可以运行任何指令
+                                if(Objects.equals(commandMain, list1) || Objects.equals(list1, "___ALL_COMMAND___")){
                                     // 执行指令
                                     if(plugin.getConfig().getBoolean("general.run-command.return",true)){
                                         System.out.println("[Chat2QQ] "+ e.getGroupID() +"."+ e.getSenderID() + " 运行指令: /"+ command);
@@ -98,9 +99,24 @@ public class onGroupMessage implements Listener {
                                                 .getGroup(e.getGroupID())
                                                 .sendMessageMirai(plugin.getConfig().getString("general.run-command.message-no-out","message-no-out"));
                                     }
-                                    return;
+
+                                    // 运行成功
+                                    runOK = true;
+
+                                    // 作为转发到服务器中的消息
+                                    if(! plugin.getConfig().getBoolean("general.run-command.also-as-message",true)){
+                                        return;
+                                    }
                                 }
                             }
+                        }
+
+                        // 指令没有运行成功 && 设置了未命中消息
+                        if(!runOK && !Objects.equals(plugin.getConfig().getString("general.run-command.message-miss", ""), "")){
+                            // 发送消息
+                            MiraiBot.getBot(plugin.getConfig().getLongList("bot.bot-accounts").get(0))
+                                    .getGroup(e.getGroupID())
+                                    .sendMessageMirai(plugin.getConfig().getString("general.run-command.message-miss"));
                         }
                     }
                 }
