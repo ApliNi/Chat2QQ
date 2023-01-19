@@ -31,12 +31,14 @@ general:
     command-max-length: 255
     # 是否发送指令的输出, 关闭可提高性能或解决一些兼容性问题
     return: true
+    # 是否将指令的输出打印到控制台
+    return-log: true
     # 等待指令运行多长时间再处理输出 (毫秒), 需要开启 return
     # 如果需要执行较慢的指令, 请尝试增大此值
     sleep: 300
     # 是否同时将指令作为消息转发到服务器中
     also-as-message: true
-    # 是否为执行不在白名单中的指令发送返回消息
+    # 执行不在白名单中的指令时发送返回消息
     message-miss: "未命中的指令"
     # 运行无返回指令的消息
     message-no-out: "运行无返回指令"

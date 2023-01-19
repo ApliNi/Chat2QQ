@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,7 +22,7 @@ public class onGroupMessage implements Listener {
     }
 
     @EventHandler
-    public void onGroupMessageReceive(MiraiGroupMessageEvent e) throws InterruptedException {
+    public void onGroupMessageReceive(MiraiGroupMessageEvent e) {
         if(plugin.getConfig().getStringList("blacklist.word").stream().anyMatch(s -> e.getMessage().contains(s)) || plugin.getConfig().getLongList("blacklist.qq").contains(e.getSenderID())) return;
 
         String name = e.getSenderNameCard();
@@ -64,12 +65,16 @@ public class onGroupMessage implements Listener {
                                     // 执行指令
                                     if(plugin.getConfig().getBoolean("general.run-command.return",true)){
                                         System.out.println("[Chat2QQ] "+ e.getGroupID() +"."+ e.getSenderID() + " 运行指令: /"+ command);
-
                                         Commander Sender = new Commander();
-                                        Bukkit.getScheduler().callSyncMethod(plugin, () -> Bukkit.dispatchCommand(Sender, command));
 
-                                        // 等待指令运行
-                                        Thread.sleep(plugin.getConfig().getInt("general.run-command.sleep", 500));
+                                        try {
+                                            Bukkit.getScheduler().callSyncMethod(plugin, () -> Bukkit.dispatchCommand(Sender, command));
+                                            // 等待指令运行
+                                            TimeUnit.MILLISECONDS.sleep(plugin.getConfig().getInt("general.run-command.sleep", 300));
+                                        } catch (InterruptedException ex) {
+                                            System.out.println("[Chat2QQ] 运行指令 \"/"+ command +"\" 时出现异常!");
+                                            throw new RuntimeException(ex);
+                                        }
 
                                         // 消息处理
                                         StringBuilder text = new StringBuilder();
@@ -82,7 +87,12 @@ public class onGroupMessage implements Listener {
                                         }else{
                                             text = new StringBuilder(plugin.getConfig().getString("general.run-command.message-no-out","message-no-out"));
                                         }
-                                        System.out.println(text);
+
+                                        // 打印日志
+                                        if(plugin.getConfig().getBoolean("general.run-command.return-log",true)){
+                                            System.out.println(text);
+                                        }
+
                                         // 处理彩色字符
                                         String finalText = String.valueOf(text).replaceAll("§[a-z0-9]", "");
 
