@@ -2,6 +2,7 @@ package me.dreamvoid.chat2qq.bukkit;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.dreamvoid.chat2qq.bukkit.listener.onGroupMessage;
+import me.dreamvoid.chat2qq.bukkit.listener.onGroupMessageCommand;
 import me.dreamvoid.chat2qq.bukkit.listener.onPlayerJoin;
 import me.dreamvoid.chat2qq.bukkit.listener.onPlayerMessage;
 import me.dreamvoid.chat2qq.bukkit.listener.onPlayerQuit;
@@ -35,12 +36,13 @@ public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecuto
     @Override // 启用插件
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(new onGroupMessage(this), this);
+        Bukkit.getPluginManager().registerEvents(new onGroupMessageCommand(this), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerMessage(this), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerJoin(this), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerQuit(this), this);
         getCommand("qchat").setExecutor(this);
         getCommand("chat2qq").setExecutor(this);
-        if(getConfig().getBoolean("general.allow-bStats",true)){
+        if(getConfig().getBoolean("allow-bStats",true)){
             int pluginId = 12193;
             new Metrics(this, pluginId);
         }
@@ -53,7 +55,7 @@ public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecuto
             boolean allowWorld = false;
             boolean isPlayer = false;
             boolean inBlackList = false;
-            boolean allowConsole = getConfig().getBoolean("general.allow-console-chat", false);
+            boolean allowConsole = getConfig().getBoolean("bot.allow-console-chat", false);
 
             if(sender instanceof Player){
                 isPlayer = true;
@@ -72,7 +74,7 @@ public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecuto
 
             } else {
                 if(allowConsole){
-                    playerName = getConfig().getString("general.console-name", "控制台");
+                    playerName = getConfig().getString("bot.console-name", "控制台");
                     allowWorld = true;
                 } else {
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&c控制台不能执行此命令！"));
@@ -112,7 +114,7 @@ public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecuto
                     }
                 }.runTaskAsynchronously(this);
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a已发送QQ群聊天消息！"));
-                if(getConfig().getBoolean("general.command-also-broadcast-to-chat") && sender instanceof Player){
+                if(getConfig().getBoolean("bot.command-also-broadcast-to-chat") && sender instanceof Player){
                     Player player = (Player) sender;
                     player.chat(message.toString());
                 }

@@ -28,23 +28,23 @@ public class onPlayerMessage implements Listener {
             return;
         }
 
-        if(!(plugin.getConfig().getBoolean("general.require-command-to-chat",false))){
+        if(!(plugin.getConfig().getBoolean("bot.require-command-to-chat",false))){
             boolean allowWorld = false;
             boolean allowPrefix = false;
             String message = ChatColor.stripColor(e.getMessage());
 
             // 判断玩家所处世界
-            for(String world : plugin.getConfig().getStringList("general.available-worlds")){
+            for(String world : plugin.getConfig().getStringList("bot.available-worlds")){
                 if(e.getPlayer().getWorld().getName().equalsIgnoreCase(world)){
                     allowWorld = true;
                     break;
                 }
             }
-            if(plugin.getConfig().getBoolean("general.available-worlds-use-as-blacklist")) allowWorld = !allowWorld;
+            if(plugin.getConfig().getBoolean("bot.available-worlds-use-as-blacklist")) allowWorld = !allowWorld;
 
             // 判断消息是否带前缀
-            if(plugin.getConfig().getBoolean("general.requite-special-word-prefix.enabled",false)){
-                for(String prefix : plugin.getConfig().getStringList("general.requite-special-word-prefix.prefix")){
+            if(plugin.getConfig().getBoolean("bot.requite-special-word-prefix.enabled",true)){
+                for(String prefix : plugin.getConfig().getStringList("bot.requite-special-word-prefix.prefix")){
                     if(message.startsWith(prefix)){
                         allowPrefix = true;
                         message = message.substring(prefix.length());

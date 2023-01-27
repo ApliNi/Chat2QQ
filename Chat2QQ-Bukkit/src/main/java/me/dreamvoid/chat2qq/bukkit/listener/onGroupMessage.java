@@ -34,8 +34,8 @@ public class onGroupMessage implements Listener {
         String message = e.getMessage();
         // 判断消息是否带前缀
         boolean allowPrefix = false;
-        if(plugin.getConfig().getBoolean("bot.requite-special-word-prefix.enabled",false)){
-            for(String prefix : plugin.getConfig().getStringList("bot.requite-special-word-prefix.prefix")){
+        if(plugin.getConfig().getBoolean("general.requite-special-word-prefix.enabled",false)){
+            for(String prefix : plugin.getConfig().getStringList("general.requite-special-word-prefix.prefix")){
                 if(e.getMessage().startsWith(prefix)){
                     allowPrefix = true;
                     message = message.substring(prefix.length());
