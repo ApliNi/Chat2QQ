@@ -1,7 +1,7 @@
 ## Chat2QQ+
-Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于添加开发者不接受合并的功能. 
+Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于添加我需要的功能. 
 
-可以点击右侧 `Releases` 按钮下载jar文件. 对于新添加的功能请在这里提问(而不是Chat2QQ). 
+可以点击右侧 `Releases` 按钮下载jar文件. 对于新添加的功能请在这里提问(而不是 DreamVoid/Chat2QQ). 
 
 如果你有好的想法请点击上方 `Issues` 按钮, 发送一个功能请求. 如果我能做到就会去实现出来. 
 
