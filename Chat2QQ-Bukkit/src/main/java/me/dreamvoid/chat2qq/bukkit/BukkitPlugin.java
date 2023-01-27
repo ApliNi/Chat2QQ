@@ -2,7 +2,7 @@ package me.dreamvoid.chat2qq.bukkit;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.dreamvoid.chat2qq.bukkit.listener.onGroupMessage;
-import me.dreamvoid.chat2qq.bukkit.listener.onGroupMessageCommand;
+//import me.dreamvoid.chat2qq.bukkit.listener.onGroupMessageCommand;
 import me.dreamvoid.chat2qq.bukkit.listener.onPlayerJoin;
 import me.dreamvoid.chat2qq.bukkit.listener.onPlayerMessage;
 import me.dreamvoid.chat2qq.bukkit.listener.onPlayerQuit;
@@ -36,7 +36,7 @@ public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecuto
     @Override // 启用插件
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(new onGroupMessage(this), this);
-        Bukkit.getPluginManager().registerEvents(new onGroupMessageCommand(this), this);
+//        Bukkit.getPluginManager().registerEvents(new onGroupMessageCommand(this), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerMessage(this), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerJoin(this), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerQuit(this), this);
