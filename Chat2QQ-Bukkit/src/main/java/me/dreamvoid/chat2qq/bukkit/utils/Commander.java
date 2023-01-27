@@ -1,4 +1,4 @@
-package me.dreamvoid.chat2qq.bukkit.listener;
+package me.dreamvoid.chat2qq.bukkit.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
