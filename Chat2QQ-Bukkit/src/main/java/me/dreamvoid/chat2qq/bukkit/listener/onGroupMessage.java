@@ -12,6 +12,8 @@ import org.bukkit.event.Listener;
 import static me.dreamvoid.chat2qq.bukkit.utils.renderGroupMessage.*;
 import static org.bukkit.Bukkit.getServer;
 
+import static org.bukkit.Bukkit.getLogger;
+
 public class onGroupMessage implements Listener {
     private final BukkitPlugin plugin;
     public onGroupMessage(BukkitPlugin plugin){
@@ -145,6 +147,10 @@ public class onGroupMessage implements Listener {
         if(! message.equals("") &&
                 plugin.getConfig().getLongList("bot.bot-accounts").contains(e.getBotID()) &&
                 plugin.getConfig().getLongList("general.group-ids").contains(e.getGroupID())){
+
+            if(plugin.getConfig().getBoolean("aplini.other-format-presets.message-to-log", true)){
+                getLogger().info(message);
+            }
 
             TextComponent formatText = new TextComponent(message);
 

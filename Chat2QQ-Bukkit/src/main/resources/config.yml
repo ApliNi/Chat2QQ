@@ -241,6 +241,9 @@ aplini:
       line-0: '' # [多行消息]
       line-prefix: '  '
 
+    # 是否将聊天消息转发到控制台/日志
+    message-to-log: true
+
 
   ## 5
   # 引用回复
