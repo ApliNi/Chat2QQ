@@ -102,6 +102,10 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
       # 文件, 字符串, 调整格式
       - prefix: '[文件]'
         to_replace: '[文件] '
+        
+      # 解决 Emoji 显示为未知字符
+      - regular: '[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]'
+        to_regular: '[Emoji]'
 
       # 取消发送包含此内容的消息
       #- contain: '此内容'

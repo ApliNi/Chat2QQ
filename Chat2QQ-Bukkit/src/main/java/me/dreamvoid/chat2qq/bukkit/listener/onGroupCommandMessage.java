@@ -102,7 +102,7 @@ public class onGroupCommandMessage implements Listener {
 
                         // 打印日志
                         if(plugin.getConfig().getBoolean("aplini.run-command.return-log",true)){
-                            getLogger().info(String.valueOf(text));
+                            getLogger().info("指令输出: \n"+ text);
                         }
 
                         // 处理格式化字符
