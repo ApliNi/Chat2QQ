@@ -1,12 +1,20 @@
 ## Chat2QQ+
 
-> **说明和下载**
+> **说明**
 
 Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于添加我需要的功能.
 
-可以点击右侧 `Releases` 按钮下载jar文件. 对于新添加的功能请在这里提问(而不是 DreamVoid/Chat2QQ). 
-
 如果你有好的想法请点击上方 `Issues` 按钮, 发送一个功能请求. 如果我能做到就会去实现出来. 
+
+
+
+> **下载**
+
+可以点击右侧 `Releases` 按钮下载jar文件. 对于新添加的功能请在这里提问(而不是 DreamVoid/Chat2QQ).
+
+如果需要开发版(包含一些未发布的功能和BUG), 可以点击上方 `Actions`, 选择第一个, 找到最下面的jar文件. 
+
+
 
 > **订阅更新**
 
