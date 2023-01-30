@@ -2,7 +2,7 @@ name: Chat2QQ
 main: me.dreamvoid.chat2qq.bukkit.BukkitPlugin
 version: ${project.version}
 author: DreamVoid
-api-version: 1.13
+api-version: 1.18
 prefix: MiraiMC
 depend:
   - MiraiMC

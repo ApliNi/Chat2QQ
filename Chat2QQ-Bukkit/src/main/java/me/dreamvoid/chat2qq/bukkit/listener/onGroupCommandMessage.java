@@ -50,7 +50,7 @@ public class onGroupCommandMessage implements Listener {
         }
 
         // 正则匹配主命令
-        Matcher matcher = Pattern.compile(plugin.getConfig().getString("aplini.run-command.regex-command-main")).matcher(command);
+        Matcher matcher = Pattern.compile(plugin.getConfig().getString("aplini.run-command.regex-command-main", "^([^ ]+)")).matcher(command);
 
         // 是否匹配到主命令
         if(! matcher.find()){

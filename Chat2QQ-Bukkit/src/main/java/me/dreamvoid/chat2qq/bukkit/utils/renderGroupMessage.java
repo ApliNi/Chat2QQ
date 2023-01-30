@@ -68,7 +68,7 @@ public class renderGroupMessage {
 
         // 预设的格式调整功能. 是否删除 %message% 消息 中的格式化字符
         if(plugin.getConfig().getBoolean("aplini.other-format-presets.render-message_format-code",false)){
-            message = message.replace("§", "");
+            message = message.replaceAll("§[a-z0-9]", "");
         }
 
         // 预设的格式调整功能. 更好的多行消息
@@ -86,7 +86,7 @@ public class renderGroupMessage {
     // 回复消息
     public static String getReplyVar(Plugin plugin, MiraiGroupMessageEvent e) {
         if(e.getQuoteReplyMessage() != null){
-            return plugin.getConfig().getString("aplini.reply-message.var")
+            return plugin.getConfig().getString("aplini.reply-message.var", "[reply] ")
                     .replace("%qq%", ""+ e.getQuoteReplySenderID());
         }
         return "";
@@ -118,17 +118,17 @@ public class renderGroupMessage {
 
         // 预设的格式调整功能. 是否删除 %nick% 群名片 中的格式化字符
         if(plugin.getConfig().getBoolean("aplini.other-format-presets.render-nick_format-code",true)){
-            name = name.replace("§", "");
+            name = name.replaceAll("§[a-z0-9]", "");
         }
 
         // cleanup-name
         String $regex_nick = "%regex_nick%";
         if(plugin.getConfig().getBoolean("aplini.cleanup-name.enabled",false)){
-            Matcher matcher = Pattern.compile(plugin.getConfig().getString("aplini.cleanup-name.regex")).matcher(name);
+            Matcher matcher = Pattern.compile(plugin.getConfig().getString("aplini.cleanup-name.regex", "([a-zA-Z0-9_]{3,16})")).matcher(name);
             if(matcher.find()){
                 $regex_nick = matcher.group(1);
             } else {
-                $regex_nick = plugin.getConfig().getString("aplini.cleanup-name.not-captured")
+                $regex_nick = plugin.getConfig().getString("aplini.cleanup-name.not-captured", "%nick%")
                         .replace("%groupname%", e.getGroupName())
                         .replace("%groupid%", String.valueOf(e.getGroupID()))
                         .replace("%nick%", name)
@@ -146,7 +146,7 @@ public class renderGroupMessage {
             message2_config_path = "general.bind-chat-format";
         }
 
-        return plugin.getConfig().getString(message2_config_path)
+        return plugin.getConfig().getString(message2_config_path, "message")
                 .replace("%groupname%",e.getGroupName())
                 .replace("%groupid%",String.valueOf(e.getGroupID()))
                 .replace("%qq%",String.valueOf(e.getSenderID()))

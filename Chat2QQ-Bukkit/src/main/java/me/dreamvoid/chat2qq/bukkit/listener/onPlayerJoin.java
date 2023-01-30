@@ -27,7 +27,7 @@ public class onPlayerJoin implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    String message = plugin.getConfig().getString("bot.player-join-message").replace("%player%", e.getPlayer().getName());
+                    String message = plugin.getConfig().getString("bot.player-join-message", "player Join").replace("%player%", e.getPlayer().getName());
                     plugin.getConfig().getLongList("bot.bot-accounts").forEach(bot -> plugin.getConfig().getLongList("general.group-ids").forEach(group -> {
                         try {
                             MiraiBot.getBot(bot).getGroup(group).sendMessageMirai(message);

@@ -54,7 +54,7 @@ public class onPlayerMessage implements Listener {
             } else allowPrefix = true;
 
             // 服务器消息发送到QQ群的格式
-            String formatText = plugin.getConfig().getString("bot.group-chat-format")
+            String formatText = plugin.getConfig().getString("bot.group-chat-format", "message")
                     .replace("%player%",e.getPlayer().getName())
                     .replace("%message%", message);
 
