@@ -31,7 +31,7 @@ general:
   # %qq% - 发送者QQ号
   # %message% - 消息内容, 支持预处理模块 aplini.pretreatment
   # %_reply_% - 如果是回复消息..., 配置在 aplini.reply-message 模块
-  in-game-chat-format: "§f[§7%nick%§r§f] §7%_reply_%%message%"
+  in-game-chat-format: "§f[§7%nick%§r§f] %_reply_%§7%message%"
 
 
   # 启用 MiraiMC 内置的QQ绑定
@@ -39,7 +39,7 @@ general:
   # 已绑定玩家向服务器发送聊天消息的格式
   # 如果玩家没有绑定，消息格式仍按照上方设置的格式发送
   # 内置变量仍然可以使用
-  bind-chat-format: "§f[§7%nick%§r§f] §7%_reply_%%message%"
+  bind-chat-format: "§f[§7%nick%§r§f] %_reply_%§7%message%"
 
 
 
@@ -252,13 +252,13 @@ aplini:
   reply-message:
     # 可用变量:
     # %qq% - 被回复的消息的发送者QQ号
-    var: '[回复 @%qq%] '
+    var: '§f[§7回复 @%qq%§f] '
 
     # 可用变量:
     # %_/n_% - 换行
     # %qq% - 被回复的消息的发送者QQ号
     # %message% - 回复内容
-    message: "[引用回复 @%qq%]%_/n_%§7%message%"
+    message: "§f[引用回复 @%qq%]%_/n_%§7%message%"
 
 
 

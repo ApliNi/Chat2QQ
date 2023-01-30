@@ -1,11 +1,11 @@
 package me.dreamvoid.chat2qq.bukkit.listener;
 
-import me.clip.placeholderapi.PlaceholderAPI;
+//import me.clip.placeholderapi.PlaceholderAPI;
 import me.dreamvoid.chat2qq.bukkit.BukkitPlugin;
 import me.dreamvoid.miraimc.api.MiraiBot;
 import me.dreamvoid.miraimc.httpapi.MiraiHttpAPI;
 import me.dreamvoid.miraimc.httpapi.exception.AbnormalStatusException;
-import org.bukkit.Bukkit;
+//import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -54,15 +54,15 @@ public class onPlayerMessage implements Listener {
             } else allowPrefix = true;
 
             // 服务器消息发送到QQ群的格式
-            String formatText = plugin.getConfig().getString("bot.group-chat-format", "message")
+            String finalFormatText = plugin.getConfig().getString("bot.group-chat-format", "message")
                     .replace("%player%",e.getPlayer().getName())
                     .replace("%message%", message);
 
             if(allowWorld && allowPrefix){
-                if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI")!=null){
-                    formatText = PlaceholderAPI.setPlaceholders(e.getPlayer(),formatText);
-                }
-                String finalFormatText = formatText;
+//                if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI")!=null){
+//                    formatText = PlaceholderAPI.setPlaceholders(e.getPlayer(),formatText);
+//                }
+//                String finalFormatText = formatText;
                 new BukkitRunnable() {
                     @Override
                     public void run() {

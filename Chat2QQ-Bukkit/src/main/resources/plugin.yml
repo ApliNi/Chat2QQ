@@ -6,8 +6,8 @@ api-version: 1.18
 prefix: MiraiMC
 depend:
   - MiraiMC
-softdepend:
-  - PlaceholderAPI
+#softdepend:
+#  - PlaceholderAPI
 commands:
   qchat:
     description: 发送聊天消息到QQ群

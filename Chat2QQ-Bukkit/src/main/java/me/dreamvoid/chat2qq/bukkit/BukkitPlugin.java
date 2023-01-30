@@ -1,6 +1,6 @@
 package me.dreamvoid.chat2qq.bukkit;
 
-import me.clip.placeholderapi.PlaceholderAPI;
+//import me.clip.placeholderapi.PlaceholderAPI;
 import me.dreamvoid.chat2qq.bukkit.listener.*;
 import me.dreamvoid.chat2qq.bukkit.utils.Metrics;
 import me.dreamvoid.miraimc.api.MiraiBot;
@@ -49,12 +49,10 @@ public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecuto
         if(command.getName().equalsIgnoreCase("qchat")){
             String playerName;
             boolean allowWorld = false;
-            boolean isPlayer = false;
             boolean inBlackList = false;
             boolean allowConsole = getConfig().getBoolean("bot.allow-console-chat", false);
 
             if(sender instanceof Player){
-                isPlayer = true;
                 Player player = (Player) sender;
                 playerName = player.getDisplayName();
                 // 判断玩家所处世界
@@ -84,13 +82,13 @@ public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecuto
 
             // 发送阶段
             if(allowWorld && !inBlackList) {
-                String formatText = getConfig().getString("bot.group-chat-format")
+                String finalFormatText = getConfig().getString("bot.group-chat-format", "message")
                         .replace("%player%", playerName)
                         .replace("%message%", message);
-                if(isPlayer && Bukkit.getPluginManager().getPlugin("PlaceholderAPI")!=null){
-                    formatText = PlaceholderAPI.setPlaceholders((Player) sender,formatText);
-                }
-                String finalFormatText = formatText;
+//                if(isPlayer && Bukkit.getPluginManager().getPlugin("PlaceholderAPI")!=null){
+//                    formatText = PlaceholderAPI.setPlaceholders((Player) sender,formatText);
+//                }
+//                String finalFormatText = formatText;
                 new BukkitRunnable() {
                     @Override
                     public void run() {
@@ -123,7 +121,10 @@ public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecuto
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a配置文件已经重新载入！"));
                 } else sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&c你没有足够的权限使用此命令！"));
             } else {
-                sender.sendMessage("This server is running "+getDescription().getName()+" version "+getDescription().getVersion()+" by "+ getDescription().getAuthors().toString().replace("[","").replace("]","")+" (MiraiMC version "+Bukkit.getPluginManager().getPlugin("MiraiMC").getDescription().getVersion()+")");
+                sender.sendMessage("This server is running "+getDescription().getName()+
+                        " version "+getDescription().getVersion()+
+                        " by "+ getDescription().getAuthors().toString().replace("[","").replace("]","")+
+                        " (MiraiMC version "+Bukkit.getPluginManager().getPlugin("MiraiMC").getDescription().getVersion()+")");
             }
         }
         return true;
