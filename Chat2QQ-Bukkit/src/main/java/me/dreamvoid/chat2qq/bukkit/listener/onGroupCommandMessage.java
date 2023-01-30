@@ -13,6 +13,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.bukkit.Bukkit.getLogger;
+
 // 运行指令的功能
 
 public class onGroupCommandMessage implements Listener {
@@ -69,7 +71,7 @@ public class onGroupCommandMessage implements Listener {
                 // ___ALL_COMMAND___ 表示可以运行任何指令
                 if(Objects.equals(commandMain, list1) || Objects.equals(list1, "___ALL_COMMAND___")){
 
-                    System.out.println("[Chat2QQ] "+ e.getGroupID() +"."+ e.getSenderID() + " 运行指令: /"+ command);
+                    getLogger().info("[Chat2QQ] "+ e.getGroupID() +"."+ e.getSenderID() + " 运行指令: /"+ command);
 
                     // 执行指令
                     // 是否开启获取指令返回消息
@@ -82,7 +84,7 @@ public class onGroupCommandMessage implements Listener {
                             // 等待指令运行
                             TimeUnit.MILLISECONDS.sleep(plugin.getConfig().getInt("aplini.run-command.return-sleep", 300));
                         } catch (InterruptedException ex) {
-                            System.out.println("[Chat2QQ] 运行指令 \"/"+ command +"\" 时出现异常!");
+                            getLogger().info("[Chat2QQ] 运行指令 \"/"+ command +"\" 时出现异常!");
                             throw new RuntimeException(ex);
                         }
 
@@ -100,7 +102,7 @@ public class onGroupCommandMessage implements Listener {
 
                         // 打印日志
                         if(plugin.getConfig().getBoolean("aplini.run-command.return-log",true)){
-                            System.out.println(text);
+                            getLogger().info(String.valueOf(text));
                         }
 
                         // 处理格式化字符
