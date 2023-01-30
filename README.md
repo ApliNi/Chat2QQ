@@ -133,3 +133,20 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
       line-0: '' # [多行消息]
       line-prefix: '  '
 ```
+
+- 引用回复
+```yaml
+  # 引用回复
+  # 添加变量: %_reply_%
+  # 如果是回复消息, 则为变量赋值并为消息添加悬浮文本框用于显示内容. 可以将鼠标悬停在消息上查看回复的内容
+  reply-message:
+    # 可用变量:
+    # %qq% - 被回复的消息的发送者QQ号
+    var: '[回复 @%qq%] '
+
+    # 可用变量:
+    # %_/n_% - 换行
+    # %qq% - 被回复的消息的发送者QQ号
+    # %message% - 回复内容
+    message: "[引用回复 @%qq%]%_/n_%§7%message%"
+```

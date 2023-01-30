@@ -30,14 +30,16 @@ general:
   # %regex_nick% - 使用正则匹配到的名称, 需要开启 aplini.cleanup-name 模块
   # %qq% - 发送者QQ号
   # %message% - 消息内容, 支持预处理模块 aplini.pretreatment
-  in-game-chat-format: "§f[§7%nick%§r§f] §7%message%"
+  # %_reply_% - 如果是回复消息..., 配置在 aplini.reply-message 模块
+  in-game-chat-format: "§f[§7%nick%§r§f] §7%_reply_%%message%"
+
 
   # 启用 MiraiMC 内置的QQ绑定
   use-miraimc-bind: false
   # 已绑定玩家向服务器发送聊天消息的格式
   # 如果玩家没有绑定，消息格式仍按照上方设置的格式发送
   # 内置变量仍然可以使用
-  bind-chat-format: "§f[§7%nick%§r§f] §7%message%"
+  bind-chat-format: "§f[§7%nick%§r§f] §7%_reply_%%message%"
 
 
 
@@ -238,6 +240,22 @@ aplini:
       enabled: true
       line-0: '' # [多行消息]
       line-prefix: '  '
+
+
+  ## 5
+  # 引用回复
+  # 添加变量: %_reply_%
+  # 如果是回复消息, 则为变量赋值并为消息添加悬浮文本框用于显示内容. 可以将鼠标悬停在消息上查看回复的内容
+  reply-message:
+    # 可用变量:
+    # %qq% - 被回复的消息的发送者QQ号
+    var: '[回复 @%qq%] '
+
+    # 可用变量:
+    # %_/n_% - 换行
+    # %qq% - 被回复的消息的发送者QQ号
+    # %message% - 回复内容
+    message: "[引用回复 @%qq%]%_/n_%§7%message%"
 
 
 
