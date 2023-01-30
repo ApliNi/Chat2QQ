@@ -40,7 +40,7 @@ public class onPlayerMessage implements Listener {
                     break;
                 }
             }
-            if(plugin.getConfig().getBoolean("bot.available-worlds-use-as-blacklist")) allowWorld = !allowWorld;
+            if(plugin.getConfig().getBoolean("bot.available-worlds-use-as-blacklist", false)) allowWorld = !allowWorld;
 
             // 判断消息是否带前缀
             if(plugin.getConfig().getBoolean("bot.requite-special-word-prefix.enabled",true)){
@@ -66,7 +66,7 @@ public class onPlayerMessage implements Listener {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        plugin.getConfig().getLongList("bot.bot-accounts").forEach(bot -> plugin.getConfig().getLongList("bot.group-ids").forEach(group -> {
+                        plugin.getConfig().getLongList("bot.bot-accounts").forEach(bot -> plugin.getConfig().getLongList("general.group-ids").forEach(group -> {
                             try {
                                 MiraiBot.getBot(bot).getGroup(group).sendMessageMirai(finalFormatText);
                             } catch (NoSuchElementException e) {

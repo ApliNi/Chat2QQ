@@ -1,11 +1,7 @@
 package me.dreamvoid.chat2qq.bukkit;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.dreamvoid.chat2qq.bukkit.listener.onGroupMessage;
-//import me.dreamvoid.chat2qq.bukkit.listener.onGroupMessageCommand;
-import me.dreamvoid.chat2qq.bukkit.listener.onPlayerJoin;
-import me.dreamvoid.chat2qq.bukkit.listener.onPlayerMessage;
-import me.dreamvoid.chat2qq.bukkit.listener.onPlayerQuit;
+import me.dreamvoid.chat2qq.bukkit.listener.*;
 import me.dreamvoid.chat2qq.bukkit.utils.Metrics;
 import me.dreamvoid.miraimc.api.MiraiBot;
 import me.dreamvoid.miraimc.httpapi.MiraiHttpAPI;
@@ -36,7 +32,7 @@ public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecuto
     @Override // 启用插件
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(new onGroupMessage(this), this);
-//        Bukkit.getPluginManager().registerEvents(new onGroupMessageCommand(this), this);
+        Bukkit.getPluginManager().registerEvents(new onGroupCommandMessage(this), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerMessage(this), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerJoin(this), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerQuit(this), this);
@@ -98,7 +94,7 @@ public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecuto
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        getConfig().getLongList("bot.bot-accounts").forEach(bot -> getConfig().getLongList("bot.group-ids").forEach(group -> {
+                        getConfig().getLongList("bot.bot-accounts").forEach(bot -> getConfig().getLongList("general.group-ids").forEach(group -> {
                             try {
                                 MiraiBot.getBot(bot).getGroup(group).sendMessageMirai(finalFormatText);
                             } catch (NoSuchElementException e) {

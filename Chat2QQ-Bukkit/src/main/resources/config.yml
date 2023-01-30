@@ -5,6 +5,11 @@ allow-bStats: true
 # 游戏内配置
 # QQ -> MC 的消息
 general:
+  # 指定接收指定群的群消息，只有这个群接收到的消息才会被处理
+  # 消息会通过 机器人设置 中的其中一个机器人发送到QQ群
+  # 请至少设置一个
+  group-ids:
+    - 1000000
 
   # 群聊天前缀（聊天需要带有指定前缀才能发送到服务器）
   requite-special-word-prefix:
@@ -15,123 +20,24 @@ general:
       - "#"
 
   # 当群名片不存在时是否尝试获取昵称
-  use-nick-if-namecard-null: false
+  use-nick-if-namecard-null: true
 
-  # 启用 MiraiMC 内置的QQ绑定
-  use-miraimc-bind: true
-
-  # QQ群消息广播到游戏内聊天的格式（可以使用样式代码）
+  # QQ群消息广播到游戏内聊天的格式 格式化代码: §
   # 变量：
   # %groupname% - 群名称
   # %groupid% - 群号
   # %nick% - 发送者群名片
-  # %regex_nick% - 使用正则匹配到的名称, 需要开启 cleanup-name 模块
+  # %regex_nick% - 使用正则匹配到的名称, 需要开启 aplini.cleanup-name 模块
   # %qq% - 发送者QQ号
-  # %message% - 消息内容
-  in-game-chat-format: "&6[%groupname%/%groupid%] &a%nick%(%qq%)&r: %message%"
+  # %message% - 消息内容, 支持预处理模块 aplini.pretreatment
+  in-game-chat-format: "§f[§7%nick%§r§f] §7%message%"
 
+  # 启用 MiraiMC 内置的QQ绑定
+  use-miraimc-bind: false
   # 已绑定玩家向服务器发送聊天消息的格式
   # 如果玩家没有绑定，消息格式仍按照上方设置的格式发送
   # 内置变量仍然可以使用
-  bind-chat-format: "&6[QQ]&r %vault_prefix%%player_name%%vault_suffix%: %message%"
-
-
-
-  # ############### #
-  # 以下为功能模块配置 #
-  # ############### #
-
-  # [模块] 在QQ群中运行指令
-  run-command:
-    # 不使用时请关闭
-    enabled: false
-    # 启用此功能的QQ群, 需要同时设置在 bot.group-ids
-    qq-group:
-      - 1000001
-    # 指令前缀, 可以是多个字符, 比如 "~$"
-    prefix: "/"
-    # 指令最大长度 (不包括指令前缀)
-    command-max-length: 255
-    # 是否发送指令的输出, 关闭可提高性能或解决一些兼容性问题
-    return: true
-    # 是否将指令的输出打印到控制台
-    return-log: true
-    # 等待指令运行多长时间再处理输出 (毫秒), 需要开启 return
-    # 如果需要执行较慢的指令, 请尝试增大此值
-    sleep: 300
-    # 是否同时将指令作为消息转发到服务器中
-    also-as-message: true
-    # 执行不在白名单中的指令时发送返回消息
-    message-miss: "未命中的指令"
-    # 运行无返回指令的消息
-    message-no-out: "运行无返回指令"
-    # 获取指令的正则表达式, 当第一个捕获组的内容与指令白名单中的匹配时则允许运行 (不带斜杠或前缀)
-    regex-command-main: "^([^ ]+)"
-    # 设置各组可执行的主命令白名单 (不带斜杠或前缀)
-    # 权限更高的用户将可以使用更低的用户的指令
-    # 如果添加一条 ___ALL_COMMAND___ 作为指令, 则表示此组可以使用所有指令, 此功能请勿随意使用 !
-    group:
-      # permission_<int> 是 MiraiMC 获取到的权限数字, 以后更新了其他权限只需要以此格式添加即可使用
-      permission_2: # 群主
-        - 指令
-      permission_1: # 管理员
-        - 指令
-      permission_0: # 成员
-        - 指令
-
-
-
-  # [模块] 从 群名片(%nick%) 中匹配 MC 可用的游戏名称
-  # 添加变量: %regex_nick% - 使用正则匹配到的名称, 需要开启 cleanup-name 功能
-  cleanup-name:
-    # 不使用时请关闭
-    enabled: false
-    # 程序取第一个捕获组的结果
-    regex: "([a-zA-Z0-9_]{3,16})"
-    # 如果匹配不到, 则使用 %nick%, 也可以替换为其他 %regex_nick% 以外的变量或字符串
-    not-captured: "%nick%"
-
-
-
-  # [模块] 预处理 %message% 中的消息
-  pretreatment:
-    # 不使用时请关闭
-    enabled: false
-    # **使用方法**
-    # list:
-    #   - 匹配方式: prefix (前缀匹配), 可用处理方式: to_all
-    #                                           to_replace
-    #             contain (包含), 可用处理方式: to_all
-    #                                        to_replace
-    #             equal (完全相等), 可用处理方式: to_all
-    #             regular (正则匹配), 可用处理方式: to_all
-    #                                           to_regular
-    #     处理方式: to_all (替换整条消息)
-    #             to_replace (替换匹配到的部分)
-    #             to_regular (使用正则替换, 可使用正则变量)
-    #
-    #     是否发送: send (填写 send 配置将取消转发送匹配到的消息, 不需要时请忽略)
-    #
-    # > 正则的性能较差, 请尽量避免使用很多正则
-    # 示例配置, 默认配置了一些可能有用的功能:
-    list:
-
-      # 简单的匹配卡片消息
-      - prefix: '{"app":"com.tencent.'
-        to_all: "[卡片消息]"
-
-#      # 取消发送包含此内容的消息
-#      - contain: '此内容'
-#        send: false
-
-#      # 更好的匹配卡片消息, 使用正则解析内容
-#      - regular: '\{"app":"com.tencent.miniapp(?:.*)"prompt":"(?:.*?)](.*?)","(?:.*)"desc":"(.*?)","(?:.*)' # miniApp
-#        to_regular: "[小程序: $1] $2" # [小程序: 哔哩哔哩] xxxxxxx
-#
-#      - regular: '\{"app":"com.tencent.structmsg(?:.*)"tag":"(.*?)","title":"(.*?)","(?:.*)' # structMsg
-#        to_regular: "[卡片消息: $1] $2" # [卡片消息: 哔哩哔哩] xxxxxxx
-
-
+  bind-chat-format: "§f[§7%nick%§r§f] §7%message%"
 
 
 
@@ -139,19 +45,14 @@ general:
 # MC -> QQ 的消息
 bot:
   # 指定使用的QQ号，只有这个QQ号接收到的群消息才会被处理
+  # 消息会发送到 游戏配置 中的每个QQ群
   # 请至少设置一个
   bot-accounts:
-    - 123456
-
-  # 指定接收指定群的群消息，只有这个群接收到的消息才会被处理
-  # 请至少设置一个
-  group-ids:
-    - 123456
+    - 2000000
 
   # 可用的世界，玩家只有在下面列出的世界中聊天才会被发送到QQ群
   available-worlds:
     - world
-    - spawn
   # 是否将上面的列表用作黑名单，即玩家在上面列出的世界聊天不会发送到QQ群
   available-worlds-use-as-blacklist: false
 
@@ -176,7 +77,7 @@ bot:
   # 自带变量：
   # %player% - 玩家显示昵称
   # %message% - 消息内容
-  group-chat-format: "[MC] %player%: %message%"
+  group-chat-format: "[%player%] %message%"
 
 
 
@@ -201,15 +102,139 @@ bot:
 blacklist:
   # 屏蔽的QQ，插件不会转发此处列出的QQ发出的消息
   qq:
-    - 987654
-    - 321987
+    - 2000001
   
   # 屏蔽的玩家名，插件不会转发此处列出的玩家的所有消息
   player:
     - Steve
-    - Alex
   
   # 屏蔽词，插件不会转发包含下方列出的屏蔽词的消息
   word:
-    - example
-    - words
+    - bad
+
+
+# ############### #
+# 以下为功能模块配置 #
+# ############### #
+
+aplini:
+
+  ## 1
+  # 在QQ群中运行指令 [需要单独添加 QQ群]
+  # 此模块不处理黑名单 blacklist
+  run-command:
+    enabled: false
+    # 启用的 QQ群
+    qq-group:
+      - 1000001
+
+    # 指令前缀, 可以是多个字符, 比如 "~$"
+    command-prefix: "/"
+    # 指令最大长度 (不包括指令前缀)
+    command-max-length: 255
+    # 获取指令的正则表达式, 当第一个捕获组的内容与指令白名单中的匹配时则允许运行 (不带斜杠或前缀)
+    regex-command-main: "^([^ ]+)"
+
+    # 是否发送指令的输出, 关闭可提高性能或解决一些兼容性问题
+    return: true
+    # 等待指令运行多长时间再将结果发送到QQ群 (毫秒), 需要开启 run-command.return
+    return-sleep: 300
+    # 是否将指令的输出打印到控制台和日志
+    return-log: true
+
+    # 执行不在白名单中的指令时发送返回消息
+    message-miss: "未命中的指令"
+    # 运行无返回指令的消息
+    message-no-out: "运行无返回指令"
+
+    # 设置各组可执行的主命令白名单 (不带斜杠或前缀)
+    # 权限更高的用户将可以使用更低的用户的指令
+    # 如果添加一条 ___ALL_COMMAND___ 作为指令, 则表示此组可以使用所有指令, 此功能请勿随意使用 !
+    group:
+      # permission_<int> 是 MiraiMC 获取到的权限数字, 以后更新了其他权限只需要以此格式添加即可使用
+      permission_2: # 群主
+        - 指令
+      permission_1: # 管理员
+        - 指令
+      permission_0: # 成员
+        - 指令
+
+
+  ## 2
+  # 从 群名片(%nick%) 中匹配 MC 可用的游戏名称
+  # 添加变量: %regex_nick% - 使用正则匹配到的名称, 需要开启 cleanup-name 功能
+  cleanup-name:
+    enabled: false
+    # 程序取第一个捕获组的结果
+    regex: "([a-zA-Z0-9_]{3,16})"
+    # 如果匹配不到, 则使用 %nick%, 也可以替换为其他 %regex_nick% 以外的变量或字符串
+    not-captured: "%nick%"
+
+
+  ## 3
+  # 预处理 %message% 中的消息
+  pretreatment:
+    enabled: false
+    # **使用方法**
+    # list:
+    #   - 匹配方式: prefix (前缀匹配), 可用处理方式: to_all
+    #                                           to_replace
+    #             contain (包含), 可用处理方式: to_all
+    #                                        to_replace
+    #             equal (完全相等), 可用处理方式: to_all
+    #             regular (正则匹配), 可用处理方式: to_all
+    #                                           to_regular
+    #     处理方式: to_all (替换整条消息)
+    #             to_replace (替换匹配到的部分)
+    #             to_regular (使用正则替换, 可使用正则变量)
+    #
+    #     是否发送: send (填写 send 配置将取消转发送匹配到的消息, 不需要时请忽略)
+    #
+    # > 正则的性能较差, 请尽量避免使用很多正则
+    # 示例配置, 默认配置了一些可能有用的功能:
+    list:
+
+      # 卡片消息, JSON
+      - prefix: '{"app":"com.tencent.'
+        to_all: '[卡片消息]'
+
+      # 群公告, JSON
+      - prefix: '{"app":"com.tencent.mannounce"'
+        to_all: '[群公告]'
+
+      # 视频, 字符串
+      - prefix: '你的QQ暂不支持查看视频短片'
+        to_all: "[视频]"
+
+      # 文件, 字符串, 调整格式
+      - prefix: '[文件]'
+        to_replace: '[文件] '
+
+      # 取消发送包含此内容的消息
+      #- contain: '此内容'
+      #  send: false
+
+      # 更好的匹配卡片消息, 使用正则解析内容. 这里的正则有点问题, 仅示范, 不采用
+      #- regular: '\{"app":"com.tencent.miniapp(?:.*)"prompt":"(?:.*?)](.*?)","(?:.*)"desc":"(.*?)","(?:.*)' # miniApp
+      #  to_regular: "[小程序: $1] $2" # [小程序: 哔哩哔哩] xxxxxxx
+      #- regular: '\{"app":"com.tencent.structmsg(?:.*)"tag":"(.*?)","title":"(.*?)","(?:.*)' # structMsg
+      #  to_regular: "[卡片消息: $1] $2" # [卡片消息: 哔哩哔哩] xxxxxxx
+
+
+  ## 4
+  # 预设的格式调整功能,
+  other-format-presets:
+    # 是否删除 %message% 消息 中的格式化字符
+    render-message_format-code: false
+    # 是否删除 %nick% 群名片 中的格式化字符
+    render-nick_format-code: true
+
+    # 是否启用 "更好的多行消息"
+    multiline-message:
+      enabled: true
+      line-0: '' # [多行消息]
+      line-prefix: '  '
+
+
+
+# <- 到此, 您已经完成了所有配置, 使用 /chat2qq reload 重载插件即可应用 uwu
