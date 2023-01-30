@@ -149,6 +149,9 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
       enabled: true
       line-0: '' # [多行消息]
       line-prefix: '  '
+
+    # 是否将聊天消息转发到控制台/日志
+    message-to-log: true
 ```
 
 - 引用回复
@@ -159,11 +162,11 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
   reply-message:
     # 可用变量:
     # %qq% - 被回复的消息的发送者QQ号
-    var: '[回复 @%qq%] '
+    var: '§f[§7回复 @%qq%§f] '
 
     # 可用变量:
     # %_/n_% - 换行
     # %qq% - 被回复的消息的发送者QQ号
     # %message% - 回复内容
-    message: "[引用回复 @%qq%]%_/n_%§7%message%"
+    message: "§f[引用回复 @%qq%]%_/n_%§7%message%"
 ```
