@@ -21,7 +21,7 @@ permissions:
     default: false
   chat2qq.command.qchat:
     description: 允许使用 /qchat
-    default: false
+    default: op
   chat2qq.command.chat2qq:
     description: 允许使用 /chat2qq
     default: op

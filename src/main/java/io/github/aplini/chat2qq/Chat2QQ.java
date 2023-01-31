@@ -136,10 +136,12 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
     // 指令补全
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        if(args.length == 1){
-            List<String> list = new ArrayList<>();
-            list.add("reload"); // 重载配置
-            return list;
+        if (command.getName().equalsIgnoreCase("chat2qq")) {
+            if (args.length == 1) {
+                List<String> list = new ArrayList<>();
+                list.add("reload"); // 重载配置
+                return list;
+            }
         }
         return null;
     }
