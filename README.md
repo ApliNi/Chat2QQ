@@ -172,3 +172,28 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
     # %message% - 回复内容
     message: "§f[引用回复 @%qq%]%_/n_%§7%message%"
 ```
+
+- `qchat` 指令
+```yaml
+  # 发送消息的指令
+  # /qchat <消息>  - 玩家使用此指令
+  # /qchat [自定义名称] <消息>  - 非玩家实体或其他程序使用此指令
+  qchat:
+    # 使用上方 general.group-ids 中配置的群
+    use-general-group-ids: true
+    # 消息转发到哪些群, 需要 use-general-group-ids: false
+    group-ids:
+      - 1000000
+    # 非玩家 执行指令时忽略 [自定义名称] 参数
+    use-fill-name: false
+    # 如果获取不到名称 (开启 auto-other-name 或参数不足) 则使用以下设定值
+    fill-name: '控制台'
+    # 转发到QQ群的格式
+    # %name% - 玩家名称或自定义名称或 fill-other-name
+    # %message% - 消息
+    qq-format: '[%name%] %message%'
+    # 是否同时将消息广播到MC服务器
+    mc-broadcast: true
+    # 广播到MC服务器的
+    mc-format: '§f[§7%name%§f] §r%message%'
+```

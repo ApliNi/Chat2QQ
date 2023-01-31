@@ -1,11 +1,7 @@
 package me.dreamvoid.chat2qq.bukkit;
 
-//import me.clip.placeholderapi.PlaceholderAPI;
 import me.dreamvoid.chat2qq.bukkit.listener.*;
 import me.dreamvoid.chat2qq.bukkit.utils.Metrics;
-import me.dreamvoid.miraimc.api.MiraiBot;
-import me.dreamvoid.miraimc.httpapi.MiraiHttpAPI;
-import me.dreamvoid.miraimc.httpapi.exception.AbnormalStatusException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -14,12 +10,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.NoSuchElementException;
+
+import static me.dreamvoid.chat2qq.bukkit.utils.Util.sendToGroup;
 
 public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecutor {
 
@@ -47,74 +42,69 @@ public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecuto
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if(command.getName().equalsIgnoreCase("qchat")){
-            String playerName;
-            boolean allowWorld = false;
-            boolean inBlackList = false;
-            boolean allowConsole = getConfig().getBoolean("bot.allow-console-chat", false);
 
+            if(args.length == 0){
+                sender.sendMessage("/qchat [name] <message>");
+                return false;
+            }
+
+            String name;
+            StringBuilder message = new StringBuilder();
+
+            // 是否为玩家
             if(sender instanceof Player){
-                Player player = (Player) sender;
-                playerName = player.getDisplayName();
-                // 判断玩家所处世界
-                for(String world : getConfig().getStringList("general.available-worlds")){
-                    if(player.getWorld().getName().equalsIgnoreCase(world)){
-                        allowWorld = true;
-                        break;
-                    }
+                name = ((Player) sender).getDisplayName();
+                // 黑名单. 玩家名
+                if(getConfig().getStringList("blacklist.player").contains(name)){
+                    return false;
                 }
-                if(getConfig().getBoolean("general.available-worlds-use-as-blacklist")) allowWorld = !allowWorld;
-
-                inBlackList = getConfig().getStringList("blacklist.player").stream().anyMatch(t -> t.equalsIgnoreCase(playerName));
-
-            } else {
-                if(allowConsole){
-                    playerName = getConfig().getString("bot.console-name", "控制台");
-                    allowWorld = true;
-                } else {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&c控制台不能执行此命令！"));
-                    return true;
+                // 获取消息内容
+                Arrays.stream(args).forEach(arg -> message.append(arg).append(" "));
+            }else{
+                // 使用填充名称
+                if(getConfig().getBoolean("aplini.qchat.use-fill-name", false)){
+                    name = getConfig().getString("aplini.qchat.fill-name", "console");
+                    Arrays.stream(args).forEach(arg -> message.append(arg).append(" "));
+                }else{
+                    if(args.length == 1){ // 未设定自定义名称
+                        name = getConfig().getString("aplini.qchat.fill-name", "console");
+                        Arrays.stream(args).forEach(arg -> message.append(arg).append(" "));
+                    }else{
+                        name = args[0];
+                        for(int i = 1; i < args.length; i++){
+                            message.append(args[i]).append(" ");
+                        }
+                    }
                 }
             }
 
-            StringBuilder message = new StringBuilder();
-            Arrays.stream(args).forEach(arg -> message.append(arg).append(" "));
-            inBlackList = inBlackList || getConfig().getStringList("blacklist.word").stream().anyMatch(t -> message.toString().contains(t));
+            // 黑名单. 关键词
+            if(getConfig().getStringList("blacklist.word").stream().anyMatch(t -> message.toString().contains(t))){
+                return false;
+            }
 
-            // 发送阶段
-            if(allowWorld && !inBlackList) {
-                String finalFormatText = getConfig().getString("bot.group-chat-format", "message")
-                        .replace("%player%", playerName)
-                        .replace("%message%", message);
-//                if(isPlayer && Bukkit.getPluginManager().getPlugin("PlaceholderAPI")!=null){
-//                    formatText = PlaceholderAPI.setPlaceholders((Player) sender,formatText);
-//                }
-//                String finalFormatText = formatText;
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        getConfig().getLongList("bot.bot-accounts").forEach(bot -> getConfig().getLongList("general.group-ids").forEach(group -> {
-                            try {
-                                MiraiBot.getBot(bot).getGroup(group).sendMessageMirai(finalFormatText);
-                            } catch (NoSuchElementException e) {
-                                if (MiraiHttpAPI.Bots.containsKey(bot)) {
-                                    try {
-                                        MiraiHttpAPI.INSTANCE.sendGroupMessage(MiraiHttpAPI.Bots.get(bot), group, finalFormatText);
-                                    } catch (IOException | AbnormalStatusException ex) {
-                                        getLogger().warning("使用" + bot + "发送消息时出现异常，原因: " + ex);
-                                    }
-                                } else getLogger().warning("指定的机器人" + bot + "不存在，是否已经登录了机器人？");
-                            }
-                        }));
-                    }
-                }.runTaskAsynchronously(this);
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a已发送QQ群聊天消息！"));
-                if(getConfig().getBoolean("bot.command-also-broadcast-to-chat") && sender instanceof Player){
-                    Player player = (Player) sender;
-                    player.chat(message.toString());
-                }
+            // 消息格式
+            String formatText = getConfig().getString("aplini.qchat.qq-format", "qq-format")
+                    .replace("%name%", name)
+                    .replace("%message%", message);
+
+            // 发送到群
+
+            getConfig().getLongList(
+                    getConfig().getBoolean("use-general-group-ids", true)? "general.group-ids" : "aplini.qchat.group-ids")
+                    .forEach(gid -> sendToGroup(this, gid, formatText));
+
+            // 广播到服务器
+            if(getConfig().getBoolean("aplini.qchat.mc-broadcast", true)){
+                Bukkit.broadcastMessage(
+                        getConfig().getString("aplini.qchat.mc-format", "mc-format")
+                                .replace("%name%", name)
+                                .replace("%message%", message)
+                );
             }
         }
-        if(command.getName().equalsIgnoreCase("chat2qq")){
+
+        else if(command.getName().equalsIgnoreCase("chat2qq")){
             if(args.length>=1 && args[0].equalsIgnoreCase("reload")){
                 if(sender.hasPermission("miraimc.command.chat2qq")){
                     reloadConfig();
@@ -129,4 +119,5 @@ public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecuto
         }
         return true;
     }
+
 }
