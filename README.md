@@ -6,9 +6,7 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
 
 如果你有好的想法请点击上方 `Issues` 按钮, 发送一个功能请求. 如果我能做到就会去实现出来. 
 
-! 注意, 此版本不兼容 Bukkit 服务器, 最低需要使用 1.18.1 版本的 Spigot (Chat2QQ-1.7.4 及以下版本支持 MC1.13.2). 
-
-! 我正在考虑重写它, 完成后将添加连接 mirai-api-http 的功能(而非MC服务器中的MiraiMC), 并使用 GPLv3.0 开源协议(如果可以). 
+! 注意, 此版本不兼容 Bukkit 服务器, 最低需要使用 1.18.1 版本的 Spigot (Chat2QQ-1.7.4 及以下版本支持 MC1.13.2).
 
 
 

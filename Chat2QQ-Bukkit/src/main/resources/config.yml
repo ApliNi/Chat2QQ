@@ -287,5 +287,19 @@ aplini:
     mc-format: '§f[§7%name%§f] §7%message%'
 
 
+  ## 7
+  # 群成员信息缓存
+  player-cache:
+    enabled: false
+    # 自动更新缓存
+    auto-update: true
+    # 测试.自动更新时重建所有缓存数据
+    test-auto-update-all: false
+    # 缓存哪些群
+    group-ids:
+      - 1000000
+    #
+
+
 
 # <- 到此, 您已经完成了所有配置, 使用 /chat2qq reload 重载插件即可应用 uwu
