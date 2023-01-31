@@ -1,17 +1,15 @@
 name: Chat2QQ
-main: me.dreamvoid.chat2qq.bukkit.BukkitPlugin
-version: ${project.version}
-author: DreamVoid
-api-version: 1.18
+main: io.github.aplini.chat2qq.Chat2QQ
+version: '${project.version}'
+author: ApliNi
+api-version: 1.18.2
 prefix: MiraiMC
 depend:
   - MiraiMC
-#softdepend:
-#  - PlaceholderAPI
 commands:
   qchat:
     description: 发送聊天消息到QQ群
-    permission: miraimc.command.qchat
+    permission: chat2qq.command.qchat
   chat2qq:
     description: Chat2QQ 插件主命令
 permissions:
@@ -21,9 +19,9 @@ permissions:
   chat2qq.quit.silent:
     description: 允许悄悄离开服务器
     default: false
-  miraimc.command.qchat:
+  chat2qq.command.qchat:
     description: 允许使用 /qchat
-    default: true
-  miraimc.command.chat2qq:
+    default: false
+  chat2qq.command.chat2qq:
     description: 允许使用 /chat2qq
     default: op

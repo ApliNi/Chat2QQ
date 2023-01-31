@@ -1,14 +1,15 @@
-package me.dreamvoid.chat2qq.bukkit.listener;
+package io.github.aplini.chat2qq.listener;
 
-import me.dreamvoid.chat2qq.bukkit.BukkitPlugin;
-import me.dreamvoid.chat2qq.bukkit.utils.Commander;
+import io.github.aplini.chat2qq.Chat2QQ;
+import io.github.aplini.chat2qq.utils.Commander;
 import me.dreamvoid.miraimc.api.MiraiBot;
 import me.dreamvoid.miraimc.bukkit.event.message.passive.MiraiGroupMessageEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,8 +19,8 @@ import static org.bukkit.Bukkit.getLogger;
 // 运行指令的功能
 
 public class onGroupCommandMessage implements Listener {
-    private final BukkitPlugin plugin;
-    public onGroupCommandMessage(BukkitPlugin plugin){
+    private final Chat2QQ plugin;
+    public onGroupCommandMessage(Chat2QQ plugin){
         this.plugin = plugin;
     }
 

@@ -6,7 +6,7 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
 
 如果你有好的想法请点击上方 `Issues` 按钮, 发送一个功能请求. 如果我能做到就会去实现出来. 
 
-! 注意, 此版本不兼容 Bukkit 服务器, 最低需要使用 1.18.1 版本的 Spigot (Chat2QQ-1.7.4 及以下版本支持 MC1.13.2).
+! 注意, 此版本不兼容 Bukkit 服务器, 最低需要使用 1.18.2 版本的 Spigot (Chat2QQ-1.7.4 及以下版本支持 MC1.13.2).
 
 
 

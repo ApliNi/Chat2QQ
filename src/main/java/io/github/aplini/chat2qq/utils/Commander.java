@@ -1,4 +1,4 @@
-package me.dreamvoid.chat2qq.bukkit.utils;
+package io.github.aplini.chat2qq.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -16,12 +16,12 @@ public class Commander implements CommandSender {
     public List<String> message = new ArrayList<>();
 
     @Override
-    public void sendMessage(String message) {
+    public void sendMessage(@NotNull String message) {
         this.message.add(message);
     }
 
     @Override
-    public void sendMessage(String[] messages) {
+    public void sendMessage(@NotNull String[] messages) {
         message.addAll(Arrays.asList(messages));
     }
 
@@ -35,63 +35,68 @@ public class Commander implements CommandSender {
         message.addAll(Arrays.asList(messages));
     }
 
+    @NotNull
     @Override
     public Server getServer() {
         return Bukkit.getConsoleSender().getServer();
     }
 
+    @NotNull
     @Override
     public String getName() {
         return "_Chat2QQ_";
     }
 
+    @NotNull
     @Override
     public Spigot spigot() {
         return Bukkit.getConsoleSender().spigot();
     }
 
     @Override
-    public boolean isPermissionSet(String s) {
+    public boolean isPermissionSet(@NotNull String s) {
         return Bukkit.getConsoleSender().isPermissionSet(s);
     }
 
     @Override
-    public boolean isPermissionSet(Permission permission) {
+    public boolean isPermissionSet(@NotNull Permission permission) {
         return Bukkit.getConsoleSender().isPermissionSet(permission);
     }
 
     @Override
-    public boolean hasPermission(String s) {
+    public boolean hasPermission(@NotNull String s) {
         return Bukkit.getConsoleSender().hasPermission(s);
     }
 
     @Override
-    public boolean hasPermission(Permission permission) {
+    public boolean hasPermission(@NotNull Permission permission) {
         return Bukkit.getConsoleSender().hasPermission(permission);
     }
 
+    @NotNull
     @Override
-    public PermissionAttachment addAttachment(Plugin plugin, String s, boolean b) {
+    public PermissionAttachment addAttachment(@NotNull Plugin plugin, @NotNull String s, boolean b) {
         return Bukkit.getConsoleSender().addAttachment(plugin, s, b);
     }
 
+    @NotNull
     @Override
-    public PermissionAttachment addAttachment(Plugin plugin) {
+    public PermissionAttachment addAttachment(@NotNull Plugin plugin) {
         return Bukkit.getConsoleSender().addAttachment(plugin);
     }
 
     @Override
-    public PermissionAttachment addAttachment(Plugin plugin, String s, boolean b, int i) {
+    public PermissionAttachment addAttachment(@NotNull Plugin plugin, @NotNull String s, boolean b, int i) {
         return Bukkit.getConsoleSender().addAttachment(plugin, s, b, i);
     }
 
     @Override
-    public PermissionAttachment addAttachment(Plugin plugin, int i) {
+    public PermissionAttachment addAttachment(@NotNull Plugin plugin, int i) {
         return Bukkit.getConsoleSender().addAttachment(plugin, i);
     }
 
     @Override
-    public void removeAttachment(PermissionAttachment permissionAttachment) {
+    public void removeAttachment(@NotNull PermissionAttachment permissionAttachment) {
 
     }
 
@@ -100,6 +105,7 @@ public class Commander implements CommandSender {
 
     }
 
+    @NotNull
     @Override
     public Set<PermissionAttachmentInfo> getEffectivePermissions() {
         return Bukkit.getConsoleSender().getEffectivePermissions();

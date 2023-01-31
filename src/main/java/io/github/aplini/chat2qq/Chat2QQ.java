@@ -1,22 +1,25 @@
-package me.dreamvoid.chat2qq.bukkit;
+package io.github.aplini.chat2qq;
 
-import me.dreamvoid.chat2qq.bukkit.listener.*;
-import me.dreamvoid.chat2qq.bukkit.utils.Metrics;
+import io.github.aplini.chat2qq.listener.*;
+import io.github.aplini.chat2qq.utils.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
-import static me.dreamvoid.chat2qq.bukkit.utils.Util.sendToGroup;
+import static io.github.aplini.chat2qq.utils.Util.sendToGroup;
 
-public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecutor {
+public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, TabExecutor {
 
     @Override // 加载插件
     public void onLoad() {
@@ -26,22 +29,27 @@ public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecuto
 
     @Override // 启用插件
     public void onEnable() {
+        // 注册事件
         Bukkit.getPluginManager().registerEvents(new onGroupMessage(this), this);
         Bukkit.getPluginManager().registerEvents(new onGroupCommandMessage(this), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerMessage(this), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerJoin(this), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerQuit(this), this);
-        getCommand("qchat").setExecutor(this);
-        getCommand("chat2qq").setExecutor(this);
-        if(getConfig().getBoolean("allow-bStats",true)){
-            int pluginId = 17587;
-            new Metrics(this, pluginId);
-        }
+        // 注册指令
+        Objects.requireNonNull(getCommand("qchat")).setExecutor(this);
+        Objects.requireNonNull(getCommand("chat2qq")).setExecutor(this);
+        // bStats
+        if(getConfig().getBoolean("allow-bStats",true)){new Metrics(this, 17587);}
     }
 
+    // 指令
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if(command.getName().equalsIgnoreCase("qchat")){
+            if(! sender.hasPermission("chat2qq.command.qchat")){
+                sender.sendMessage("§f[§7Chat2QQ§f] §7没有权限");
+                return false;
+            }
 
             if(args.length == 0){
                 sender.sendMessage("/qchat [name] <message>");
@@ -105,19 +113,34 @@ public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecuto
         }
 
         else if(command.getName().equalsIgnoreCase("chat2qq")){
-            if(args.length>=1 && args[0].equalsIgnoreCase("reload")){
-                if(sender.hasPermission("miraimc.command.chat2qq")){
-                    reloadConfig();
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a配置文件已经重新载入！"));
-                } else sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&c你没有足够的权限使用此命令！"));
-            } else {
-                sender.sendMessage("This server is running "+getDescription().getName()+
-                        " version "+getDescription().getVersion()+
-                        " by "+ getDescription().getAuthors().toString().replace("[","").replace("]","")+
-                        " (MiraiMC version "+Bukkit.getPluginManager().getPlugin("MiraiMC").getDescription().getVersion()+")");
+            if(args.length == 0){
+                sender.sendMessage("§f[§7Chat2QQ§f] §7https://github.com/ApliNi/Chat2QQ");
+                sender.sendMessage("   |                 ");
+                sender.sendMessage("   //| |\\  | _| |\\ _|");
+                sender.sendMessage("     |               ");
+                return true;
+            }
+            else if(args[0].equalsIgnoreCase("reload")){
+                if(sender.hasPermission("chat2qq.command.chat2qq")){
+                    sender.sendMessage("§f[§7Chat2QQ§f] §7没有权限");
+                    return false;
+                }
+                reloadConfig();
+                sender.sendMessage("§f[§7Chat2QQ§f] §7已重载配置");
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
+    // 指令补全
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+        if(args.length == 1){
+            List<String> list = new ArrayList<>();
+            list.add("reload"); // 重载配置
+            return list;
+        }
+        return null;
+    }
 }

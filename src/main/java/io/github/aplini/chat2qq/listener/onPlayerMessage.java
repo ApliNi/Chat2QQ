@@ -1,17 +1,17 @@
-package me.dreamvoid.chat2qq.bukkit.listener;
+package io.github.aplini.chat2qq.listener;
 
-import me.dreamvoid.chat2qq.bukkit.BukkitPlugin;
+import io.github.aplini.chat2qq.Chat2QQ;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import static me.dreamvoid.chat2qq.bukkit.utils.Util.sendToGroup;
+import static io.github.aplini.chat2qq.utils.Util.sendToGroup;
 
 public class onPlayerMessage implements Listener {
-    private final BukkitPlugin plugin;
-    public onPlayerMessage(BukkitPlugin plugin){
+    private final Chat2QQ plugin;
+    public onPlayerMessage(Chat2QQ plugin){
         this.plugin = plugin;
     }
 
@@ -33,7 +33,7 @@ public class onPlayerMessage implements Listener {
                     break;
                 }
             }
-            if(plugin.getConfig().getBoolean("bot.available-worlds-use-as-blacklist", false)) allowWorld = !allowWorld;
+            if(plugin.getConfig().getBoolean("bot.available-worlds-use-as-blacklist", true)) allowWorld = !allowWorld;
 
             // 判断消息是否带前缀
             if(plugin.getConfig().getBoolean("bot.requite-special-word-prefix.enabled",true)){

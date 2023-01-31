@@ -1,29 +1,28 @@
-package me.dreamvoid.chat2qq.bukkit.listener;
+package io.github.aplini.chat2qq.listener;
 
-import me.dreamvoid.chat2qq.bukkit.BukkitPlugin;
+import io.github.aplini.chat2qq.Chat2QQ;
 import me.dreamvoid.miraimc.bukkit.event.message.passive.MiraiGroupMessageEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import static me.dreamvoid.chat2qq.bukkit.utils.renderGroupMessage.*;
-import static me.dreamvoid.chat2qq.bukkit.utils.renderGroupMessage._renderMessage;
+import static io.github.aplini.chat2qq.utils.renderGroupMessage._renderMessage;
+import static io.github.aplini.chat2qq.utils.renderGroupMessage.renderMessage;
+import static org.bukkit.Bukkit.getLogger;
 import static org.bukkit.Bukkit.getServer;
 
-import static org.bukkit.Bukkit.getLogger;
-
 public class onGroupMessage implements Listener {
-    private final BukkitPlugin plugin;
-    public onGroupMessage(BukkitPlugin plugin){
+    private final Chat2QQ plugin;
+    public onGroupMessage(Chat2QQ plugin){
         this.plugin = plugin;
     }
 
     @EventHandler
     public void onGroupMessageReceive(MiraiGroupMessageEvent e) {
-        if(plugin.getConfig().getStringList("blacklist.word").stream().anyMatch(s -> e.getMessage().contains(s)) || plugin.getConfig().getLongList("blacklist.qq").contains(e.getSenderID())) return;
+        // QQID黑名单
+        if(plugin.getConfig().getLongList("blacklist.qq").contains(e.getSenderID())) return;
 
         // 渲染消息
         String [] message = renderMessage(plugin, e);

@@ -1,4 +1,4 @@
-package me.dreamvoid.chat2qq.bukkit.utils;
+package io.github.aplini.chat2qq.utils;
 
 import me.dreamvoid.miraimc.api.MiraiBot;
 import me.dreamvoid.miraimc.httpapi.MiraiHttpAPI;

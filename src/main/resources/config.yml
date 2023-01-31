@@ -5,13 +5,11 @@ allow-bStats: true
 # 游戏内配置
 # QQ -> MC 的消息
 general:
-  # 指定接收指定群的群消息，只有这个群接收到的消息才会被处理
-  # 消息会通过 机器人设置 中的其中一个机器人发送到QQ群
-  # 请至少设置一个
+  # 处理哪些QQ群的消息
   group-ids:
     - 1000000
 
-  # 群聊天前缀（聊天需要带有指定前缀才能发送到服务器）
+  # 群聊天前缀 (聊天需要带有指定前缀才能发送到服务器)
   requite-special-word-prefix:
     enabled: false
     prefix:
@@ -21,7 +19,6 @@ general:
   use-nick-if-namecard-null: true
 
   # QQ群消息广播到游戏内聊天的格式 格式化代码: §
-  # 变量：
   # %groupname% - 群名称
   # %groupid% - 群号
   # %nick% - 发送者群名片
@@ -31,12 +28,9 @@ general:
   # %_reply_% - 如果是回复消息..., 配置在 aplini.reply-message 模块
   in-game-chat-format: '§f[§7%nick%§r§f] %_reply_%§7%message%'
 
-
   # 启用 MiraiMC 内置的QQ绑定
   use-miraimc-bind: false
-  # 已绑定玩家向服务器发送聊天消息的格式
-  # 如果玩家没有绑定，消息格式仍按照上方设置的格式发送
-  # 内置变量仍然可以使用
+  # 已绑定玩家的广播消息格式
   bind-chat-format: '§f[§7%nick%§r§f] %_reply_%§7%message%'
 
 
@@ -44,62 +38,50 @@ general:
 # 机器人配置
 # MC -> QQ 的消息
 bot:
-  # 指定使用的QQ号，只有这个QQ号接收到的群消息才会被处理
-  # 消息会发送到 游戏配置 中的每个QQ群
-  # 请设置一个
+  # 使用哪些QQ号处理消息, 最好只设置一个 (我没测试
   bot-accounts:
     - 2000000
 
-  # 可用的世界，玩家只有在下面列出的世界中聊天才会被发送到QQ群
+  # 玩家在以下世界中聊天才会被转发
   available-worlds:
-    - world
-  # 是否将上面的列表用作黑名单，即玩家在上面列出的世界聊天不会发送到QQ群
-  available-worlds-use-as-blacklist: false
+    #- world
+  # 将以上配置作为黑名单, 玩家不在以上世界中聊天才会被转发
+  available-worlds-use-as-blacklist: true
 
-  # 游戏聊天前缀（聊天需要带有指定前缀才能发送到QQ群）
+  # 游戏聊天前缀 (聊天需要带有指定前缀才能发送到QQ群) 
   requite-special-word-prefix:
     enabled: true
     prefix:
       - '#'
 
-  # 服务器消息发送到QQ群的格式（可以使用PlaceholderAPI变量）
-  # 自带变量：
-  # %player% - 玩家显示昵称
+  # 服务器消息发送到QQ群的格式
+  # %player% - 玩家名称
   # %message% - 消息内容
   group-chat-format: '[%player%] %message%'
 
 
-
-  # 是否发送玩家进服退服消息
+  # 是否发送玩家进出服务器的消息
   # %player% - 玩家显示昵称
   send-player-join-quit-message: false
-
-  # 进服消息
+  # 加入
   player-join-message: '%player% 进入服务器'
-  # 玩家进服消息发送间隔，单位：秒. 在此间隔内多次进入不会多次发送群消息
-  player-join-message-interval: 0
-
-  # 退服消息
+  # 退出
   player-quit-message: '%player% 离开服务器'
-  # 玩家退服消息发送间隔，单位：秒. 在此间隔内多次退出不会多次发送群消息
-  player-quit-message-interval: 0
+  # 防刷屏, 在此时间内多次进出服务器不会发送消息
+  player-join-quit-message-interval: 0
 
 
 
-# 黑名单
-# 无论上方如何设置，下方的黑名单如有匹配则不会进行任何操作（优先级最高）
+# 黑名单, 可用于添加其他QQ机器人
+# 优先级大于上方配置
 blacklist:
-  # 屏蔽的QQ，插件不会转发此处列出的QQ发出的消息
+  # 不转发以下QQ号的聊天消息
   qq:
-    #- 2000001
-  
-  # 屏蔽的玩家名，插件不会转发此处列出的玩家的所有消息
+  #- 2000001
+
+  # 不转发以下玩家名的聊天消息
   player:
-    #- playerName
-  
-  # 屏蔽词，插件不会转发包含下方列出的屏蔽词的消息
-  word:
-    #- shieldWord
+  #- playerName
 
 
 # ############### #
@@ -142,12 +124,12 @@ aplini:
     group:
       # permission_<int> 是 MiraiMC 获取到的权限数字, 以后更新了其他权限只需要以此格式添加即可使用
       permission_2: # 群主
-        #- chat2qq
+      #- chat2qq
       permission_1: # 管理员
-        #- spark
+      #- spark
       permission_0: # 成员
-        #- list
-        #- tps
+      #- list
+      #- tps
 
 
   ## 2
