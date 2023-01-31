@@ -91,7 +91,7 @@ public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecuto
             // 发送到群
 
             getConfig().getLongList(
-                    getConfig().getBoolean("use-general-group-ids", true)? "general.group-ids" : "aplini.qchat.group-ids")
+                    getConfig().getBoolean("aplini.qchat.use-general-group-ids", true)? "general.group-ids" : "aplini.qchat.group-ids")
                     .forEach(gid -> sendToGroup(this, gid, formatText));
 
             // 广播到服务器
