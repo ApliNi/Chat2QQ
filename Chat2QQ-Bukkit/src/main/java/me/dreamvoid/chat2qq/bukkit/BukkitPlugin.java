@@ -39,7 +39,7 @@ public class BukkitPlugin extends JavaPlugin implements Listener, CommandExecuto
         getCommand("qchat").setExecutor(this);
         getCommand("chat2qq").setExecutor(this);
         if(getConfig().getBoolean("allow-bStats",true)){
-            int pluginId = 12193;
+            int pluginId = 17587;
             new Metrics(this, pluginId);
         }
     }
