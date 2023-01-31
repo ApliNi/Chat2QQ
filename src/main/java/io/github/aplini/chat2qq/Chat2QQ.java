@@ -115,9 +115,9 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
         else if(command.getName().equalsIgnoreCase("chat2qq")){
             if(args.length == 0){
                 sender.sendMessage("§f[§7Chat2QQ§f] §7https://github.com/ApliNi/Chat2QQ");
-                sender.sendMessage("   |                 ");
-                sender.sendMessage("   //| |\\  | _| |\\ _|");
-                sender.sendMessage("     |               ");
+                sender.sendMessage("§7   |                 ");
+                sender.sendMessage("§7   //| |\\  | _| |\\ _|");
+                sender.sendMessage("§7     |               ");
                 return true;
             }
             else if(args[0].equalsIgnoreCase("reload")){

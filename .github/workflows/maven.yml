@@ -28,5 +28,5 @@ jobs:
     - name: 上传工件
       uses: actions/upload-artifact@v2.3.1
       with:
-        name: "Chat2QQ-Bukkit.jar"
+        name: "Chat2QQ.jar"
         path: /home/runner/work/Chat2QQ/Chat2QQ/target/Chat2QQ.jar
