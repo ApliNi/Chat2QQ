@@ -1,20 +1,13 @@
 package me.dreamvoid.chat2qq.bukkit.listener;
 
-//import me.clip.placeholderapi.PlaceholderAPI;
 import me.dreamvoid.chat2qq.bukkit.BukkitPlugin;
-import me.dreamvoid.miraimc.api.MiraiBot;
-import me.dreamvoid.miraimc.httpapi.MiraiHttpAPI;
-import me.dreamvoid.miraimc.httpapi.exception.AbnormalStatusException;
-//import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.IOException;
-import java.util.NoSuchElementException;
+import static me.dreamvoid.chat2qq.bukkit.utils.Util.sendToGroup;
 
 public class onPlayerMessage implements Listener {
     private final BukkitPlugin plugin;
@@ -54,34 +47,14 @@ public class onPlayerMessage implements Listener {
             } else allowPrefix = true;
 
             // 服务器消息发送到QQ群的格式
-            String finalFormatText = plugin.getConfig().getString("bot.group-chat-format", "message")
+            String formatText = plugin.getConfig().getString("bot.group-chat-format", "message")
                     .replace("%player%",e.getPlayer().getName())
                     .replace("%message%", message);
 
             if(allowWorld && allowPrefix){
-//                if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI")!=null){
-//                    formatText = PlaceholderAPI.setPlaceholders(e.getPlayer(),formatText);
-//                }
-//                String finalFormatText = formatText;
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        plugin.getConfig().getLongList("bot.bot-accounts").forEach(bot -> plugin.getConfig().getLongList("general.group-ids").forEach(group -> {
-                            try {
-                                MiraiBot.getBot(bot).getGroup(group).sendMessageMirai(finalFormatText);
-                            } catch (NoSuchElementException e) {
-                                if (MiraiHttpAPI.Bots.containsKey(bot)) {
-                                    try {
-                                        MiraiHttpAPI.INSTANCE.sendGroupMessage(MiraiHttpAPI.Bots.get(bot), group, finalFormatText);
-                                    } catch (IOException | AbnormalStatusException ex) {
-                                        plugin.getLogger().warning("使用" + bot + "发送消息时出现异常，原因: " + ex);
-                                    }
-                                } else plugin.getLogger().warning("指定的机器人" + bot + "不存在，是否已经登录了机器人？");
-                            }
-                        }));
-                    }
-                }.runTaskAsynchronously(plugin);
+                plugin.getConfig().getLongList("general.group-ids").forEach(group -> sendToGroup(plugin, group, formatText));
             }
+
         }
     }
 }

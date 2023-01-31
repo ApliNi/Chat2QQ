@@ -1,18 +1,15 @@
 package me.dreamvoid.chat2qq.bukkit.listener;
 
 import me.dreamvoid.chat2qq.bukkit.BukkitPlugin;
-import me.dreamvoid.miraimc.api.MiraiBot;
-import me.dreamvoid.miraimc.httpapi.MiraiHttpAPI;
-import me.dreamvoid.miraimc.httpapi.exception.AbnormalStatusException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
+
+import static me.dreamvoid.chat2qq.bukkit.utils.Util.sendToGroup;
 
 public class onPlayerJoin implements Listener {
     private final BukkitPlugin plugin;
@@ -30,15 +27,7 @@ public class onPlayerJoin implements Listener {
                     String message = plugin.getConfig().getString("bot.player-join-message", "player Join").replace("%player%", e.getPlayer().getName());
                     plugin.getConfig().getLongList("bot.bot-accounts").forEach(bot -> plugin.getConfig().getLongList("general.group-ids").forEach(group -> {
                         try {
-                            MiraiBot.getBot(bot).getGroup(group).sendMessageMirai(message);
-                        } catch (NoSuchElementException e) {
-                            if (MiraiHttpAPI.Bots.containsKey(bot)) {
-                                try {
-                                    MiraiHttpAPI.INSTANCE.sendGroupMessage(MiraiHttpAPI.Bots.get(bot), group, message);
-                                } catch (IOException | AbnormalStatusException ex) {
-                                    plugin.getLogger().warning("使用" + bot + "发送消息时出现异常，原因: " + ex);
-                                }
-                            } else plugin.getLogger().warning("指定的机器人" + bot + "不存在，是否已经登录了机器人？");
+                            sendToGroup(plugin, group, message);
                         } finally {
                             int interval = plugin.getConfig().getInt("bot.player-join-message-interval");
                             if(interval > 0) {
