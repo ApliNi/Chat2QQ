@@ -121,7 +121,7 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
                 return true;
             }
             else if(args[0].equalsIgnoreCase("reload")){
-                if(sender.hasPermission("chat2qq.command.chat2qq")){
+                if(! sender.hasPermission("chat2qq.command.chat2qq")){
                     sender.sendMessage("§f[§7Chat2QQ§f] §7没有权限");
                     return false;
                 }

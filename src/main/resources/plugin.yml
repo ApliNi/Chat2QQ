@@ -2,7 +2,7 @@ name: Chat2QQ
 main: io.github.aplini.chat2qq.Chat2QQ
 version: '${project.version}'
 author: ApliNi
-api-version: 1.18.2
+api-version: 1.18
 prefix: MiraiMC
 depend:
   - MiraiMC

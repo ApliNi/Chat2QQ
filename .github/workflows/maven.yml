@@ -29,4 +29,4 @@ jobs:
       uses: actions/upload-artifact@v2.3.1
       with:
         name: "Chat2QQ-Bukkit.jar"
-        path: /home/runner/work/Chat2QQ/Chat2QQ/target/Chat2QQ-1.7.9.jar
+        path: /home/runner/work/Chat2QQ/Chat2QQ/target/Chat2QQ.jar
