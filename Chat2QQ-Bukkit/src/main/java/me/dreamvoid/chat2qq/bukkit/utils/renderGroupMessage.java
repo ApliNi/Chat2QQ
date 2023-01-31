@@ -71,6 +71,11 @@ public class renderGroupMessage {
             message = message.replaceAll("§[a-z0-9]", "");
         }
 
+        // 预设的格式调整功能. 删除 %message% 前后的空格和换行
+        if(plugin.getConfig().getBoolean("aplini.other-format-presets.message-trim",true)){
+            message = message.trim();
+        }
+
         // 预设的格式调整功能. 更好的多行消息
         if(plugin.getConfig().getBoolean("aplini.other-format-presets.multiline-message.enabled",true) && message.contains("\n")) {
             String _l0 = plugin.getConfig().getString("aplini.other-format-presets.multiline-message.line-0", "line-0");
@@ -87,7 +92,8 @@ public class renderGroupMessage {
     public static String getReplyVar(Plugin plugin, MiraiGroupMessageEvent e) {
         if(e.getQuoteReplyMessage() != null){
             return plugin.getConfig().getString("aplini.reply-message.var", "[reply] ")
-                    .replace("%qq%", ""+ e.getQuoteReplySenderID());
+                    .replace("%qq%", ""+ e.getQuoteReplySenderID())
+                    .replace("%_/n_%", "\n");
         }
         return "";
     }
@@ -95,7 +101,11 @@ public class renderGroupMessage {
 
 
     // 渲染主消息
-    public static String renderMessage(Plugin plugin, MiraiGroupMessageEvent e) {
+    public static String [] renderMessage(Plugin plugin, MiraiGroupMessageEvent e) {
+
+        String [] out = new String [2];
+        out[0] = "";
+        out[1] = "";
 
         // 判断消息是否带前缀
         String message = e.getMessage();
@@ -108,7 +118,7 @@ public class renderGroupMessage {
                     break;
                 }
             }
-            if(! allowPrefix) return "";
+            if(! allowPrefix) return out;
         }
 
         String name = e.getSenderNameCard();
@@ -137,16 +147,26 @@ public class renderGroupMessage {
             }
         }
 
+        // 预设的格式调整功能. 聊天消息过长时转换为悬浮文本
+        if(message.length() > plugin.getConfig().getInt("aplini.other-format-presets.long-message.condition-length", 210) ||
+                message.contains("\n") &&
+                        message.length() - message.replace("\n","").length() >
+                                plugin.getConfig().getInt("aplini.other-format-presets.long-message.condition-line_num", 7)){
+            out[0] = "lm";
+            message = plugin.getConfig().getString("aplini.other-format-presets.long-message.message");
+        }
+
         // 预处理
         message = _renderMessage(plugin, message);
-        if(message.equals("")) return "";
+        if(message.equals("")) return out;
 
         String message2_config_path = "general.in-game-chat-format";
         if(plugin.getConfig().getBoolean("general.use-miraimc-bind",false) && MiraiMC.getBind(e.getSenderID()) != null){
             message2_config_path = "general.bind-chat-format";
         }
 
-        return plugin.getConfig().getString(message2_config_path, "message")
+        out[0] = out[0].equals("") ? "ok" : out[0];
+        out[1] = plugin.getConfig().getString(message2_config_path, "message")
                 .replace("%groupname%",e.getGroupName())
                 .replace("%groupid%",String.valueOf(e.getGroupID()))
                 .replace("%qq%",String.valueOf(e.getSenderID()))
@@ -155,6 +175,7 @@ public class renderGroupMessage {
                 .replace("%_reply_%", getReplyVar(plugin, e))
                 .replace("%message%", message);
 
+        return out;
     }
 
 }

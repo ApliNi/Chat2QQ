@@ -134,8 +134,21 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
   other-format-presets:
     # 是否删除 %message% 消息 中的格式化字符
     render-message_format-code: false
+    # 删除 %message% 消息 前后的空格和空行
+    message-trim: true
     # 是否删除 %nick% 群名片 中的格式化字符
     render-nick_format-code: true
+
+    # 聊天消息过长时转换为悬浮文本
+    long-message:
+      enabled: true
+      # 以下任意一个条件成立时被判定为长消息, 若需取消一个, 请改为很大的数
+      # 条件1: 消息长度达到此值
+      condition-length: 210
+      # 条件2: 换行数量达到此值, 在 message-trim 之后运行
+      condition-line_num: 6
+      # 显示为
+      message: '§f[§7长消息§f]'
 
     # 是否启用 "更好的多行消息"
     multiline-message:
@@ -161,7 +174,8 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
     # %_/n_% - 换行
     # %qq% - 被回复的消息的发送者QQ号
     # %message% - 回复内容
-    message: '§f[引用回复 @%qq%]%_/n_%§7%message%'
+    # %main_message% - 当前消息的完整内容
+    message: '§f[§7引用 @%qq%§f] §7%message%§r%_/n_%%_/n_%§f%main_message%'
 ```
 
 - `qchat` 指令
