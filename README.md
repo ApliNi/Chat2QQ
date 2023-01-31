@@ -87,7 +87,7 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
 ```yaml
   # 预处理 %message% 中的消息
   pretreatment:
-    enabled: false
+    enabled: true
     # **使用方法**
     # list:
     #   - 匹配方式: prefix (前缀匹配), 可用处理方式: to_all
