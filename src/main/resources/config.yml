@@ -245,8 +245,8 @@ aplini:
     # %qq% - 被回复的消息的发送者QQ号
     # %c_name% - 群名片 - 需要开启 aplini.format-qq-id
     # %message% - 回复内容
-    # %main_message% - 当前消息的完整内容
-    message: '§f[§7引用 @%c_name%§f] §7%message%§r%_/n_%%_/n_%§f%main_message%'
+    # %main_message% - 当前消息内容
+    message: '§f[§7引用 @%c_name%§f]%_/n_%§7%message%§r%_/n_%%_/n_%§f——%main_message%'
 
     # 删除重复@ :: 如果引用回复对象等于消息开头的@对象, 则删除消息开头的 @
     del-duplicates-at: true

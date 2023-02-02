@@ -108,9 +108,10 @@ public class renderGroupMessage {
     // 渲染主消息
     public static String [] renderMessage(Plugin plugin, MiraiGroupMessageEvent e) {
 
-        String [] out = new String [2];
+        String [] out = new String [3];
         out[0] = "";
         out[1] = "";
+        out[2] = "";
 
         // 判断消息是否带前缀
         String message = e.getMessage();
@@ -171,6 +172,7 @@ public class renderGroupMessage {
                 .replace("%regex_nick%", cleanupName(plugin, name, e.getSenderID())) // aplini.cleanup-name
                 .replace("%_reply_%", getReplyVar(plugin, e))
                 .replace("%message%", formatQQID(plugin, message, e.getGroupID()));
+        out[2] = message;
 
         return out;
     }

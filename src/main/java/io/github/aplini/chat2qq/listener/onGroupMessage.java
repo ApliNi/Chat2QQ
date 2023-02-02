@@ -58,7 +58,7 @@ public class onGroupMessage implements Listener {
                         .replace("%qq%", ""+ e.getQuoteReplySenderID())
                         .replace("%_/n_%", "\n")
                         .replace("%message%", ""+ formatQQID(plugin, _renderMessage(plugin, e.getQuoteReplyMessage()), e.getGroupID()))
-                        .replace("%main_message%", message[1]);
+                        .replace("%main_message%", message[2]);
                 // 设置悬浮文本
                 formatText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(replyMessage)));
             }
