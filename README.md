@@ -173,7 +173,10 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
     # %qq% - 被回复的消息的发送者QQ号
     # %message% - 回复内容
     # %main_message% - 当前消息的完整内容
-    message: '§f[§7引用 @%qq%§f] §7%message%§r%_/n_%%_/n_%§f%main_message%'
+    message: '§f[§7引用 @%c_name%§f] §7%message%§r%_/n_%%_/n_%§f%main_message%'
+
+    # 删除重复@ :: 如果引用回复对象等于消息开头的@对象, 则删除消息开头的 @
+    del-duplicates-at: true
 ```
 
 - `qchat` 指令

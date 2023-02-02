@@ -136,21 +136,13 @@ public class renderGroupMessage {
             name = name.replaceAll("§[a-z0-9]", "");
         }
 
-        // cleanup-name
-//        String $regex_nick = ;
-//        if(plugin.getConfig().getBoolean("aplini.cleanup-name.enabled",false)){
-//            Matcher matcher = Pattern.compile(plugin.getConfig().getString("aplini.cleanup-name.regex", "([a-zA-Z0-9_]{3,16})")).matcher(name);
-//            if(matcher.find()){
-//                $regex_nick = matcher.group(1);
-//            } else {
-//                $regex_nick = plugin.getConfig().getString("aplini.cleanup-name.not-captured", "%nick%")
-//                        .replace("%groupname%", e.getGroupName())
-//                        .replace("%groupid%", String.valueOf(e.getGroupID()))
-//                        .replace("%nick%", name)
-//                        .replace("%qq%", String.valueOf(e.getSenderID()))
-//                        .replace("%message%", message);
-//            }
-//        }
+        // 如果是回复消息, 则删除消息开头相同的 @qqID
+        if(e.getQuoteReplyMessage() != null && plugin.getConfig().getBoolean("aplini.reply-message.del-duplicates-at",true)){
+            String atField = "@"+ e.getQuoteReplySenderID();
+            if(message.startsWith(atField)){
+                message = message.substring(atField.length());
+            }
+        }
 
         // 预设的格式调整功能. 聊天消息过长时转换为悬浮文本
         if(message.length() > plugin.getConfig().getInt("aplini.other-format-presets.long-message.condition-length", 210) ||
