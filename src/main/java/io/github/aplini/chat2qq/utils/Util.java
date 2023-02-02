@@ -1,5 +1,8 @@
 package io.github.aplini.chat2qq.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import io.github.aplini.chat2qq.Chat2QQ;
 import me.dreamvoid.miraimc.api.MiraiBot;
 import me.dreamvoid.miraimc.bukkit.event.message.passive.MiraiGroupMessageEvent;
@@ -7,9 +10,11 @@ import me.dreamvoid.miraimc.httpapi.MiraiHttpAPI;
 import me.dreamvoid.miraimc.httpapi.exception.AbnormalStatusException;
 import org.bukkit.plugin.Plugin;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -74,7 +79,7 @@ public class Util {
 
     // 从文本中匹配 @qqID, 并替换为 @名称
     public static String formatQQID(Plugin plugin, String message, long groupID) {
-        if(plugin.getConfig().getBoolean("aplini.format-qq-id.enabled", false)){
+        if(plugin.getConfig().getBoolean("aplini.format-qq-id.enabled", true)){
 
             Matcher matcher = Pattern.compile(plugin.getConfig().getString("aplini.format-qq-id.regular", "(@[0-9]{5,11})")).matcher(message);
 
@@ -104,5 +109,61 @@ public class Util {
 
         }
         return message;
+    }
+
+
+    // 初始化群成员缓存
+    public static void _setGroupCacheAll(Plugin plugin) {
+        Map<Long, Map<Long, String>> _group_cache_all = new HashMap<>();
+
+        // 获取开启此功能的群
+        List<Long> configGroupList;
+        if(plugin.getConfig().getBoolean("aplini.player-cache.use-general-group-ids", true)){
+            configGroupList = plugin.getConfig().getLongList("general.group-ids");
+        }else{
+            configGroupList = plugin.getConfig().getLongList("aplini.player-cache.group-ids");
+        }
+
+        // 遍历需要缓存的群
+        configGroupList.forEach(gid -> {
+            getLogger().info("§f[§7Chat2QQ§f] §f正在缓存群: "+ gid);
+            // 散列表
+            Map<Long, String> group_cache = new HashMap<>();
+
+            // 获取群数据
+            JsonArray groupArray;
+            try {
+                String jsonString = Files.readString(Paths.get(
+                        "plugins/MiraiMC/MiraiBot/bots/2469678133/cache/contacts/groups/435876332.json"
+                                .replace("/", File.separator)
+                ));
+                JsonObject groupJson = new Gson().fromJson(jsonString, JsonObject.class);
+                groupArray = groupJson.getAsJsonArray("list");
+            } catch (IOException e) {
+                getLogger().info("§f[§7Chat2QQ§f] §f读取MiraiMC群数据缓存时出错: "+ gid);
+                throw new RuntimeException(e);
+            }
+
+            groupArray.forEach(JsonElement -> {
+                JsonObject aGroup = (JsonObject) JsonElement;
+                Long id = aGroup.get("uin").getAsLong();
+                String name = aGroup.get("nameCard").getAsString();
+                if(Objects.equals(name, "")){
+                    if(plugin.getConfig().getBoolean("general.use-nick-if-namecard-null", true)){
+                        name = aGroup.get("nick").getAsString();
+                    }else{
+                        name = ""+ id;
+                    }
+                }
+                group_cache.put(id, name);
+            });
+
+            // 添加到all
+            _group_cache_all.put(gid, group_cache);
+        });
+
+        Chat2QQ.group_cache_all = _group_cache_all;
+
+        getLogger().info("§f[§7Chat2QQ§f] §f群成员缓存完成!");
     }
 }

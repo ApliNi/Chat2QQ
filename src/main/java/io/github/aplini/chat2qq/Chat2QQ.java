@@ -1,6 +1,7 @@
 package io.github.aplini.chat2qq;
 
 import io.github.aplini.chat2qq.bot.onBotOnline;
+import io.github.aplini.chat2qq.bot.onCardChange;
 import io.github.aplini.chat2qq.listener.*;
 import io.github.aplini.chat2qq.utils.Metrics;
 import org.bukkit.Bukkit;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+import static io.github.aplini.chat2qq.utils.Util._setGroupCacheAll;
 import static io.github.aplini.chat2qq.utils.Util.sendToGroup;
 
 public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, TabExecutor {
@@ -30,14 +32,18 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
     public void onEnable() {
         // 注册事件
         Bukkit.getPluginManager().registerEvents(new onBotOnline(this), this);
+        Bukkit.getPluginManager().registerEvents(new onCardChange(this), this);
+
         Bukkit.getPluginManager().registerEvents(new onGroupMessage(this), this);
         Bukkit.getPluginManager().registerEvents(new onGroupCommandMessage(this), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerMessage(this), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerJoin(this), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerQuit(this), this);
+
         // 注册指令
         Objects.requireNonNull(getCommand("qchat")).setExecutor(this);
         Objects.requireNonNull(getCommand("chat2qq")).setExecutor(this);
+
         // bStats
         if(getConfig().getBoolean("allow-bStats",true)){new Metrics(this, 17587);}
     }
@@ -115,6 +121,11 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
         else if(command.getName().equalsIgnoreCase("chat2qq")){
             if(args.length == 0){
                 sender.sendMessage("§f[§7Chat2QQ§f] §7https://github.com/ApliNi/Chat2QQ");
+                sender.sendMessage("  指令列表: ");
+                sender.sendMessage("    - /qchat [名称] <消息> - 发送一条消息到QQ群中");
+                sender.sendMessage("    - /chat2qq reload - 重载配置");
+                sender.sendMessage("    - /chat2qq setgroupcacheall - 重新运行群成员缓存程序");
+
                 sender.sendMessage("§7   |                 ");
                 sender.sendMessage("§7   //| |\\  | _| |\\ _|");
                 sender.sendMessage("§7     |               ");
@@ -129,6 +140,20 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
                 sender.sendMessage("§f[§7Chat2QQ§f] §7已重载配置");
                 return true;
             }
+            else if(args[0].equalsIgnoreCase("setgroupcacheall")){
+                if(! sender.hasPermission("chat2qq.command.setgroupcacheall")){
+                    sender.sendMessage("§f[§7Chat2QQ§f] §7没有权限");
+                    return false;
+                }
+                // 未开启此功能
+                if(! getConfig().getBoolean("aplini.player-cache.enabled", true)){
+                    sender.sendMessage("§f[§7Chat2QQ§f] §7此功能未开启: aplini.player-cache.enabled");
+                    return false;
+                }
+                sender.sendMessage("§f[§7Chat2QQ§f] §f群成员缓存程序已启动");
+                _setGroupCacheAll(this);
+                return true;
+            }
         }
         return false;
     }
@@ -140,6 +165,7 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
             if (args.length == 1) {
                 List<String> list = new ArrayList<>();
                 list.add("reload"); // 重载配置
+                list.add("setgroupcacheall"); // 启动群成员缓存
                 return list;
             }
         }

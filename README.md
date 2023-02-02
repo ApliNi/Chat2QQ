@@ -200,3 +200,37 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
     # 广播到MC服务器的
     mc-format: '§f[§7%name%§f] §r%message%'
 ```
+
+- [前置] 群成员信息缓存
+```yaml
+  # [前置] 群成员信息缓存, 测试功能
+  player-cache:
+    # 在指定机器人登录时运行此程序
+    enabled: true
+    # 自动更新缓存
+    auto-update: true
+    # 测试.自动更新时重建所有缓存数据
+    #test-auto-update-all: false
+
+    # 使用上方 general.group-ids 中配置的群
+    use-general-group-ids: true
+    # 缓存哪些群, 需要 use-general-group-ids: false
+    group-ids:
+      - 1000000
+```
+
+- 使用 @群名片
+```yaml
+  # 将 %message% 中的 @qqID 替换为 @名称
+  # 需要开启 aplini.player-cache
+  format-qq-id:
+    enabled: true
+    # 用于匹配 @qqID 的正则
+    regular: '(@[0-9]{5,11})'
+    # 格式
+    # %qq% - qq号
+    # %name% - 名称
+    format: '[@%name%]'
+    # 最多匹配几次, 防止刷屏浪费性能
+    max-cycles-num: 7
+```

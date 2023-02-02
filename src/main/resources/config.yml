@@ -274,15 +274,19 @@ aplini:
 
 
   ## 7
-  # 群成员信息缓存, 测试功能, 是其他功能的前置
+  # [前置] 群成员信息缓存, 测试功能
+  # ! 需要开启 MiraiMC 配置中的 bot.contact-cache.enable-group-member-list-cache
   player-cache:
     # 在指定机器人登录时运行此程序
-    enabled: false
+    enabled: true
     # 自动更新缓存
-    #auto-update: true
+    auto-update: true
     # 测试.自动更新时重建所有缓存数据
     #test-auto-update-all: false
-    # 缓存哪些群
+
+    # 使用上方 general.group-ids 中配置的群
+    use-general-group-ids: true
+    # 缓存哪些群, 需要 use-general-group-ids: false
     group-ids:
       - 1000000
 
@@ -291,13 +295,13 @@ aplini:
   # 将 %message% 中的 @qqID 替换为 @名称
   # 需要开启 aplini.player-cache
   format-qq-id:
-    enabled: false
+    enabled: true
     # 用于匹配 @qqID 的正则
     regular: '(@[0-9]{5,11})'
     # 格式
     # %qq% - qq号
     # %name% - 名称
-    format: '[@%name%]'
+    format: '§f[§7@%name%§f]§7'
     # 最多匹配几次, 防止刷屏浪费性能
     max-cycles-num: 7
 
