@@ -1,5 +1,6 @@
 package io.github.aplini.chat2qq;
 
+import io.github.aplini.chat2qq.bot.onBotOnline;
 import io.github.aplini.chat2qq.listener.*;
 import io.github.aplini.chat2qq.utils.Metrics;
 import org.bukkit.Bukkit;
@@ -12,14 +13,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static io.github.aplini.chat2qq.utils.Util.sendToGroup;
 
 public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, TabExecutor {
+    public static Map<Long, Map<Long, String>> group_cache_all;
 
     @Override // 加载插件
     public void onLoad() {
@@ -30,6 +29,7 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
     @Override // 启用插件
     public void onEnable() {
         // 注册事件
+        Bukkit.getPluginManager().registerEvents(new onBotOnline(this), this);
         Bukkit.getPluginManager().registerEvents(new onGroupMessage(this), this);
         Bukkit.getPluginManager().registerEvents(new onGroupCommandMessage(this), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerMessage(this), this);

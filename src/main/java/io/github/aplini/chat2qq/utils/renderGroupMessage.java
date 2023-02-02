@@ -6,8 +6,9 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static io.github.aplini.chat2qq.utils.Util.*;
 
 public class renderGroupMessage {
 
@@ -92,6 +93,7 @@ public class renderGroupMessage {
     public static String getReplyVar(Plugin plugin, MiraiGroupMessageEvent e) {
         if(e.getQuoteReplyMessage() != null){
             return plugin.getConfig().getString("aplini.reply-message.var", "[reply] ")
+                    .replace("%c_name%", ""+ getNameFromCache(plugin, e.getGroupID(), e.getQuoteReplySenderID(), ""+ e.getQuoteReplySenderID()))
                     .replace("%qq%", ""+ e.getQuoteReplySenderID())
                     .replace("%_/n_%", "\n");
         }
@@ -132,20 +134,20 @@ public class renderGroupMessage {
         }
 
         // cleanup-name
-        String $regex_nick = "%regex_nick%";
-        if(plugin.getConfig().getBoolean("aplini.cleanup-name.enabled",false)){
-            Matcher matcher = Pattern.compile(plugin.getConfig().getString("aplini.cleanup-name.regex", "([a-zA-Z0-9_]{3,16})")).matcher(name);
-            if(matcher.find()){
-                $regex_nick = matcher.group(1);
-            } else {
-                $regex_nick = plugin.getConfig().getString("aplini.cleanup-name.not-captured", "%nick%")
-                        .replace("%groupname%", e.getGroupName())
-                        .replace("%groupid%", String.valueOf(e.getGroupID()))
-                        .replace("%nick%", name)
-                        .replace("%qq%", String.valueOf(e.getSenderID()))
-                        .replace("%message%", message);
-            }
-        }
+//        String $regex_nick = ;
+//        if(plugin.getConfig().getBoolean("aplini.cleanup-name.enabled",false)){
+//            Matcher matcher = Pattern.compile(plugin.getConfig().getString("aplini.cleanup-name.regex", "([a-zA-Z0-9_]{3,16})")).matcher(name);
+//            if(matcher.find()){
+//                $regex_nick = matcher.group(1);
+//            } else {
+//                $regex_nick = plugin.getConfig().getString("aplini.cleanup-name.not-captured", "%nick%")
+//                        .replace("%groupname%", e.getGroupName())
+//                        .replace("%groupid%", String.valueOf(e.getGroupID()))
+//                        .replace("%nick%", name)
+//                        .replace("%qq%", String.valueOf(e.getSenderID()))
+//                        .replace("%message%", message);
+//            }
+//        }
 
         // 预设的格式调整功能. 聊天消息过长时转换为悬浮文本
         if(message.length() > plugin.getConfig().getInt("aplini.other-format-presets.long-message.condition-length", 210) ||
@@ -171,9 +173,9 @@ public class renderGroupMessage {
                 .replace("%groupid%",String.valueOf(e.getGroupID()))
                 .replace("%qq%",String.valueOf(e.getSenderID()))
                 .replace("%nick%",name)
-                .replace("%regex_nick%", $regex_nick)
+                .replace("%regex_nick%", cleanupName(plugin, name, e.getSenderID())) // aplini.cleanup-name
                 .replace("%_reply_%", getReplyVar(plugin, e))
-                .replace("%message%", message);
+                .replace("%message%", formatQQID(plugin, message, e.getGroupID()));
 
         return out;
     }

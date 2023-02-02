@@ -139,7 +139,9 @@ aplini:
     enabled: false
     # 程序取第一个捕获组的结果
     regex: '([a-zA-Z0-9_]{3,16})'
-    # 如果匹配不到, 则使用 %nick%, 也可以替换为其他 %regex_nick% 以外的变量或字符串
+    # 如果匹配不到, 则使用以下字符串
+    # %nick% - 群名片
+    # %qq% - qq号
     not-captured: '%nick%'
 
 
@@ -235,14 +237,16 @@ aplini:
   reply-message:
     # 可用变量:
     # %qq% - 被回复的消息的发送者QQ号
-    var: '§f[§7回复 @%qq%§f] '
+    # %c_name% - 群名片 - 需要开启 aplini.format-qq-id
+    var: '§f[§7回复 @%c_name%§f] '
 
     # 可用变量:
     # %_/n_% - 换行
     # %qq% - 被回复的消息的发送者QQ号
+    # %c_name% - 群名片 - 需要开启 aplini.format-qq-id
     # %message% - 回复内容
     # %main_message% - 当前消息的完整内容
-    message: '§f[§7引用 @%qq%§f] §7%message%§r%_/n_%%_/n_%§f%main_message%'
+    message: '§f[§7引用 @%c_name%§f] §7%message%§r%_/n_%%_/n_%§f%main_message%'
 
 
   ## 6
@@ -270,18 +274,32 @@ aplini:
 
 
   ## 7
-  # 群成员信息缓存
+  # 群成员信息缓存, 测试功能, 是其他功能的前置
   player-cache:
+    # 在指定机器人登录时运行此程序
     enabled: false
     # 自动更新缓存
-    auto-update: true
+    #auto-update: true
     # 测试.自动更新时重建所有缓存数据
-    test-auto-update-all: false
+    #test-auto-update-all: false
     # 缓存哪些群
     group-ids:
       - 1000000
-    #
 
+
+  ## 8
+  # 将 %message% 中的 @qqID 替换为 @名称
+  # 需要开启 aplini.player-cache
+  format-qq-id:
+    enabled: false
+    # 用于匹配 @qqID 的正则
+    regular: '(@[0-9]{5,11})'
+    # 格式
+    # %qq% - qq号
+    # %name% - 名称
+    format: '[@%name%]'
+    # 最多匹配几次, 防止刷屏浪费性能
+    max-cycles-num: 7
 
 
 # <- 到此, 您已经完成了所有配置, 使用 /chat2qq reload 重载插件即可应用 uwu

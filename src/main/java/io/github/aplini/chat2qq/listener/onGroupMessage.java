@@ -8,6 +8,8 @@ import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import static io.github.aplini.chat2qq.utils.Util.formatQQID;
+import static io.github.aplini.chat2qq.utils.Util.getNameFromCache;
 import static io.github.aplini.chat2qq.utils.renderGroupMessage._renderMessage;
 import static io.github.aplini.chat2qq.utils.renderGroupMessage.renderMessage;
 import static org.bukkit.Bukkit.getLogger;
@@ -50,9 +52,10 @@ public class onGroupMessage implements Listener {
             if(e.getQuoteReplyMessage() != null){
                 // 创建回复消息的悬浮文本
                 String replyMessage = plugin.getConfig().getString("aplini.reply-message.message", "[引用回复]")
+                        .replace("%c_name%", ""+ getNameFromCache(plugin, e.getGroupID(), e.getQuoteReplySenderID(), ""+ e.getQuoteReplySenderID()))
                         .replace("%qq%", ""+ e.getQuoteReplySenderID())
                         .replace("%_/n_%", "\n")
-                        .replace("%message%", ""+ _renderMessage(plugin, e.getQuoteReplyMessage()))
+                        .replace("%message%", ""+ formatQQID(plugin, _renderMessage(plugin, e.getQuoteReplyMessage()), e.getGroupID()))
                         .replace("%main_message%", message[1]);
                 // 设置悬浮文本
                 formatText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(replyMessage)));
