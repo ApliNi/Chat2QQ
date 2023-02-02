@@ -26,6 +26,11 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
 
 **功能列表**
 
+- 兼容命令方块
+```yaml
+# 重写了一遍, 不知不觉发现启动命令方块后不报错了 )
+```
+
 - 执行指令
 ```yaml
   # 在QQ群中运行指令 [需要单独添加 QQ群]
