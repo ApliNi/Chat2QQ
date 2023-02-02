@@ -77,7 +77,9 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
     enabled: false
     # 程序取第一个捕获组的结果
     regex: '([a-zA-Z0-9_]{3,16})'
-    # 如果匹配不到, 则使用 %nick%, 也可以替换为其他 %regex_nick% 以外的变量或字符串
+    # 如果匹配不到, 则使用以下字符串
+    # %nick% - 群名片
+    # %qq% - qq号
     not-captured: '%nick%'
 ```
 
@@ -166,11 +168,13 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
   reply-message:
     # 可用变量:
     # %qq% - 被回复的消息的发送者QQ号
-    var: '§f[§7回复 @%qq%§f] '
+    # %c_name% - 群名片 - 需要开启 aplini.format-qq-id
+    var: '§f[§7回复 @%c_name%§f] '
 
     # 可用变量:
     # %_/n_% - 换行
     # %qq% - 被回复的消息的发送者QQ号
+    # %c_name% - 群名片 - 需要开启 aplini.format-qq-id
     # %message% - 回复内容
     # %main_message% - 当前消息的完整内容
     message: '§f[§7引用 @%c_name%§f] §7%message%§r%_/n_%%_/n_%§f%main_message%'
@@ -236,4 +240,30 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
     format: '[@%name%]'
     # 最多匹配几次, 防止刷屏浪费性能
     max-cycles-num: 7
+```
+
+**指令和权限**
+```yaml
+commands:
+  qchat:
+    description: 发送聊天消息到QQ群
+    permission: chat2qq.command.qchat
+  chat2qq:
+    description: Chat2QQ 插件主命令
+permissions:
+  chat2qq.join.silent:
+    description: 允许悄悄加入服务器
+    default: false
+  chat2qq.quit.silent:
+    description: 允许悄悄离开服务器
+    default: false
+  chat2qq.command.qchat:
+    description: 允许使用 /qchat
+    default: op
+  chat2qq.command.chat2qq:
+    description: 允许使用 /chat2qq
+    default: op
+  chat2qq:.command.setgroupcacheall:
+    description: 允许使用 /chat2qq setgroupcacheall
+    default: op
 ```
