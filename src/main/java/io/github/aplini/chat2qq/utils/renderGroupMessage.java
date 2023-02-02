@@ -93,7 +93,10 @@ public class renderGroupMessage {
     public static String getReplyVar(Plugin plugin, MiraiGroupMessageEvent e) {
         if(e.getQuoteReplyMessage() != null){
             return plugin.getConfig().getString("aplini.reply-message.var", "[reply] ")
-                    .replace("%c_name%", ""+ getNameFromCache(plugin, e.getGroupID(), e.getQuoteReplySenderID(), ""+ e.getQuoteReplySenderID()))
+                    .replace("%c_name%", ""+ cleanupName(
+                            plugin,
+                            getNameFromCache(plugin, e.getGroupID(), e.getQuoteReplySenderID(), ""+ e.getQuoteReplySenderID()),
+                            e.getQuoteReplySenderID()))
                     .replace("%qq%", ""+ e.getQuoteReplySenderID())
                     .replace("%_/n_%", "\n");
         }
