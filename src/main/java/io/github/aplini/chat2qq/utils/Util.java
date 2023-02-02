@@ -92,7 +92,7 @@ public class Util {
                 }
                 // 替换
                 message = message.replace(matcher.group(),
-                        plugin.getConfig().getString("aplini.cleanup-name.format", "format")
+                        plugin.getConfig().getString("aplini.format-qq-id.format", "format")
                                 .replace("%qq%", ""+ qqID)
                                 .replace("%name%", name)
                 );
