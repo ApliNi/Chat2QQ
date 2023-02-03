@@ -55,10 +55,10 @@ public class Util {
         }
         return defaultName;
     }
-    // 简化调用
-    public static String getNameFromCache(Plugin plugin, MiraiGroupMessageEvent e, String name) {
-        return getNameFromCache(plugin, e.getGroupID(), e.getSenderID(), name);
-    }
+//    // 简化调用
+//    public static String getNameFromCache(Plugin plugin, MiraiGroupMessageEvent e, String name) {
+//        return getNameFromCache(plugin, e.getGroupID(), e.getSenderID(), name);
+//    }
 
 
     // 从群名片匹配出MC标准名称
@@ -124,6 +124,9 @@ public class Util {
             configGroupList = plugin.getConfig().getLongList("aplini.player-cache.group-ids");
         }
 
+        // 获取机器人账号
+        Long botID = plugin.getConfig().getLongList("bot.bot-accounts").get(0);
+
         // 遍历需要缓存的群
         configGroupList.forEach(gid -> {
             getLogger().info("§f[§7Chat2QQ§f] §f正在缓存群: "+ gid);
@@ -134,7 +137,7 @@ public class Util {
             JsonArray groupArray;
             try {
                 String jsonString = Files.readString(Paths.get(
-                        "plugins/MiraiMC/MiraiBot/bots/2469678133/cache/contacts/groups/435876332.json"
+                        "plugins/MiraiMC/MiraiBot/bots/"+ botID +"/cache/contacts/groups/"+ gid +".json"
                                 .replace("/", File.separator)
                 ));
                 JsonObject groupJson = new Gson().fromJson(jsonString, JsonObject.class);
