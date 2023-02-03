@@ -5,12 +5,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.github.aplini.chat2qq.Chat2QQ;
 import me.dreamvoid.miraimc.api.MiraiBot;
-import me.dreamvoid.miraimc.bukkit.event.message.passive.MiraiGroupMessageEvent;
 import me.dreamvoid.miraimc.httpapi.MiraiHttpAPI;
 import me.dreamvoid.miraimc.httpapi.exception.AbnormalStatusException;
 import org.bukkit.plugin.Plugin;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -55,10 +53,6 @@ public class Util {
         }
         return defaultName;
     }
-//    // 简化调用
-//    public static String getNameFromCache(Plugin plugin, MiraiGroupMessageEvent e, String name) {
-//        return getNameFromCache(plugin, e.getGroupID(), e.getSenderID(), name);
-//    }
 
 
     // 从群名片匹配出MC标准名称
@@ -138,7 +132,7 @@ public class Util {
             try {
                 String jsonString = Files.readString(Paths.get(
                         "plugins/MiraiMC/MiraiBot/bots/"+ botID +"/cache/contacts/groups/"+ gid +".json"
-                                .replace("/", File.separator)
+//                                .replace("/", File.separator) // IDEA说它没用
                 ));
                 JsonObject groupJson = new Gson().fromJson(jsonString, JsonObject.class);
                 groupArray = groupJson.getAsJsonArray("list");

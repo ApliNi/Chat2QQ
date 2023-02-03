@@ -120,15 +120,14 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
 
         else if(command.getName().equalsIgnoreCase("chat2qq")){
             if(args.length == 0){
+                sender.sendMessage("§7   |                 ");
+                sender.sendMessage("§7   //| |\\  | _| |\\ _|");
+                sender.sendMessage("§7     |               ");
                 sender.sendMessage("§f[§7Chat2QQ§f] §7https://github.com/ApliNi/Chat2QQ");
                 sender.sendMessage("  指令列表: ");
                 sender.sendMessage("    - /qchat [名称] <消息> - 发送一条消息到QQ群中");
                 sender.sendMessage("    - /chat2qq reload - 重载配置");
                 sender.sendMessage("    - /chat2qq setgroupcacheall - 重新运行群成员缓存程序");
-
-                sender.sendMessage("§7   |                 ");
-                sender.sendMessage("§7   //| |\\  | _| |\\ _|");
-                sender.sendMessage("§7     |               ");
                 return true;
             }
             else if(args[0].equalsIgnoreCase("reload")){
