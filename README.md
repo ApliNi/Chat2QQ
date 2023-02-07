@@ -6,7 +6,7 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
 
 如果你有好的想法请点击上方 `Issues` 按钮, 发送一个功能请求. 如果我能做到就会去实现出来. 
 
-! 注意, 此版本不兼容 Bukkit 服务器, 最低需要使用 1.18.2 版本的 Spigot (Chat2QQ-1.7.4 及以下版本支持 MC1.13.2).
+! 注意, 此版本不兼容 Bukkit 服务器, 最低需要使用 1.16.5 版本的 Spigot (Chat2QQ-1.7.4 及以下版本支持 MC1.13.2).
 
 
 
@@ -24,14 +24,10 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
 
 ---
 
-**功能列表**
+**新增功能列表 (点击展开)**
 
-- 兼容命令方块
-```yaml
-# 重写了一遍, 不知不觉发现启动命令方块后不报错了 )
-```
+<details><summary>执行指令</summary>
 
-- 执行指令
 ```yaml
   # 在QQ群中运行指令 [需要单独添加 QQ群]
   # 此模块不处理黑名单 blacklist
@@ -74,7 +70,11 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
       #- tps
 ```
 
-- 匹配游戏名
+</details>
+
+
+<details><summary>匹配游戏名</summary>
+
 ```yaml
   # 从 群名片(%nick%) 中匹配 MC 可用的游戏名称
   # 添加变量: %regex_nick% - 使用正则匹配到的名称, 需要开启 cleanup-name 功能
@@ -88,7 +88,10 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
     not-captured: '%nick%'
 ```
 
-- 消息预处理
+</details>
+
+<details><summary>消息预处理</summary>
+
 ```yaml
   # 预处理 %message% 中的消息
   pretreatment:
@@ -133,7 +136,11 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
         to_regular: '[Emoji]'
 ```
 
-- 预设格式调整配置
+</details>
+
+
+<details><summary>预设的格式调整配置</summary>
+
 ```yaml
   # 预设的格式调整功能
   other-format-presets:
@@ -165,7 +172,10 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
     message-to-log: true
 ```
 
-- 引用回复
+</details>
+
+<details><summary>引用回复</summary>
+
 ```yaml
   # 引用回复
   # 添加变量: %_reply_%
@@ -188,7 +198,10 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
     del-duplicates-at: true
 ```
 
-- `qchat` 指令
+</details>
+
+<details><summary><code>/qchat</code></summary>
+
 ```yaml
   # 发送消息的指令
   # /qchat <消息>  - 玩家使用此指令
@@ -213,7 +226,10 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
     mc-format: '§f[§7%name%§f] §r%message%'
 ```
 
-- [前置] 群成员信息缓存
+</details>
+
+<details><summary>[前置] 群成员信息缓存</summary>
+
 ```yaml
   # [前置] 群成员信息缓存, 测试功能
   player-cache:
@@ -231,7 +247,11 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
       - 1000000
 ```
 
-- 使用 @群名片
+</details>
+
+
+<details><summary>使用 @群名片</summary>
+
 ```yaml
   # 将 %message% 中的 @qqID 替换为 @名称
   # 需要开启 aplini.player-cache
@@ -247,7 +267,16 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
     max-cycles-num: 7
 ```
 
-**指令和权限**
+</details>
+
+<details><summary>指令和权限</summary>
+
+- `qchat [名称] <消息>` - 使用自定义名称发送消息到群
+- `qchat <消息>` - 发送消息到群
+- `chat2qq` - 插件主命令 & 帮助信息
+    - `chat2qq setgroupcacheall` - 重新创建群成员缓存
+
+plugin.yml
 ```yaml
 commands:
   qchat:
@@ -272,3 +301,18 @@ permissions:
     description: 允许使用 /chat2qq setgroupcacheall
     default: op
 ```
+
+</details>
+
+<details><summary>其他信息和兼容性</summary>
+
+- [x] 兼容命令方块
+- [ ] 兼容模组服?
+
+</details>
+
+---
+
+**其他**
+
+- 统计: [bStats](https://bstats.org/plugin/bukkit/ApliNi-Chat2QQ/17587)
