@@ -145,6 +145,10 @@ public class renderGroupMessage {
             }
         }
 
+        // 预处理
+        message = _renderMessage(plugin, message);
+        if(message.equals("")) return out;
+
         // 预设的格式调整功能. 聊天消息过长时转换为悬浮文本
         if(message.length() > plugin.getConfig().getInt("aplini.other-format-presets.long-message.condition-length", 210) ||
                 message.contains("\n") &&
@@ -154,10 +158,7 @@ public class renderGroupMessage {
             message = plugin.getConfig().getString("aplini.other-format-presets.long-message.message");
         }
 
-        // 预处理
-        message = _renderMessage(plugin, message);
-        if(message.equals("")) return out;
-
+        // Mirai 内置QQ绑定
         String message2_config_path = "general.in-game-chat-format";
         if(plugin.getConfig().getBoolean("general.use-miraimc-bind",false) && MiraiMC.getBind(e.getSenderID()) != null){
             message2_config_path = "general.bind-chat-format";
