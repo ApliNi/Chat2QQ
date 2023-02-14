@@ -2,7 +2,6 @@ package io.github.aplini.chat2qq.listener;
 
 import io.github.aplini.chat2qq.Chat2QQ;
 import io.github.aplini.chat2qq.utils.Commander;
-import me.dreamvoid.miraimc.api.MiraiBot;
 import me.dreamvoid.miraimc.bukkit.event.message.passive.MiraiGroupMessageEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -14,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static io.github.aplini.chat2qq.utils.Util.sendToGroup;
 import static org.bukkit.Bukkit.getLogger;
 
 // 运行指令的功能
@@ -110,9 +110,7 @@ public class onGroupCommandMessage implements Listener {
                         String finalText = String.valueOf(text).replaceAll("§[a-z0-9]", "");
 
                         // 指令返回消息
-                        MiraiBot.getBot(plugin.getConfig().getLongList("bot.bot-accounts").get(0))
-                                .getGroup(e.getGroupID())
-                                .sendMessageMirai(finalText);
+                        sendToGroup(plugin, e.getGroupID(), finalText);
 
                     } else {
 
@@ -120,9 +118,8 @@ public class onGroupCommandMessage implements Listener {
 
                         // "运行无返回指令"
                         if(! plugin.getConfig().getString("aplini.run-command.mmessage-no-out", "").equals("")) {
-                            MiraiBot.getBot(plugin.getConfig().getLongList("bot.bot-accounts").get(0))
-                                    .getGroup(e.getGroupID())
-                                    .sendMessageMirai(plugin.getConfig().getString("aplini.run-command.message-no-out", "message-no-out"));
+                            sendToGroup(plugin, e.getGroupID(),
+                                    plugin.getConfig().getString("aplini.run-command.message-no-out", "message-no-out"));
                         }
                     }
 
@@ -137,9 +134,7 @@ public class onGroupCommandMessage implements Listener {
         // 指令没有运行成功 && 设置了未命中消息
         if(!runOK && !plugin.getConfig().getString("aplini.run-command.message-miss", "").equals("")){
             // 发送消息
-            MiraiBot.getBot(plugin.getConfig().getLongList("bot.bot-accounts").get(0))
-                    .getGroup(e.getGroupID())
-                    .sendMessageMirai(plugin.getConfig().getString("aplini.run-command.message-miss"));
+            sendToGroup(plugin, e.getGroupID(), plugin.getConfig().getString("aplini.run-command.message-miss"));
         }
     }
 

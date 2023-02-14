@@ -315,4 +315,4 @@ permissions:
 
 **其他**
 
-- 统计: [bStats](https://bstats.org/plugin/bukkit/ApliNi-Chat2QQ/17587)
+- 使用量统计: [bStats](https://bstats.org/plugin/bukkit/ApliNi-Chat2QQ/17587)
