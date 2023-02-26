@@ -106,6 +106,8 @@ aplini:
     command-max-length: 255
     # 获取指令的正则表达式, 当第一个捕获组的内容与指令白名单中的匹配时则允许运行 (不带斜杠或前缀)
     regex-command-main: '^([^ ]+)'
+    # 是否将主命令转换为小写再执行
+    always-lowercase: false
 
     # 是否发送指令的输出, 关闭可提高性能或解决一些兼容性问题
     return: true

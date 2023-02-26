@@ -61,6 +61,11 @@ public class onGroupCommandMessage implements Listener {
         // 主命令
         String commandMain = matcher.group(1);
 
+        // 转换为小写
+        if(plugin.getConfig().getBoolean("aplini.run-command.always-lowercase", false)){
+            commandMain = commandMain.toLowerCase();
+        }
+
         // 初始化运行状态 // 指令是否运行成功
         boolean runOK = false;
 
