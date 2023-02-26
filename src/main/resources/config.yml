@@ -287,16 +287,17 @@ aplini:
   player-cache:
     # 在指定机器人登录时运行此程序
     enabled: true
-    # 自动更新缓存
+    # 在玩家群名片修改时更新内存中的数据
     auto-update: true
-    # 测试.自动更新时重建所有缓存数据
-    #test-auto-update-all: false
-
     # 使用上方 general.group-ids 中配置的群
     use-general-group-ids: true
     # 缓存哪些群, 需要 use-general-group-ids: false
     group-ids:
       - 1000000
+    # MiraiMC 群缓存文件路径, 如果你修改了插件目录相关的配置, 才需要修改它
+    # %qq% - 机器人账号
+    # %group% - 群号
+    mirai-cache-path: "plugins/MiraiMC/MiraiBot/bots/%qq%/cache/contacts/groups/%group%.json"
 
 
   ## 8

@@ -131,7 +131,9 @@ public class Util {
             JsonArray groupArray;
             try {
                 String jsonString = Files.readString(Paths.get(
-                        "plugins/MiraiMC/MiraiBot/bots/"+ botID +"/cache/contacts/groups/"+ gid +".json"
+                        plugin.getConfig().getString("aplini.player-cache.mirai-cache-path", "plugins/MiraiMC/MiraiBot/bots/%qq%/cache/contacts/groups/%group%.json")
+                                .replace("%qq%", ""+ botID)
+                                .replace("%group%", ""+ gid)
 //                                .replace("/", File.separator) // IDEA说它没用
                 ));
                 JsonObject groupJson = new Gson().fromJson(jsonString, JsonObject.class);
