@@ -139,7 +139,7 @@ public class Util {
                 JsonObject groupJson = new Gson().fromJson(jsonString, JsonObject.class);
                 groupArray = groupJson.getAsJsonArray("list");
             } catch (IOException e) {
-                getLogger().info("§f[§7Chat2QQ§f] §f读取MiraiMC群数据缓存时出错: "+ gid);
+                getLogger().warning("§f[§7Chat2QQ§f] §f读取MiraiMC群数据缓存时出错. botID: "+ botID +", groupID: "+ gid +". \n§r"+ e);
                 throw new RuntimeException(e);
             }
 
