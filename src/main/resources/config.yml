@@ -1,5 +1,7 @@
 # 是否允许bStats统计
 allow-bStats: true
+# 配置版本号. 如有需要, 请在更新配置时修改
+config-version: 100
 
 
 # 游戏内配置
