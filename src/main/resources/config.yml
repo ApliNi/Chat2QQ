@@ -200,8 +200,6 @@ aplini:
       # 更好的匹配卡片消息, 使用正则解析内容. 这里的正则有点问题, 仅示范, 不采用
       #- regular: '\{"app":"com.tencent.miniapp(?:.*)"prompt":"(?:.*?)](.*?)","(?:.*)"desc":"(.*?)","(?:.*)' # miniApp
       #  to_regular: '[小程序: $1] $2' # [小程序: 哔哩哔哩] xxxxxxx
-      #- regular: '\{"app":"com.tencent.structmsg(?:.*)"tag":"(.*?)","title":"(.*?)","(?:.*)' # structMsg
-      #  to_regular: '[卡片消息: $1] $2' # [卡片消息: 哔哩哔哩] xxxxxxx
 
 
   ## 4
@@ -302,7 +300,7 @@ aplini:
 
   ## 8
   # 将 %message% 中的 @qqID 替换为 @名称
-  # 需要开启 aplini.player-cache
+  # 需要开启前置: aplini.player-cache
   format-qq-id:
     enabled: true
     # 用于匹配 @qqID 的正则
@@ -311,8 +309,8 @@ aplini:
     # %qq% - qq号
     # %name% - 名称
     format: '§f[§7@%name%§f]§7'
-    # 最多匹配几次, 防止刷屏浪费性能
-    max-cycles-num: 7
+    # 一条消息最多匹配几次, 防止刷屏浪费性能
+    max-cycles-num: 10
 
 
 # <- 到此, 您已经完成了所有配置, 使用 /chat2qq reload 重载插件即可应用 uwu

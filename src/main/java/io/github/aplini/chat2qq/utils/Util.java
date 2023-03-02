@@ -67,7 +67,7 @@ public class Util {
                         .replace("%qq%", String.valueOf(qqID));
             }
         }
-        return "[Chat2QQ] [未启用此功能: aplini.cleanup-name.enabled]";
+        return "[Chat2QQ.未启用此功能: aplini.cleanup-name.enabled]";
     }
 
 
@@ -96,7 +96,7 @@ public class Util {
                                 .replace("%name%", name)
                 );
 
-                if(count == plugin.getConfig().getInt("aplini.format-qq-id.max-cycles-num", 7)){
+                if(count == plugin.getConfig().getInt("aplini.format-qq-id.max-cycles-num", 10)){
                     break;
                 }
             }

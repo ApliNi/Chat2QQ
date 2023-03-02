@@ -51,8 +51,7 @@ public class onGroupMessage implements Listener {
             if(e.getQuoteReplyMessage() != null){
                 // 创建回复消息的悬浮文本
                 String replyMessage = plugin.getConfig().getString("aplini.reply-message.message", "[引用回复]")
-                        .replace("%c_name%", ""+ cleanupName(
-                                plugin,
+                        .replace("%c_name%", ""+ cleanupName(plugin,
                                 getNameFromCache(plugin, e.getGroupID(), e.getQuoteReplySenderID(), ""+ e.getQuoteReplySenderID()),
                                 e.getQuoteReplySenderID()))
                         .replace("%qq%", ""+ e.getQuoteReplySenderID())
