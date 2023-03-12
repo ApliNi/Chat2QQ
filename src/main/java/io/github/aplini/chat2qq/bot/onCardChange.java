@@ -5,9 +5,10 @@ import me.dreamvoid.miraimc.bukkit.event.group.member.MiraiMemberCardChangeEvent
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static io.github.aplini.chat2qq.utils.Util.isGroupInConfig;
 
 public class onCardChange implements Listener {
     private final Chat2QQ plugin;
@@ -23,16 +24,16 @@ public class onCardChange implements Listener {
             if(plugin.getConfig().getLongList("bot.bot-accounts").contains(e.getBotID())){
                 long groupID = e.getGroupID();
 
-                // 获取开启此功能的群
-                List<Long> configGroupList;
-                if(plugin.getConfig().getBoolean("aplini.player-cache.use-general-group-ids", true)){
-                    configGroupList = plugin.getConfig().getLongList("general.group-ids");
-                }else{
-                    configGroupList = plugin.getConfig().getLongList("aplini.player-cache.group-ids");
-                }
+//                // 获取开启此功能的群
+//                List<Long> configGroupList;
+//                if(plugin.getConfig().getBoolean("aplini.player-cache.use-general-group-ids", true)){
+//                    configGroupList = plugin.getConfig().getLongList("general.group-ids");
+//                }else{
+//                    configGroupList = plugin.getConfig().getLongList("aplini.player-cache.group-ids");
+//                }
 
                 // 如果这个群在配置中
-                if(configGroupList.contains(groupID)){
+                if(isGroupInConfig(plugin, "aplini.player-cache", groupID)){
                     // 获取散列表
                     Map<Long, String> group_cache = Chat2QQ.group_cache_all.get(groupID);
                     if(group_cache != null){

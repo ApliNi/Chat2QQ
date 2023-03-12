@@ -165,4 +165,19 @@ public class Util {
 
         getLogger().info("§f[§7Chat2QQ§f] §f群成员缓存完成!");
     }
+
+    // 判断是否为配置中的群
+    public static boolean isGroupInConfig(Plugin plugin, String funcConfigString, Long groupID){
+        if(plugin.getConfig().getBoolean(funcConfigString +".use-general-group-ids", true)){
+            if(plugin.getConfig().getLongList("general.group-ids").contains(groupID)){
+                return true;
+            }
+        }else{
+            if(plugin.getConfig().getLongList(funcConfigString +".group-ids").contains(groupID)){
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

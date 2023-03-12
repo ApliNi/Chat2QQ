@@ -1,7 +1,7 @@
 # 是否允许bStats统计
 allow-bStats: true
 # 配置版本号. 如有需要, 请在更新配置时修改
-config-version: 100
+config-version: 101
 
 
 # 游戏内配置
@@ -311,6 +311,44 @@ aplini:
     format: '§f[§7@%name%§f]§7'
     # 一条消息最多匹配几次, 防止刷屏浪费性能
     max-cycles-num: 10
+
+
+  ## 9
+  # 事件任务
+  event-func:
+    # enable 修改后需要重启服务器
+    enable: false
+    # 使用上方 general.group-ids 中配置的群
+    use-general-group-ids: true
+    # 启用在哪些群, 需要 use-general-group-ids: false
+    group-ids:
+      - 1000000
+
+    group-join: # 群成员加入
+      - command: 'tps' # 运行指令
+      - command: 'mspt' # 运行指令
+      - message: '消息' # 发送消息
+
+    group-quit: # 成员退出
+#      - message: '消息' # 发送消息
+
+
+  ## 10
+  # 测试功能 :: 掉线重连
+  bot-offline:
+    # enable 修改后需要重启服务器
+    enable: false
+    # 启用哪些机器人, 可添加多个
+    bot-ids:
+      - 2000000
+      - 2000001
+
+    # 延迟重新连接, 秒
+    delay: 10
+    # 重新连接失败重试次数, 超过后不再继续重连
+    max-reconnect-num: 4
+
+
 
 
 # <- 到此, 您已经完成了所有配置, 使用 /chat2qq reload 重载插件即可应用 uwu
