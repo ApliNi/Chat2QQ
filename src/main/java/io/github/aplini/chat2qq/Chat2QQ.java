@@ -47,7 +47,7 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
             Bukkit.getPluginManager().registerEvents(new EventFunc(this), this);
         }
         // 掉线重连
-        if(getConfig().getBoolean("aplini.bot-offline", false)){
+        if(getConfig().getBoolean("aplini.bot-offline.enable", false)){
             Bukkit.getPluginManager().registerEvents(new onBotOffline(this), this);
         }
 
@@ -60,7 +60,7 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
 
         // 配置版本检查
         if(versionCheck_configVersion(this)){
-            getLogger().warning("[Chat2QQ] 配置版本与软件版本不同, 请更新配置文件");
+            getLogger().info("§f[§7Chat2QQ§f] §b配置版本与软件版本不同, 请更新配置文件");
         }
     }
 
@@ -153,7 +153,7 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
                 reloadConfig();
                 // 配置版本检查
                 if(versionCheck_configVersion(this)){
-                    getLogger().warning("§f[§7Chat2QQ§f] §b配置版本与软件版本不同, 请更新配置文件");
+                    getLogger().info("§f[§7Chat2QQ§f] §b配置版本与软件版本不同, 请更新配置文件");
                 }
                 sender.sendMessage("§f[§7Chat2QQ§f] §7已重载配置");
                 return true;
