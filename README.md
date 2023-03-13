@@ -269,6 +269,76 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
 
 </details>
 
+
+<details><summary>事件任务</summary>
+
+```yaml
+  # 事件任务
+  event-func:
+    # enable 修改后需要重启服务器
+    enable: false
+    # 使用上方 general.group-ids 中配置的群
+    use-general-group-ids: true
+    # 启用在哪些群, 需要 use-general-group-ids: false
+    group-ids:
+      - 1000000
+
+      # 每个事件可用的任务不同, 这里列出了所有任务的使用方法:
+      # - command: 'command' - 发送指令
+
+      # - message-text: '消息' - 向事件来源发送消息, 群 或 好友/私聊
+
+      # - message-group: 1000000 - 向指定群发送消息
+      #   message-text: '消息'
+
+      # - message-friend: 2000003 - 向指定好友发送消息
+      #   message-text: '消息'
+
+    MiraiMemberJoinEvent: # 群成员加入
+      # 可使用: command, message-text, message-group
+      # 一个事件中可添加多个相同或不相同的任务
+      - message-text: '欢迎'
+      - command: 'tps'
+      - command: 'mspt'
+      #- message-group: 1000000
+      #  message-text: '消息'
+
+    MiraiMemberLeaveEvent: # 成员退出
+    # 可使用: command, message-text, message-group
+```
+
+</details>
+
+
+<details><summary>掉线重连</summary>
+
+```yaml
+  # 测试功能 :: 掉线重连
+  bot-offline:
+    # enable 修改后需要重启服务器
+    enable: false
+    # 启用哪些机器人, 可添加多个, 只能在这里添加
+    bot-ids:
+      - 2000000
+      - 2000001
+
+    # 延迟重新连接, 秒
+    delay: 14
+    # 重新连接失败重试次数, 超过后不再继续重连
+    max-reconnect-num: 7
+```
+
+</details>
+
+
+<details><summary>其他信息和兼容性</summary>
+
+- [x] 兼容命令方块
+- [ ] 兼容模组服?
+
+</details>
+
+
 <details><summary>指令和权限</summary>
 
 - `qchat [名称] <消息>` - 使用自定义名称发送消息到群
@@ -301,13 +371,6 @@ permissions:
     description: 允许使用 /chat2qq setgroupcacheall
     default: op
 ```
-
-</details>
-
-<details><summary>其他信息和兼容性</summary>
-
-- [x] 兼容命令方块
-- [ ] 兼容模组服?
 
 </details>
 
