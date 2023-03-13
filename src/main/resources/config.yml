@@ -335,22 +335,17 @@ aplini:
       # - message-friend: 2000003 - 向指定好友发送消息
       #   message-text: '消息'
 
-
     MiraiMemberJoinEvent: # 群成员加入
       # 可使用: command, message-text, message-group
       # 一个事件中可添加多个相同或不相同的任务
-#      - command: 'tps'
-#      - command: 'mspt'
-#
-#      - message-group: 1000000
-#        message-text: '消息'
-#
-#      - message-text: '消息'
+      - message-text: '欢迎'
+      - command: 'tps'
+      - command: 'mspt'
+      #- message-group: 1000000
+      #  message-text: '消息'
 
     MiraiMemberLeaveEvent: # 成员退出
       # 可使用: command, message-text, message-group
-
-
 
 
   ## 10
@@ -358,7 +353,7 @@ aplini:
   bot-offline:
     # enable 修改后需要重启服务器
     enable: false
-    # 启用哪些机器人, 可添加多个
+    # 启用哪些机器人, 可添加多个, 只能在这里添加
     bot-ids:
       - 2000000
       - 2000001

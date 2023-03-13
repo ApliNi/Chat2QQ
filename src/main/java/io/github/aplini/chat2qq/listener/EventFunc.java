@@ -1,7 +1,6 @@
 package io.github.aplini.chat2qq.listener;
 
 import io.github.aplini.chat2qq.Chat2QQ;
-import io.github.aplini.chat2qq.utils.Commander;
 import me.dreamvoid.miraimc.bukkit.event.group.member.MiraiMemberJoinEvent;
 import me.dreamvoid.miraimc.bukkit.event.group.member.MiraiMemberLeaveEvent;
 import org.bukkit.Bukkit;
@@ -12,6 +11,7 @@ import java.util.Map;
 
 import static io.github.aplini.chat2qq.utils.Util.isGroupInConfig;
 import static io.github.aplini.chat2qq.utils.Util.sendToGroup;
+import static org.bukkit.Bukkit.getLogger;
 
 public class EventFunc implements Listener {
     private final Chat2QQ plugin;
@@ -29,12 +29,14 @@ public class EventFunc implements Listener {
         for(Map<?, ?> funcConfig : plugin.getConfig().getMapList("aplini.event-func."+ eventNameInConfig)){
             // 执行指令
             if(funcConfig.get("command") != null){
-                Bukkit.getScheduler().callSyncMethod(plugin, () -> Bukkit.dispatchCommand(new Commander(), (String) funcConfig.get("command")));
+                getLogger().info("[Chat2QQ] [event-func] 运行指令: /"+ funcConfig.get("command"));
+                Bukkit.getScheduler().callSyncMethod(plugin, () ->
+                        Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), String.valueOf(funcConfig.get("command"))));
             }
             // 发送消息
             else if(funcConfig.get("message-text") != null){
-                Long messageGroupID = funcConfig.get("message-group") != null ? (Long) funcConfig.get("message-group") : groupID;
-                sendToGroup(plugin, messageGroupID, (String) funcConfig.get("message"));
+                Long messageGroupID = funcConfig.get("message-group") != null ? Long.valueOf(String.valueOf(funcConfig.get("message-group"))) : groupID;
+                sendToGroup(plugin, messageGroupID, String.valueOf(funcConfig.get("message-text")));
             }
         }
     }
@@ -46,7 +48,10 @@ public class EventFunc implements Listener {
     public void onMiraiMemberLeaveEvent(MiraiMemberLeaveEvent e) {
         FuncMember("MiraiMemberLeaveEvent", e.getGroupID());
     }
-
+//    @EventHandler // 收到群消息
+//    public void onMiraiGroupMessageEvent(MiraiGroupMessageEvent e) {
+//        FuncMember("MiraiGroupMessageEvent", e.getGroupID());
+//    }
 
 
 // 功能不完整?

@@ -123,8 +123,7 @@ public class onGroupCommandMessage implements Listener {
 
                         // "运行无返回指令"
                         if(! plugin.getConfig().getString("aplini.run-command.mmessage-no-out", "").equals("")) {
-                            sendToGroup(plugin, e.getGroupID(),
-                                    plugin.getConfig().getString("aplini.run-command.message-no-out", "message-no-out"));
+                            sendToGroup(plugin, e.getGroupID(), plugin.getConfig().getString("aplini.run-command.message-no-out", "message-no-out"));
                         }
                     }
 
