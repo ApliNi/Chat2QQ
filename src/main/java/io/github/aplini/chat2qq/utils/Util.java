@@ -139,7 +139,9 @@ public class Util {
                 JsonObject groupJson = new Gson().fromJson(jsonString, JsonObject.class);
                 groupArray = groupJson.getAsJsonArray("list");
             } catch (IOException e) {
-                getLogger().warning("§f[§7Chat2QQ§f] §f读取MiraiMC群数据缓存时出错. botID: "+ botID +", groupID: "+ gid +". \n§r"+ e);
+                getLogger().warning("[Chat2QQ] 读取MiraiMC群数据缓存时出错. botID: "+ botID +", groupID: "+ gid);
+                getLogger().warning("[Chat2QQ] 请检查 MiraiMC 的配置 \"bot.contact-cache.enable-group-member-list-cache\" 是否开启");
+
                 throw new RuntimeException(e);
             }
 

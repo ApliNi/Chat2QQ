@@ -324,13 +324,33 @@ aplini:
     group-ids:
       - 1000000
 
-    group-join: # 群成员加入
-      - command: 'tps' # 运行指令
-      - command: 'mspt' # 运行指令
-      - message: '消息' # 发送消息
+    # 每个事件可用的任务不同, 这里列出了所有任务的使用方法:
+      # - command: 'command' - 发送指令
 
-    group-quit: # 成员退出
-#      - message: '消息' # 发送消息
+      # - message-text: '消息' - 向事件来源发送消息, 群 或 好友/私聊
+
+      # - message-group: 1000000 - 向指定群发送消息
+      #   message-text: '消息'
+
+      # - message-friend: 2000003 - 向指定好友发送消息
+      #   message-text: '消息'
+
+
+    MiraiMemberJoinEvent: # 群成员加入
+      # 可使用: command, message-text, message-group
+      # 一个事件中可添加多个相同或不相同的任务
+#      - command: 'tps'
+#      - command: 'mspt'
+#
+#      - message-group: 1000000
+#        message-text: '消息'
+#
+#      - message-text: '消息'
+
+    MiraiMemberLeaveEvent: # 成员退出
+      # 可使用: command, message-text, message-group
+
+
 
 
   ## 10
@@ -344,9 +364,9 @@ aplini:
       - 2000001
 
     # 延迟重新连接, 秒
-    delay: 10
+    delay: 14
     # 重新连接失败重试次数, 超过后不再继续重连
-    max-reconnect-num: 4
+    max-reconnect-num: 7
 
 
 

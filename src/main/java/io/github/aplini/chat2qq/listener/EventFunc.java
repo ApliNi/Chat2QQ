@@ -1,8 +1,10 @@
 package io.github.aplini.chat2qq.listener;
 
 import io.github.aplini.chat2qq.Chat2QQ;
+import io.github.aplini.chat2qq.utils.Commander;
 import me.dreamvoid.miraimc.bukkit.event.group.member.MiraiMemberJoinEvent;
 import me.dreamvoid.miraimc.bukkit.event.group.member.MiraiMemberLeaveEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -17,33 +19,65 @@ public class EventFunc implements Listener {
         this.plugin = plugin;
     }
 
-    // 复用
+    // 群成员 复用
     public void FuncMember(String eventNameInConfig, Long groupID){
         // 如果不是配置中的群
         if(! isGroupInConfig(plugin, "aplini.event-func", groupID)){
             return;
         }
 
-        for(Map<?, ?> func : plugin.getConfig().getMapList("aplini.event-func."+ eventNameInConfig)){
+        for(Map<?, ?> funcConfig : plugin.getConfig().getMapList("aplini.event-func."+ eventNameInConfig)){
             // 执行指令
-            if(func.get("command") != null){
-                sendToGroup(plugin, groupID, (String) func.get("command"));
+            if(funcConfig.get("command") != null){
+                Bukkit.getScheduler().callSyncMethod(plugin, () -> Bukkit.dispatchCommand(new Commander(), (String) funcConfig.get("command")));
             }
             // 发送消息
-            if(func.get("message") != null){
-                sendToGroup(plugin, groupID, (String) func.get("message"));
+            else if(funcConfig.get("message-text") != null){
+                Long messageGroupID = funcConfig.get("message-group") != null ? (Long) funcConfig.get("message-group") : groupID;
+                sendToGroup(plugin, messageGroupID, (String) funcConfig.get("message"));
             }
         }
     }
-
     @EventHandler // 成员加入
     public void onMiraiMemberJoinEvent(MiraiMemberJoinEvent e) {
-        FuncMember("group-join", e.getGroupID());
+        FuncMember("MiraiMemberJoinEvent", e.getGroupID());
     }
-
     @EventHandler // 成员退出
     public void onMiraiMemberLeaveEvent(MiraiMemberLeaveEvent e) {
-        FuncMember("group-quit", e.getGroupID());
+        FuncMember("MiraiMemberLeaveEvent", e.getGroupID());
     }
+
+
+
+// 功能不完整?
+// https://jd.miraimc.dreamvoid.me/me/dreamvoid/miraimc/bukkit/event/message/passive/package-summary
+
+//    // 好友消息/私聊 复用
+//    public void FuncFriend(String eventNameInConfig, Long groupID){
+//        // 如果不是配置中的群
+//        if(! isGroupInConfig(plugin, "aplini.event-func", groupID)){
+//            return;
+//        }
+//
+//        for(Map<?, ?> funcConfig : plugin.getConfig().getMapList("aplini.event-func."+ eventNameInConfig)){
+//            // 执行指令
+//            if(funcConfig.get("command") != null){
+//                Bukkit.getScheduler().callSyncMethod(plugin, () -> Bukkit.dispatchCommand(new Commander(), (String) funcConfig.get("command")));
+//            }
+//            // 发送消息
+//            else if(funcConfig.get("message-text") != null){
+//                Long messageGroupID = funcConfig.get("message-group") != null ? (Long) funcConfig.get("message-group") : groupID;
+//                sendToGroup(plugin, messageGroupID, (String) funcConfig.get("message"));
+//            }
+//        }
+//    }
+//    @EventHandler // 好友消息
+//    public void onMiraiFriendMessageEvent(MiraiFriendMessageEvent e) {
+//        FuncFriend("MiraiFriendMessageEvent", e.getFriend().getID());
+//    }
+//    @EventHandler // 群临时会话
+//    public void onMiraiGroupTempMessageEvent(MiraiGroupTempMessageEvent e) {
+//        FuncFriend("MiraiFriendMessageEvent", e.);
+//    }
 
 }
