@@ -19,7 +19,6 @@ import java.util.*;
 
 import static io.github.aplini.chat2qq.utils.Util._setGroupCacheAll;
 import static io.github.aplini.chat2qq.utils.Util.sendToGroup;
-import static io.github.aplini.chat2qq.utils.versionCheck.versionCheck_configVersion;
 
 public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, TabExecutor {
     public static Map<Long, Map<Long, String>> group_cache_all;
@@ -70,11 +69,6 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
 
         // bStats
         if(getConfig().getBoolean("allow-bStats",true)){new Metrics(this, 17587);}
-
-        // 配置版本检查
-        if(versionCheck_configVersion(this)){
-            getLogger().info("§f[§7Chat2QQ§f] §b配置版本与软件版本不同, 请更新配置文件");
-        }
     }
 
     // 指令
@@ -164,10 +158,6 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
                     return false;
                 }
                 reloadConfig();
-                // 配置版本检查
-                if(versionCheck_configVersion(this)){
-                    getLogger().info("§f[§7Chat2QQ§f] §b配置版本与软件版本不同, 请更新配置文件");
-                }
                 sender.sendMessage("§f[§7Chat2QQ§f] §7已重载配置");
                 return true;
             }
