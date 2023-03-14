@@ -2,7 +2,7 @@
 
 > **说明**
 
-Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于添加我需要的功能.
+ApliNi/Chat2QQ 是包含 [DreamVoid/Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 几乎所有功能的插件, 经过重写并添加了我需要的功能.  
 
 如果你有好的想法请点击上方 `Issues` 按钮, 发送一个功能请求. 如果我能做到就会去实现出来. 
 
