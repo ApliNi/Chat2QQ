@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.github.aplini.chat2qq.Chat2QQ;
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.dreamvoid.miraimc.api.MiraiBot;
 import me.dreamvoid.miraimc.httpapi.MiraiHttpAPI;
 import me.dreamvoid.miraimc.httpapi.exception.AbnormalStatusException;
@@ -181,5 +182,10 @@ public class Util {
         }
 
         return false;
+    }
+
+    // PAPI
+    public static String PAPIString(String inp){
+        return PlaceholderAPI.setPlaceholders(new _OfflinePlayer(), inp);
     }
 }

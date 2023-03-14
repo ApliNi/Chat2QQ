@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class Commander implements CommandSender {
+public class _Commander implements CommandSender {
     public List<String> message = new ArrayList<>();
 
     @Override

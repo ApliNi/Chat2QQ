@@ -1,7 +1,7 @@
 package io.github.aplini.chat2qq.listener;
 
 import io.github.aplini.chat2qq.Chat2QQ;
-import io.github.aplini.chat2qq.utils.Commander;
+import io.github.aplini.chat2qq.utils._Commander;
 import me.dreamvoid.miraimc.bukkit.event.message.passive.MiraiGroupMessageEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -83,7 +83,7 @@ public class onGroupCommandMessage implements Listener {
                     // 是否开启获取指令返回消息
                     if(plugin.getConfig().getBoolean("aplini.run-command.return",true)){
 
-                        Commander Sender = new Commander();
+                        _Commander Sender = new _Commander();
 
                         try {
                             Bukkit.getScheduler().callSyncMethod(plugin, () -> Bukkit.dispatchCommand(Sender, command));

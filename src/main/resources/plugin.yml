@@ -4,6 +4,8 @@ version: '${project.version}'
 author: ApliNi
 api-version: 1.18
 prefix: MiraiMC
+softdepend:
+  - PlaceholderAPI
 depend:
   - MiraiMC
 commands:

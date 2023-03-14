@@ -43,6 +43,8 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
     command-max-length: 255
     # 获取指令的正则表达式, 当第一个捕获组的内容与指令白名单中的匹配时则允许运行 (不带斜杠或前缀)
     regex-command-main: '^([^ ]+)'
+    # 是否将主命令转换为小写再执行
+    always-lowercase: false
 
     # 是否发送指令的输出, 关闭可提高性能或解决一些兼容性问题
     return: true
@@ -326,6 +328,62 @@ Chat2QQ+ 是 [Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 的分支, 用于�
     delay: 14
     # 重新连接失败重试次数, 超过后不再继续重连
     max-reconnect-num: 7
+```
+
+</details>
+
+
+<details><summary>自动回复</summary>
+
+```yaml
+  # 自动回复
+  # 当QQ群中的消息匹配时发送自定义消息
+  auto-response:
+    enable: true
+    # 使用上方 general.group-ids 中配置的群
+    use-general-group-ids: true
+    # 回复哪些群的消息, 需要 use-general-group-ids: false
+    group-ids:
+      - 1000000
+    # 为此功能启用PAPI, 需要安装PAPI插件
+    enable-papi: false
+    #
+
+    # **使用方法**
+    # list:
+    #   - 匹配方式: prefix (前缀匹配)
+    #             contain (包含)
+    #             equal (完全相等)
+    #             regular (正则匹配, send 中可使用正则变量)
+    #     send (发送的消息内容)
+    #
+    # > 正则的性能较差, 请尽量避免使用很多正则
+    # !! 请小心使用正则拼接PAPI变量, 如果正则设计有问题则可能出现注入漏洞 !!
+    #    - 提示: 应指定匹配的字符范围和最小最大次数, 要绝对的防止输入PAPI变量的保留符号: %
+    #      - 比如: - regular: '^\#ping ([a-zA-Z0-9_]{3,16})$'
+    #               send: '%player_ping_$1%'
+    # 示例配置, 默认配置了一些可能有用的功能:
+    list:
+
+      # 使用PAPI获取在线玩家数量, 需要启用 aplini.auto-response.enable-papi
+      # PlayerList: /papi ecloud download playerlist
+      - equal: '#list'
+        send: '在线玩家: [%playerlist_online,normal,yes,amount%] \n%playerlist_online,normal,yes,list%'
+
+      # 使用PAPI获取服务器TPS, 需要启用 aplini.auto-response.enable-papi
+      # Server: /papi ecloud download Server
+      - equal: '#tps'
+        send: 'TPS [1m, 5m, 15m]: %server_tps_1% / %server_tps_5% / %server_tps_15%'
+
+      # 指令列表
+      - equal: '#help'
+        send: '指令列表: 
+        \n    - #list - 显示在线玩家列表
+        \n    - #tps - 显示服务器TPS'
+
+      # @一个QQ号时发送消息
+      - contain: '@2000000'
+        send: 'OwO'
 ```
 
 </details>

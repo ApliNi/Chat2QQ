@@ -33,12 +33,20 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
     @Override // 启用插件
     public void onEnable() {
         // 注册事件
+        // 机器人上线
         Bukkit.getPluginManager().registerEvents(new onBotOnline(this), this);
+        // 群成员修改名片 :: 群成员缓存
         Bukkit.getPluginManager().registerEvents(new onCardChange(this), this);
 
+        // 群成员发送消息
         Bukkit.getPluginManager().registerEvents(new onGroupMessage(this), this);
+        // 群成员发送消息 :: 指令
         Bukkit.getPluginManager().registerEvents(new onGroupCommandMessage(this), this);
+        // 群成员发送消息 :: 自动回复
+        Bukkit.getPluginManager().registerEvents(new onAutoResponseMessage(this), this);
+        // 玩家发送消息
         Bukkit.getPluginManager().registerEvents(new onPlayerMessage(this), this);
+        // 玩家加入退出
         Bukkit.getPluginManager().registerEvents(new onPlayerJoin(this), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerQuit(this), this);
 
@@ -54,6 +62,11 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
         // 注册指令
         Objects.requireNonNull(getCommand("qchat")).setExecutor(this);
         Objects.requireNonNull(getCommand("chat2qq")).setExecutor(this);
+
+        // PAPI
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
+            Bukkit.getPluginManager().registerEvents(this, this);
+        }
 
         // bStats
         if(getConfig().getBoolean("allow-bStats",true)){new Metrics(this, 17587);}
