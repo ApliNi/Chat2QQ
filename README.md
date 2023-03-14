@@ -2,8 +2,8 @@
 
 
 - **🚧 说明**
-  - 📦 [ApliNi/Chat2QQ](https://github.com/ApliNi/Chat2QQ) 是包含 [DreamVoid/Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 几乎所有功能的插件, 经过重写并添加了许多功能.
-  - 📬 如果你有任何想法请点击 [`Issues`](https://github.com/ApliNi/Chat2QQ/issues), 打开一个功能请求. 如果我能做到就会去实现出来. 
+  - [ApliNi/Chat2QQ](https://github.com/ApliNi/Chat2QQ) 是包含 [DreamVoid/Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 几乎所有功能的插件, 经过重写并添加了许多功能.
+  - 如果你有任何想法请点击 [`Issues`](https://github.com/ApliNi/Chat2QQ/issues), 打开一个功能请求. 如果我能做到就会去实现出来. 
 <p></p>
 
 - **🍥 下载**
@@ -20,6 +20,8 @@
 <br />
 
 > **✨ 新增功能列表 (点击展开)**
+
+[[查看完整配置]](https://github.com/ApliNi/Chat2QQ/blob/main/src/main/resources/config.yml)
 
 <details><summary>执行指令</summary>
 
