@@ -2,15 +2,12 @@ package io.github.aplini.chat2qq.listener;
 
 import io.github.aplini.chat2qq.Chat2QQ;
 import me.dreamvoid.miraimc.bukkit.event.message.passive.MiraiGroupMessageEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import static io.github.aplini.chat2qq.utils.Util.*;
-import static io.github.aplini.chat2qq.utils.renderGroupMessage._renderMessage;
-import static io.github.aplini.chat2qq.utils.renderGroupMessage.renderMessage;
+import static io.github.aplini.chat2qq.utils.renderGroupMessage.renderMessage1;
+import static io.github.aplini.chat2qq.utils.renderGroupMessage.renderMessage2;
 import static org.bukkit.Bukkit.getLogger;
 import static org.bukkit.Bukkit.getServer;
 
@@ -25,46 +22,67 @@ public class onGroupMessage implements Listener {
         // QQID黑名单
         if(plugin.getConfig().getLongList("blacklist.qq").contains(e.getSenderID())) return;
 
-        // 渲染消息
-        String [] message = renderMessage(plugin, e);
+        // 渲染为可见消息
+        String [] message = renderMessage1(plugin, e);
 
-        if(! message[0].equals("") &&
+
+        if(! message[2].equals("") &&
                 plugin.getConfig().getLongList("bot.bot-accounts").contains(e.getBotID()) &&
                 plugin.getConfig().getLongList("general.group-ids").contains(e.getGroupID())){
 
             // 输出到控制台
             if(plugin.getConfig().getBoolean("aplini.other-format-presets.message-to-log", true)){
-                getLogger().info(message[1]);
+                getLogger().info(message[3]);
             }
 
-            // 转换格式
-            TextComponent formatText = new TextComponent(message[1]);
-
-            // 如果是长消息
-            if(message[0].equals("lm")){
-                message[1] = _renderMessage(plugin, e.getMessage());
-                // 设置悬浮文本
-                formatText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(message[1])));
-            }
-
-            // 如果是回复消息
-            if(e.getQuoteReplyMessage() != null){
-                // 创建回复消息的悬浮文本
-                String replyMessage = plugin.getConfig().getString("aplini.reply-message.message", "[引用回复]")
-                        .replace("%c_name%", ""+ cleanupName(plugin,
-                                getNameFromCache(plugin, e.getGroupID(), e.getQuoteReplySenderID(), ""+ e.getQuoteReplySenderID()),
-                                e.getQuoteReplySenderID()))
-                        .replace("%qq%", ""+ e.getQuoteReplySenderID())
-                        .replace("%_/n_%", "\n")
-                        .replace("%message%", ""+ formatQQID(plugin, _renderMessage(plugin, e.getQuoteReplyMessage()), e.getGroupID()))
-                        .replace("%main_message%", message[2]);
-                // 设置悬浮文本
-                formatText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(replyMessage)));
-            }
+            // 渲染为JSON消息
+            TextComponent formatText = renderMessage2(plugin, message, e);
 
             // 广播
             getServer().spigot().broadcast(formatText);
         }
+
+
+//        // 渲染消息
+//        String [] message = renderMessage(plugin, e);
+//
+//        if(! message[0].equals("") &&
+//                plugin.getConfig().getLongList("bot.bot-accounts").contains(e.getBotID()) &&
+//                plugin.getConfig().getLongList("general.group-ids").contains(e.getGroupID())){
+//
+//            // 输出到控制台
+//            if(plugin.getConfig().getBoolean("aplini.other-format-presets.message-to-log", true)){
+//                getLogger().info(message[1]);
+//            }
+//
+//            // 转换格式
+//            TextComponent formatText = new TextComponent(message[1]);
+//
+//            // 如果是长消息
+//            if(message[0].equals("lm")){
+//                message[1] = _renderMessage(plugin, e.getMessage());
+//                // 设置悬浮文本
+//                formatText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(message[1])));
+//            }
+//
+//            // 如果是回复消息
+//            if(e.getQuoteReplyMessage() != null){
+//                // 创建回复消息的悬浮文本
+//                String replyMessage = plugin.getConfig().getString("aplini.reply-message.message", "[引用回复]")
+//                        .replace("%c_name%", ""+ cleanupName(plugin,
+//                                getNameFromCache(plugin, e.getGroupID(), e.getQuoteReplySenderID(), ""+ e.getQuoteReplySenderID()),
+//                                e.getQuoteReplySenderID()))
+//                        .replace("%qq%", ""+ e.getQuoteReplySenderID())
+//                        .replace("%_/n_%", "\n")
+//                        .replace("%message%", ""+ formatQQID(plugin, _renderMessage(plugin, e.getQuoteReplyMessage()), e.getGroupID()))
+//                        .replace("%main_message%", message[2]);
+//                // 设置悬浮文本
+//                formatText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(replyMessage)));
+//            }
+//
+//            // 广播
+//            getServer().spigot().broadcast(formatText);
+//        }
 
     }
 

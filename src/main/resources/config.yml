@@ -375,7 +375,6 @@ aplini:
       - 1000000
     # 为此功能启用PAPI, 需要安装PAPI插件
     enable-papi: false
-    #
 
     # **使用方法**
     # list:
