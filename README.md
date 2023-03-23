@@ -448,3 +448,5 @@ permissions:
 
 </details>
 
+
+<a href="https://bstats.org/plugin/bukkit/ApliNi-Chat2QQ/17587">![](https://bstats.org/signatures/bukkit/ApliNi-Chat2QQ.svg)</a>
