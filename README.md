@@ -74,10 +74,10 @@
 </details>
 
 
-<details><summary>匹配游戏名</summary>
+<details><summary>从群名片中匹配游戏名称</summary>
 
-![image](https://user-images.githubusercontent.com/59365724/227127693-2016b00a-3264-4d0e-894d-a6e9ca57e65b.png)
-![image](https://user-images.githubusercontent.com/59365724/227127721-6413f84f-c651-4c32-ad06-6a3194ee435a.png)
+![image](https://user-images.githubusercontent.com/59365724/227157788-d9259da8-46e6-438e-b32b-3926a2d3a9a3.png)
+![image](https://user-images.githubusercontent.com/59365724/227157812-a0245843-66e9-44bc-8bc2-e0935ebc2d2b.png)
 
 ```yaml
   # 从 群名片(%nick%) 中匹配 MC 可用的游戏名称
@@ -151,6 +151,10 @@
 ![image](https://user-images.githubusercontent.com/59365724/227128013-013e0514-771e-4075-8d4d-c28557cfa126.png)
 ![image](https://user-images.githubusercontent.com/59365724/227127980-628d662d-cc47-4468-9437-2e5298a6d6c3.png)
 
+![image](https://user-images.githubusercontent.com/59365724/227158659-b35ac9b3-113e-4d3d-80d7-f214c8064b02.png)
+![image](https://user-images.githubusercontent.com/59365724/227158697-45a16e51-f4b1-4f97-8296-03d4074d3efb.png)
+
+
 ```yaml
   # 预设的格式调整功能
   other-format-presets:
@@ -184,10 +188,14 @@
 
 </details>
 
-<details><summary>引用回复</summary>
+<details><summary>更好的回复消息</summary>
 
-![image](https://user-images.githubusercontent.com/59365724/227128371-9f2ac694-efb9-4374-ab24-fb798138d7e8.png)
-![image](https://user-images.githubusercontent.com/59365724/227128351-7274208e-3af3-4827-b52a-6fe649439b46.png)
+![image](https://user-images.githubusercontent.com/59365724/227159155-8a731828-c929-44f8-b0c1-5f380da403cc.png)
+![image](https://user-images.githubusercontent.com/59365724/227159055-02e5cdcd-3a5e-4c20-8fda-85b0df90062a.png)
+
+![image](https://user-images.githubusercontent.com/59365724/227159023-7333b385-c687-45a4-965b-e9b066af0e6f.png)
+![image](https://user-images.githubusercontent.com/59365724/227159083-e8d6b7e7-9ba6-41e8-9562-e7a174f87be5.png)
+
 
 ```yaml
   # 引用回复
@@ -263,10 +271,13 @@
 </details>
 
 
-<details><summary>使用 @群名片</summary>
+<details><summary>替换 @qqID 为 @群名片</summary>
 
 ![image](https://user-images.githubusercontent.com/59365724/227128959-ff5fcdab-f09e-4ed8-bee9-08ade7cf7ef3.png)
 ![image](https://user-images.githubusercontent.com/59365724/227128919-092545b6-6d38-4324-b8b8-1903cb522a05.png)
+
+![image](https://user-images.githubusercontent.com/59365724/227157070-c8fa51ca-b623-4167-a7ef-f02239d84aef.png)
+![image](https://user-images.githubusercontent.com/59365724/227157097-d6b226e4-2158-4b3b-a36b-db21acfeff2e.png)
 
 ```yaml
   # 将 %message% 中的 @qqID 替换为 @名称
