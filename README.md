@@ -25,6 +25,8 @@
 
 <details><summary>执行指令</summary>
 
+![image](https://user-images.githubusercontent.com/59365724/227127511-a149cc33-9683-4bd9-9640-fd938546859d.png)
+
 ```yaml
   # 在QQ群中运行指令 [需要单独添加 QQ群]
   # 此模块不处理黑名单 blacklist
@@ -74,6 +76,9 @@
 
 <details><summary>匹配游戏名</summary>
 
+![image](https://user-images.githubusercontent.com/59365724/227127693-2016b00a-3264-4d0e-894d-a6e9ca57e65b.png)
+![image](https://user-images.githubusercontent.com/59365724/227127721-6413f84f-c651-4c32-ad06-6a3194ee435a.png)
+
 ```yaml
   # 从 群名片(%nick%) 中匹配 MC 可用的游戏名称
   # 添加变量: %regex_nick% - 使用正则匹配到的名称, 需要开启 cleanup-name 功能
@@ -90,6 +95,9 @@
 </details>
 
 <details><summary>消息预处理</summary>
+
+![image](https://user-images.githubusercontent.com/59365724/227128189-8f217293-04e9-472d-a09e-daad7eef79f0.png)
+![image](https://user-images.githubusercontent.com/59365724/227128209-f6be73c2-efd1-4ca2-b85b-b2c2b84dad7d.png)
 
 ```yaml
   # 预处理 %message% 中的消息
@@ -140,6 +148,9 @@
 
 <details><summary>预设的格式调整配置</summary>
 
+![image](https://user-images.githubusercontent.com/59365724/227128013-013e0514-771e-4075-8d4d-c28557cfa126.png)
+![image](https://user-images.githubusercontent.com/59365724/227127980-628d662d-cc47-4468-9437-2e5298a6d6c3.png)
+
 ```yaml
   # 预设的格式调整功能
   other-format-presets:
@@ -174,6 +185,9 @@
 </details>
 
 <details><summary>引用回复</summary>
+
+![image](https://user-images.githubusercontent.com/59365724/227128371-9f2ac694-efb9-4374-ab24-fb798138d7e8.png)
+![image](https://user-images.githubusercontent.com/59365724/227128351-7274208e-3af3-4827-b52a-6fe649439b46.png)
 
 ```yaml
   # 引用回复
@@ -250,6 +264,9 @@
 
 
 <details><summary>使用 @群名片</summary>
+
+![image](https://user-images.githubusercontent.com/59365724/227128959-ff5fcdab-f09e-4ed8-bee9-08ade7cf7ef3.png)
+![image](https://user-images.githubusercontent.com/59365724/227128919-092545b6-6d38-4324-b8b8-1903cb522a05.png)
 
 ```yaml
   # 将 %message% 中的 @qqID 替换为 @名称
@@ -331,6 +348,8 @@
 
 
 <details><summary>自动回复</summary>
+
+![image](https://user-images.githubusercontent.com/59365724/227129074-9a8316e1-8b8f-4abe-9e74-ad73f212f9ec.png)
 
 ```yaml
   # 自动回复
