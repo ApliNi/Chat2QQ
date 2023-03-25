@@ -6,24 +6,28 @@
   - 如果你有任何想法请点击 [`Issues`](https://github.com/ApliNi/Chat2QQ/issues), 打开一个功能请求. 如果我能做到就会去实现出来. 
 <p></p>
 
-- **🍥 下载**
+- **🥡 下载**
   - 在 [`Releases`](https://github.com/ApliNi/Chat2QQ/releases) 中下载最新的jar文件.
   - 如果需要开发版本, 可以点击 [`Actions`](https://github.com/ApliNi/Chat2QQ/actions), 打开第一个, 找到最下面的jar文件. 
 <p></p>
 
-- **⏰ 其他**
+- **✨ 其他**
   - 订阅更新: 点击右上角 `Watch` 按钮, 选择 `Custom` 中的 `Releases` !
   - 使用量统计: [bStats](https://bstats.org/plugin/bukkit/ApliNi-Chat2QQ/17587)
 <p></p>
 
 
+<a href="https://bstats.org/plugin/bukkit/ApliNi-Chat2QQ/17587">![](https://bstats.org/signatures/bukkit/ApliNi-Chat2QQ.svg)</a>
+
+
 <br />
+
 
 > **✨ 新增功能列表 (点击展开)**
 
 [[查看完整配置]](https://github.com/ApliNi/Chat2QQ/blob/main/src/main/resources/config.yml)
 
-<details><summary>执行指令</summary>
+### 执行指令
 
 ![image](https://user-images.githubusercontent.com/59365724/227127511-a149cc33-9683-4bd9-9640-fd938546859d.png)
 
@@ -71,10 +75,10 @@
       #- tps
 ```
 
-</details>
 
 
-<details><summary>从群名片中匹配游戏名称</summary>
+
+### 从群名片中匹配游戏名称
 
 ![image](https://user-images.githubusercontent.com/59365724/227157788-d9259da8-46e6-438e-b32b-3926a2d3a9a3.png)
 ![image](https://user-images.githubusercontent.com/59365724/227157812-a0245843-66e9-44bc-8bc2-e0935ebc2d2b.png)
@@ -92,9 +96,9 @@
     not-captured: '%nick%'
 ```
 
-</details>
 
-<details><summary>消息预处理</summary>
+
+### 消息预处理
 
 ![image](https://user-images.githubusercontent.com/59365724/227128189-8f217293-04e9-472d-a09e-daad7eef79f0.png)
 ![image](https://user-images.githubusercontent.com/59365724/227128209-f6be73c2-efd1-4ca2-b85b-b2c2b84dad7d.png)
@@ -143,10 +147,10 @@
         to_regular: '[Emoji]'
 ```
 
-</details>
 
 
-<details><summary>预设的格式调整配置</summary>
+
+### 预设的格式调整配置
 
 ![image](https://user-images.githubusercontent.com/59365724/227128013-013e0514-771e-4075-8d4d-c28557cfa126.png)
 ![image](https://user-images.githubusercontent.com/59365724/227127980-628d662d-cc47-4468-9437-2e5298a6d6c3.png)
@@ -186,9 +190,9 @@
     message-to-log: true
 ```
 
-</details>
 
-<details><summary>更好的回复消息</summary>
+
+### 更好的回复消息
 
 ![image](https://user-images.githubusercontent.com/59365724/227159155-8a731828-c929-44f8-b0c1-5f380da403cc.png)
 ![image](https://user-images.githubusercontent.com/59365724/227159055-02e5cdcd-3a5e-4c20-8fda-85b0df90062a.png)
@@ -219,9 +223,9 @@
     del-duplicates-at: true
 ```
 
-</details>
 
-<details><summary><code>/qchat</code></summary>
+
+### <code>/qchat</code>
 
 ```yaml
   # 发送消息的指令
@@ -247,9 +251,9 @@
     mc-format: '§f[§7%name%§f] §r%message%'
 ```
 
-</details>
 
-<details><summary>[前置] 群成员信息缓存</summary>
+
+### [前置] 群成员信息缓存
 
 ```yaml
   # [前置] 群成员信息缓存, 测试功能
@@ -268,10 +272,10 @@
       - 1000000
 ```
 
-</details>
 
 
-<details><summary>替换 @qqID 为 @群名片</summary>
+
+### 替换 @qqID 为 @群名片
 
 ![image](https://user-images.githubusercontent.com/59365724/227128959-ff5fcdab-f09e-4ed8-bee9-08ade7cf7ef3.png)
 ![image](https://user-images.githubusercontent.com/59365724/227128919-092545b6-6d38-4324-b8b8-1903cb522a05.png)
@@ -294,10 +298,10 @@
     max-cycles-num: 7
 ```
 
-</details>
 
 
-<details><summary>事件任务</summary>
+
+### 事件任务
 
 ```yaml
   # 事件任务
@@ -334,10 +338,10 @@
     # 可使用: command, message-text, message-group
 ```
 
-</details>
 
 
-<details><summary>掉线重连</summary>
+
+### 掉线重连
 
 ```yaml
   # 测试功能 :: 掉线重连
@@ -355,10 +359,10 @@
     max-reconnect-num: 7
 ```
 
-</details>
 
 
-<details><summary>自动回复</summary>
+
+### 自动回复
 
 ![image](https://user-images.githubusercontent.com/59365724/227129074-9a8316e1-8b8f-4abe-9e74-ad73f212f9ec.png)
 
@@ -413,18 +417,18 @@
         send: 'OwO'
 ```
 
-</details>
 
 
-<details><summary>其他信息和兼容性</summary>
+
+### 其他信息和兼容性
 
 - [x] 兼容命令方块
 - [ ] 兼容模组服?
 
-</details>
 
 
-<details><summary>指令和权限</summary>
+
+### 指令和权限
 
 - `qchat [名称] <消息>` - 使用自定义名称发送消息到群
 - `qchat <消息>` - 发送消息到群
@@ -456,8 +460,3 @@ permissions:
     description: 允许使用 /chat2qq setgroupcacheall
     default: op
 ```
-
-</details>
-
-
-<a href="https://bstats.org/plugin/bukkit/ApliNi-Chat2QQ/17587">![](https://bstats.org/signatures/bukkit/ApliNi-Chat2QQ.svg)</a>
