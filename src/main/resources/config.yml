@@ -209,6 +209,11 @@ aplini:
       - regular: '§[a-z0-9]'
         to_regular: ''
 
+      # 示例: co插件翻页消息处理
+      #- regular: '◀? ?第 (.*) 页 ▶? ?\((.*)\)'
+      #  to_regular: '第 $1 页,  使用 /co page <页码> 翻页'
+
+
 
   ## 4
   # 预设的格式调整功能
