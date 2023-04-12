@@ -31,6 +31,7 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
 
     @Override // 启用插件
     public void onEnable() {
+
         // 注册事件
         // 机器人上线
         Bukkit.getPluginManager().registerEvents(new onBotOnline(this), this);
