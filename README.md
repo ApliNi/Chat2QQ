@@ -109,16 +109,14 @@
     enabled: true
     # **使用方法**
     # list:
-    #   - 匹配方式: prefix (前缀匹配), 可用处理方式: to_all
-    #                                           to_replace
-    #             contain (包含), 可用处理方式: to_all
-    #                                        to_replace
-    #             equal (完全相等), 可用处理方式: to_all
-    #             regular (正则匹配), 可用处理方式: to_all
-    #                                           to_regular
+    #   - 匹配方式: prefix (前缀匹配), 处理方式: to_all, to_replace
+    #              contain (包含), 处理方式: to_all, to_replace
+    #              equal (完全相等), 处理方式: to_all
+    #              regular (正则匹配), 处理方式: to_all, to_regular
+    #
     #     处理方式: to_all (替换整条消息)
-    #             to_replace (替换匹配到的部分)
-    #             to_regular (使用正则替换, 可使用正则变量)
+    #              to_replace (替换匹配到的部分)
+    #              to_regular (使用正则替换, 可使用正则变量)
     #
     #     是否发送: send (填写 send 配置将取消转发送匹配到的消息, 不需要时请忽略)
     #
@@ -147,6 +145,16 @@
         to_regular: '[Emoji]'
 ```
 
+```yaml
+  # 预处理指令返回消息, 用于处理返回到QQ群的消息
+  pretreatment-command-message:
+    enabled: true
+    # 使用方法: 如上
+    list:
+      # 删除格式化字符
+      - regular: '§[a-z0-9]'
+        to_regular: ''
+```
 
 
 
