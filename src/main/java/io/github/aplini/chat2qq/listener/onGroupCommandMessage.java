@@ -8,7 +8,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -96,15 +95,15 @@ public class onGroupCommandMessage implements Listener {
                         }
 
                         // 消息处理
-                        StringBuilder text = new StringBuilder();
-                        if(Sender.message.size() == 1){
-                            text = Optional.ofNullable(Sender.message.get(0)).map(StringBuilder::new).orElse(null);
-                        }else if(Sender.message.size() > 1){
+                        String text = "";
+
+                        if(Sender.message.size() != 0){
                             for(String m : Sender.message){
-                                text.append(m).append("\n");
+                                text = text + m + "\n";
+                                text = pretreatment(plugin, "aplini.pretreatment-command-message", text);
                             }
                         }else{
-                            text = new StringBuilder(plugin.getConfig().getString("aplini.run-command.message-no-out","message-no-out"));
+                            text = plugin.getConfig().getString("aplini.run-command.message-no-out","message-no-out");
                         }
 
                         // 打印日志
@@ -112,14 +111,8 @@ public class onGroupCommandMessage implements Listener {
                             getLogger().info("指令输出: \n"+ text);
                         }
 
-                        // 转换为字符串
-                        String finalText = String.valueOf(text); //.replaceAll("§[a-z0-9]", "");
-
-                        // 消息预处理
-                        finalText = pretreatment(plugin, "aplini.pretreatment-command-message", finalText);
-
                         // 指令返回消息
-                        sendToGroup(plugin, e.getGroupID(), finalText);
+                        sendToGroup(plugin, e.getGroupID(), text);
 
                     } else {
 
