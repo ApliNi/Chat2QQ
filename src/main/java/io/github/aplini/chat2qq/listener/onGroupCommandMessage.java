@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static io.github.aplini.chat2qq.utils.Util.pretreatment;
 import static io.github.aplini.chat2qq.utils.Util.sendToGroup;
 import static org.bukkit.Bukkit.getLogger;
 
@@ -111,8 +112,11 @@ public class onGroupCommandMessage implements Listener {
                             getLogger().info("指令输出: \n"+ text);
                         }
 
-                        // 处理格式化字符
-                        String finalText = String.valueOf(text).replaceAll("§[a-z0-9]", "");
+                        // 转换为字符串
+                        String finalText = String.valueOf(text); //.replaceAll("§[a-z0-9]", "");
+
+                        // 消息预处理
+                        finalText = pretreatment(plugin, "aplini.pretreatment-command-message", finalText);
 
                         // 指令返回消息
                         sendToGroup(plugin, e.getGroupID(), finalText);

@@ -7,68 +7,14 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.regex.Pattern;
-
 import static io.github.aplini.chat2qq.utils.Util.*;
 
 public class renderGroupMessage {
 
     // 渲染 message
     public static String _renderMessage(Plugin plugin, String message) {
-        if(plugin.getConfig().getBoolean("aplini.pretreatment.enabled",false)){
-            for(Map<?, ?> config : plugin.getConfig().getMapList("aplini.pretreatment.list")){
-                // 前缀匹配
-                if(config.get("prefix") != null && message.startsWith((String) config.get("prefix"))){
-                    if(config.get("send") != null){
-                        return "";
-                    }
-                    else if(config.get("to_all") != null){
-                        message = (String) config.get("to_all");
-                    }
-                    else if(config.get("to_replace") != null){
-                        message = message.replace((String) config.get("prefix"), (String) config.get("to_replace"));
-                    }
-                }
-
-                // 包含
-                else if(config.get("contain") != null && message.contains((String) config.get("contain"))){
-                    if(config.get("send") != null){
-                        return "";
-                    }
-                    else if(config.get("to_replace") != null){
-                        message = message.replace((String) config.get("contain"), (String) config.get("to_replace"));
-                    }
-                    else if(config.get("to_all") != null){
-                        message = (String) config.get("to_all");
-                    }
-                }
-
-                // 相等
-                else if(config.get("equal") != null && Objects.equals(message, config.get("equal"))){
-                    if(config.get("send") != null){
-                        return "";
-                    }
-                    else if(config.get("to_all") != null){
-                        message = (String) config.get("to_all");
-                    }
-                }
-
-                // 正则匹配
-                else if(config.get("regular") != null && Pattern.compile((String) config.get("regular")).matcher(message).find()){
-                    if(config.get("send") != null){
-                        return "";
-                    }
-                    else if(config.get("to_regular") != null){
-                        message = message.replaceAll((String) config.get("regular"), (String) config.get("to_regular"));
-                    }
-                    else if(config.get("to_all") != null){
-                        message = (String) config.get("to_all");
-                    }
-                }
-            }
-        }
+        // 预处理模块
+        message = pretreatment(plugin, "aplini.pretreatment", message);
 
         // 预设的格式调整功能. 是否删除 %message% 消息 中的格式化字符
         if(plugin.getConfig().getBoolean("aplini.other-format-presets.render-message_format-code",false)){

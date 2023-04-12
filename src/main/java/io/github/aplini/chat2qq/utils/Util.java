@@ -188,4 +188,62 @@ public class Util {
     public static String PAPIString(String inp){
         return PlaceholderAPI.setPlaceholders(new _OfflinePlayer(), inp);
     }
+
+    // 预处理模块 :: 消息替换
+    public static String pretreatment(Plugin plugin, String configPath, String message){
+        if(plugin.getConfig().getBoolean(configPath +".enabled",false)){
+            for(Map<?, ?> config : plugin.getConfig().getMapList(configPath +".list")){
+                // 前缀匹配
+                if(config.get("prefix") != null && message.startsWith(config.get("prefix").toString())){
+                    if(config.get("send") != null){
+                        return "";
+                    }
+                    else if(config.get("to_all") != null){
+                        message = config.get("to_all").toString();
+                    }
+                    else if(config.get("to_replace") != null){
+                        message = message.replace(config.get("prefix").toString(), config.get("to_replace").toString());
+                    }
+                }
+
+                // 包含
+                else if(config.get("contain") != null && message.contains(config.get("contain").toString())){
+                    if(config.get("send") != null){
+                        return "";
+                    }
+                    else if(config.get("to_replace") != null){
+                        message = message.replace(config.get("contain").toString(), config.get("to_replace").toString());
+                    }
+                    else if(config.get("to_all") != null){
+                        message = config.get("to_all").toString();
+                    }
+                }
+
+                // 相等
+                else if(config.get("equal") != null && Objects.equals(message, config.get("equal"))){
+                    if(config.get("send") != null){
+                        return "";
+                    }
+                    else if(config.get("to_all") != null){
+                        message = config.get("to_all").toString();
+                    }
+                }
+
+                // 正则匹配
+                else if(config.get("regular") != null && Pattern.compile(config.get("regular").toString()).matcher(message).find()){
+                    if(config.get("send") != null){
+                        return "";
+                    }
+                    else if(config.get("to_regular") != null){
+                        message = message.replaceAll(config.get("regular").toString(), config.get("to_regular").toString());
+                    }
+                    else if(config.get("to_all") != null){
+                        message = config.get("to_all").toString();
+                    }
+                }
+            }
+        }
+
+        return message;
+    }
 }
