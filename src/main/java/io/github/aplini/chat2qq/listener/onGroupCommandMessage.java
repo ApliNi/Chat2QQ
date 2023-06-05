@@ -88,7 +88,7 @@ public class onGroupCommandMessage implements Listener {
                         // 循环判断指令返回是否为空, 总计等待时间
                         int sleepTime = plugin.getConfig().getInt("aplini.run-command.return-sleep-min", 14);
                         // 指令输出
-                        String text = "";
+                        String text;
 
                         _Commander Sender = new _Commander();
 
@@ -173,9 +173,8 @@ public class onGroupCommandMessage implements Listener {
         StringBuilder text = new StringBuilder();
 
         if(Sender.message.size() != 0){
-            for(String m : Sender.message){
-                text.append(pretreatment(plugin, "aplini.pretreatment-command-message", m))
-                        .append("\n");
+            for(String line : Sender.message){
+                text.append(pretreatment(plugin, "aplini.pretreatment-command-message", line +"\n"));
             }
         }
 
