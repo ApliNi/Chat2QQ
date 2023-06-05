@@ -241,6 +241,11 @@ public class Util {
                         message = config.get("to_all").toString();
                     }
                 }
+
+                // 匹配任何
+                else if(config.get("any") != null){
+
+                }
             }
         }
 

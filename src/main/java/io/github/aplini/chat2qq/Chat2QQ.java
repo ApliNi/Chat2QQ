@@ -1,6 +1,5 @@
 package io.github.aplini.chat2qq;
 
-import io.github.aplini.chat2qq.bot.onBotOffline;
 import io.github.aplini.chat2qq.bot.onBotOnline;
 import io.github.aplini.chat2qq.bot.onCardChange;
 import io.github.aplini.chat2qq.listener.*;
@@ -53,10 +52,6 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
         // 事件任务程序
         if(getConfig().getBoolean("aplini.event-func.enable", false)){
             Bukkit.getPluginManager().registerEvents(new EventFunc(this), this);
-        }
-        // 掉线重连
-        if(getConfig().getBoolean("aplini.bot-offline.enable", false)){
-            Bukkit.getPluginManager().registerEvents(new onBotOffline(this), this);
         }
 
         // 注册指令
