@@ -6,12 +6,12 @@
   - 如果你有任何想法请点击 [`Issues`](https://github.com/ApliNi/Chat2QQ/issues), 打开一个功能请求. 如果我能做到就会去实现出来. 
 <p></p>
 
-- **🥡 下载**
+- **📦 下载**
   - 在 [`Releases`](https://github.com/ApliNi/Chat2QQ/releases) 中下载最新的jar文件.
   - 如果需要开发版本, 可以点击 [`Actions`](https://github.com/ApliNi/Chat2QQ/actions), 打开第一个, 找到最下面的jar文件. 
 <p></p>
 
-- **✨ 其他**
+- **📄 其他**
   - 订阅更新: 点击右上角 `Watch` 按钮, 选择 `Custom` 中的 `Releases` !
   - 使用量统计: [bStats](https://bstats.org/plugin/bukkit/ApliNi-Chat2QQ/17587)
 <p></p>
@@ -25,13 +25,24 @@
 
 ### ✨ 图片
 
+运行指令
+
 ![image](https://user-images.githubusercontent.com/59365724/227127511-a149cc33-9683-4bd9-9640-fd938546859d.png)
+
+
+群名片过滤
 
 ![image](https://user-images.githubusercontent.com/59365724/227157788-d9259da8-46e6-438e-b32b-3926a2d3a9a3.png)
 ![image](https://user-images.githubusercontent.com/59365724/227157812-a0245843-66e9-44bc-8bc2-e0935ebc2d2b.png)
 
+
+特殊消息预处理
+
 ![image](https://user-images.githubusercontent.com/59365724/227128189-8f217293-04e9-472d-a09e-daad7eef79f0.png)
 ![image](https://user-images.githubusercontent.com/59365724/227128209-f6be73c2-efd1-4ca2-b85b-b2c2b84dad7d.png)
+
+
+多行文本和长文本显示优化
 
 ![image](https://user-images.githubusercontent.com/59365724/227128013-013e0514-771e-4075-8d4d-c28557cfa126.png)
 ![image](https://user-images.githubusercontent.com/59365724/227127980-628d662d-cc47-4468-9437-2e5298a6d6c3.png)
@@ -39,17 +50,27 @@
 ![image](https://user-images.githubusercontent.com/59365724/227158659-b35ac9b3-113e-4d3d-80d7-f214c8064b02.png)
 ![image](https://user-images.githubusercontent.com/59365724/227158697-45a16e51-f4b1-4f97-8296-03d4074d3efb.png)
 
+
+
+引用回复显示优化
+
+![image](https://user-images.githubusercontent.com/59365724/227128959-ff5fcdab-f09e-4ed8-bee9-08ade7cf7ef3.png)
+![image](https://user-images.githubusercontent.com/59365724/227128919-092545b6-6d38-4324-b8b8-1903cb522a05.png)
+
 ![image](https://user-images.githubusercontent.com/59365724/227159155-8a731828-c929-44f8-b0c1-5f380da403cc.png)
 ![image](https://user-images.githubusercontent.com/59365724/227159055-02e5cdcd-3a5e-4c20-8fda-85b0df90062a.png)
 
 ![image](https://user-images.githubusercontent.com/59365724/227159023-7333b385-c687-45a4-965b-e9b066af0e6f.png)
 ![image](https://user-images.githubusercontent.com/59365724/227159083-e8d6b7e7-9ba6-41e8-9562-e7a174f87be5.png)
 
-![image](https://user-images.githubusercontent.com/59365724/227128959-ff5fcdab-f09e-4ed8-bee9-08ade7cf7ef3.png)
-![image](https://user-images.githubusercontent.com/59365724/227128919-092545b6-6d38-4324-b8b8-1903cb522a05.png)
+
+更好的群名片支持
 
 ![image](https://user-images.githubusercontent.com/59365724/227157070-c8fa51ca-b623-4167-a7ef-f02239d84aef.png)
 ![image](https://user-images.githubusercontent.com/59365724/227157097-d6b226e4-2158-4b3b-a36b-db21acfeff2e.png)
+
+
+自动回复
 
 ![image](https://user-images.githubusercontent.com/59365724/227129074-9a8316e1-8b8f-4abe-9e74-ad73f212f9ec.png)
 
