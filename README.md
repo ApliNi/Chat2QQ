@@ -121,7 +121,7 @@ bot:
 
   # 玩家在以下世界中聊天才会被转发
   available-worlds:
-    #- world
+  #- world
   # 将以上配置作为黑名单, 玩家不在以上世界中聊天才会被转发
   available-worlds-use-as-blacklist: true
 
@@ -168,7 +168,7 @@ blacklist:
 aplini:
 
   ## 1
-  # 在QQ群中运行指令 [需要单独添加 QQ群]
+  # 在QQ群中运行指令 [需要单独添加QQ群]
   # 此模块不处理黑名单 blacklist
   run-command:
     enabled: false
@@ -182,7 +182,7 @@ aplini:
     command-max-length: 255
     # 获取指令的正则表达式, 当第一个捕获组的内容与指令白名单中的匹配时则允许运行 (不带斜杠或前缀)
     regex-command-main: '^([^ ]+)'
-    # 判断指令返回为空的正则, 匹配多行文本
+    # 判断指令返回为空的正则, 匹配多行文本. (经过 pretreatment-command-message 处理后)
     return-isNull: '^\s*$'
     # 是否将主命令转换为小写再执行
     always-lowercase: false
@@ -208,12 +208,12 @@ aplini:
     group:
       # permission_<int> 是 MiraiMC 获取到的权限数字, 以后更新了其他权限只需要以此格式添加即可使用
       permission_2: # 群主
-        #- chat2qq
+      #- chat2qq
       permission_1: # 管理员
-        #- spark
+      #- spark
       permission_0: # 成员
-        #- list
-        #- tps
+      #- list
+      #- tps
 
 
   ## 2
@@ -301,9 +301,9 @@ aplini:
     enabled-placeholder: false # 关闭占位符可提高性能
     # 使用方法: 如上
     list:
-      # 示例: 显示指令运行时间, 需要开启占位符
-      #- regular: '([\s\S]+)'
-      #  to_regular: '$1\n  - 运行耗时: %time%ms'
+    # 示例: 显示指令运行时间, 需要开启占位符
+    #- regular: '([\s\S]+)'
+    #  to_regular: '$1\n  - 运行耗时: %time%ms'
 
 
   ## 4
@@ -428,7 +428,7 @@ aplini:
     group-ids:
       - 1000000
 
-    # 每个事件可用的任务不同, 这里列出了所有任务的使用方法:
+      # 每个事件可用的任务不同, 这里列出了所有任务的使用方法:
       # - command: 'command' - 发送指令
 
       # - message-text: '消息' - 向事件来源发送消息, 群 或 好友/私聊
@@ -440,35 +440,19 @@ aplini:
       #   message-text: '消息'
 
     MiraiMemberJoinEvent: # 群成员加入
-      # 可使用: command, message-text, message-group
-      # 一个事件中可添加多个相同或不相同的任务
-      - message-text: '欢迎'
-      - command: 'tps'
-      - command: 'mspt'
-      #- message-group: 1000000
-      #  message-text: '消息'
+    # 可使用: command, message-text, message-group
+    # 一个事件中可添加多个相同或不相同的任务, 就像这样:
+    #- message-text: '欢迎'
+    #- command: 'tps'
+    #- command: 'mspt'
+    #- message-group: 1000000
+    #  message-text: '消息'
 
     MiraiMemberLeaveEvent: # 成员退出
-      # 可使用: command, message-text, message-group
+    # 可使用: command, message-text, message-group
 
 
   ## 10
-  # 测试功能 :: 掉线重连
-  bot-offline:
-    # enable 修改后需要重启服务器
-    enable: false
-    # 启用哪些机器人, 可添加多个, 只能在这里添加
-    bot-ids:
-      - 2000000
-      - 2000001
-
-    # 延迟重新连接, 秒
-    delay: 14
-    # 重新连接失败重试次数, 超过后不再继续重连
-    max-reconnect-num: 7
-
-
-  ## 11
   # 自动回复
   # 当QQ群中的消息匹配时发送自定义消息
   auto-response:

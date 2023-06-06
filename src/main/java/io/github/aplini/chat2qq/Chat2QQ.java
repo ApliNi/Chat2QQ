@@ -1,6 +1,5 @@
 package io.github.aplini.chat2qq;
 
-import io.github.aplini.chat2qq.bot.onBotOnline;
 import io.github.aplini.chat2qq.bot.onCardChange;
 import io.github.aplini.chat2qq.listener.*;
 import io.github.aplini.chat2qq.utils.Metrics;
@@ -32,8 +31,6 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
     public void onEnable() {
 
         // 注册事件
-        // 机器人上线
-        Bukkit.getPluginManager().registerEvents(new onBotOnline(this), this);
         // 群成员修改名片 :: 群成员缓存
         Bukkit.getPluginManager().registerEvents(new onCardChange(this), this);
 
