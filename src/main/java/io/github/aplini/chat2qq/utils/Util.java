@@ -186,7 +186,8 @@ public class Util {
 
     // PAPI
     public static String PAPIString(String inp){
-        return PlaceholderAPI.setPlaceholders(new _OfflinePlayer(), inp);
+//        return PlaceholderAPI.setPlaceholders(new _OfflinePlayer(), inp);
+        return PlaceholderAPI.setPlaceholders(null, inp);
     }
 
     // 预处理模块 :: 消息替换
