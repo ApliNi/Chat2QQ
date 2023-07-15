@@ -144,7 +144,9 @@ public class onGroupCommandMessage implements Listener {
 
                     } else {
 
-                        Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
+//                        Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
+                        Bukkit.getScheduler().callSyncMethod(plugin, () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command));
+
 
                         // "运行无返回指令"
                         if(! plugin.getConfig().getString("aplini.run-command.message-no-out", "").equals("")) {

@@ -50,7 +50,7 @@ public class Util {
                     return name;
                 }
             }
-            return ""+ playerID;
+            return String.valueOf(playerID);
         }
         return defaultName;
     }
@@ -93,7 +93,7 @@ public class Util {
                 // 替换
                 message = message.replace(matcher.group(),
                         plugin.getConfig().getString("aplini.format-qq-id.format", "format")
-                                .replace("%qq%", ""+ qqID)
+                                .replace("%qq%", String.valueOf(qqID))
                                 .replace("%name%", name)
                 );
 
@@ -133,8 +133,8 @@ public class Util {
             try {
                 String jsonString = Files.readString(Paths.get(
                         plugin.getConfig().getString("aplini.player-cache.mirai-cache-path", "plugins/MiraiMC/MiraiBot/bots/%qq%/cache/contacts/groups/%group%.json")
-                                .replace("%qq%", ""+ botID)
-                                .replace("%group%", ""+ gid)
+                                .replace("%qq%", String.valueOf(botID))
+                                .replace("%group%", String.valueOf(gid))
 //                                .replace("/", File.separator) // IDEA说它没用
                 ));
                 JsonObject groupJson = new Gson().fromJson(jsonString, JsonObject.class);
@@ -154,7 +154,7 @@ public class Util {
                     if(plugin.getConfig().getBoolean("general.use-nick-if-namecard-null", true)){
                         name = aGroup.get("nick").getAsString();
                     }else{
-                        name = ""+ id;
+                        name = String.valueOf(id);
                     }
                 }
                 group_cache.put(id, name);
