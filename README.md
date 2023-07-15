@@ -3,7 +3,8 @@
 
 - **🚧 说明**
   - [ApliNi/Chat2QQ](https://github.com/ApliNi/Chat2QQ) 是包含 [DreamVoid/Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 几乎所有功能的插件, 经过重写并添加了许多功能.
-  - 如果你有任何想法请点击 [`Issues`](https://github.com/ApliNi/Chat2QQ/issues), 打开一个功能请求. 如果我能做到就会去实现出来. 
+  - 如果你有任何想法请点击 [`Issues`](https://github.com/ApliNi/Chat2QQ/issues), 打开一个功能请求. 如果我能做到就会去实现出来.  
+  - 如果您使用默认配置, 那么还需要开启 MiraiMC 插件配置中的 `bot.contact-cache.enable-group-member-list-cache`, 才能保证软件正常运行.  
 <p></p>
 
 - **📦 下载**
