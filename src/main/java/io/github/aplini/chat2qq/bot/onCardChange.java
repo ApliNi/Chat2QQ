@@ -42,7 +42,7 @@ public class onCardChange implements Listener {
                             if(plugin.getConfig().getBoolean("general.use-nick-if-namecard-null", true)){
                                 name = e.getMemberNick();
                             }else{
-                                name = ""+ e.getMemberID();
+                                name = String.valueOf(e.getMemberID());
                             }
                         }
                         group_cache.put(groupID, name);

@@ -35,11 +35,11 @@ public class renderGroupMessage {
     public static String getReplyVar(Plugin plugin, MiraiGroupMessageEvent e) {
         if(e.getQuoteReplyMessage() != null){
             return plugin.getConfig().getString("aplini.reply-message.var", "[reply] ")
-                    .replace("%c_name%", ""+ cleanupName(
+                    .replace("%c_name%", cleanupName(
                             plugin,
-                            getNameFromCache(plugin, e.getGroupID(), e.getQuoteReplySenderID(), ""+ e.getQuoteReplySenderID()),
+                            getNameFromCache(plugin, e.getGroupID(), e.getQuoteReplySenderID(), String.valueOf(e.getQuoteReplySenderID())),
                             e.getQuoteReplySenderID()))
-                    .replace("%qq%", ""+ e.getQuoteReplySenderID())
+                    .replace("%qq%", String.valueOf(e.getQuoteReplySenderID()))
                     .replace("%_/n_%", "\n");
         }
         return "";
@@ -167,12 +167,12 @@ public class renderGroupMessage {
         if(e.getQuoteReplyMessage() != null){
             // 创建回复消息的悬浮文本
             String replyMessage = plugin.getConfig().getString("aplini.reply-message.message", "[引用回复]")
-                    .replace("%c_name%", ""+ cleanupName(plugin,
-                            getNameFromCache(plugin, e.getGroupID(), e.getQuoteReplySenderID(), ""+ e.getQuoteReplySenderID()),
+                    .replace("%c_name%", cleanupName(plugin,
+                            getNameFromCache(plugin, e.getGroupID(), e.getQuoteReplySenderID(), String.valueOf(e.getQuoteReplySenderID())),
                             e.getQuoteReplySenderID()))
-                    .replace("%qq%", ""+ e.getQuoteReplySenderID())
+                    .replace("%qq%", String.valueOf(e.getQuoteReplySenderID()))
                     .replace("%_/n_%", "\n")
-                    .replace("%message%", ""+ formatQQID(plugin, _renderMessage(plugin, e.getQuoteReplyMessage()), e.getGroupID()))
+                    .replace("%message%", formatQQID(plugin, _renderMessage(plugin, e.getQuoteReplyMessage()), e.getGroupID()))
                     .replace("%main_message%", message[2]); // 跳过消息过长部分
             // 设置悬浮文本
             formatText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(replyMessage)));
@@ -180,8 +180,4 @@ public class renderGroupMessage {
 
         return formatText;
     }
-
-
-
-
 }
