@@ -81,7 +81,8 @@ public class onGroupCommandMessage implements Listener {
 
                     // 执行指令
                     // 是否开启获取指令返回消息
-                    if(plugin.getConfig().getBoolean("aplini.run-command.return",true)){
+                    if(plugin.getConfig().getBoolean("aplini.run-command.return",true)
+                            && !plugin.getConfig().getStringList("aplini.run-command.special.no-return").contains(command)){
 
                         // 判断指令输出为空的正则
                         Pattern isNull = Pattern.compile(plugin.getConfig().getString("aplini.run-command.return-isNull", "^\\s*$"), Pattern.DOTALL);

@@ -136,6 +136,12 @@ aplini:
         #- list
         #- tps
 
+    # 特殊指令配置
+    special:
+      no-return: # 这些指令始终不输出消息
+        #- plugins
+        #- version
+
 
   ## 2
   # 从 群名片(%nick%) 中匹配 MC 可用的游戏名称
