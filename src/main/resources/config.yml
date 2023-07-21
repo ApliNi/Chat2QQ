@@ -2,9 +2,10 @@
 # 游戏内配置
 # QQ -> MC 的消息
 general:
-  # 处理哪些QQ群的消息
+  # 转发哪些QQ群的消息
   group-ids:
     - 1000000
+    - 1000001
 
   # 群聊天前缀 (聊天需要带有指定前缀才能发送到服务器)
   requite-special-word-prefix:
@@ -46,6 +47,10 @@ bot:
   # 只能添加一个
   bot-accounts:
     - 2000000
+
+  # 将消息转发到那些QQ群
+  group-ids:
+    - 1000000
 
   # 玩家在以下世界中聊天才会被转发
   available-worlds:

@@ -52,7 +52,7 @@ public class onPlayerMessage implements Listener {
                     .replace("%message%", message);
 
             if(allowWorld && allowPrefix){
-                plugin.getConfig().getLongList("general.group-ids").forEach(group -> sendToGroup(plugin, group, formatText));
+                plugin.getConfig().getLongList("bot.group-ids").forEach(group -> sendToGroup(plugin, group, formatText));
             }
 
         }
