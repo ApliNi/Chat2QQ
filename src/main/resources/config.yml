@@ -24,11 +24,18 @@ general:
   # %message% - 消息内容, 支持预处理模块 aplini.pretreatment
   # %_reply_% - 如果是回复消息..., 配置在 aplini.reply-message 模块
   in-game-chat-format: '§f[§7%nick%§r§f] %_reply_%§7%message%'
+  # 为每个群使用不同的格式, 如果没有则使用上方的 in-game-chat-format
+  special:
+    1000000: '§f[§7主群 %nick%§r§f] %_reply_%§7%message%'
+    1000001: '§7[外群 %nick%] %_reply_%%message%'
 
   # 启用 MiraiMC 内置的QQ绑定
   use-miraimc-bind: false
   # 已绑定玩家的广播消息格式
   bind-chat-format: '§f[§7%nick%§r§f] %_reply_%§7%message%'
+  # 为每个群使用不同的格式, 如果没有则使用上方的 bind-chat-format
+  special-bind:
+    1000000: '§f[§7主群 %nick%§r§f] %_reply_%§7%message%'
 
 
 

@@ -131,14 +131,19 @@ public class renderGroupMessage {
         }
 
 
+        // 消息模板路径
+        String message2_config_path;
         // Mirai 内置QQ绑定
-        String message2_config_path = "general.in-game-chat-format";
         if(plugin.getConfig().getBoolean("general.use-miraimc-bind",false) && MiraiMC.getBind(e.getSenderID()) != null){
-            message2_config_path = "general.bind-chat-format";
+            message2_config_path = plugin.getConfig().getString("general.special-bind."+ e.getGroupID(),
+                    plugin.getConfig().getString("general.bind-chat-format", "message"));
+        }else{
+            message2_config_path = plugin.getConfig().getString("general.special."+ e.getGroupID(),
+                    plugin.getConfig().getString("general.in-game-chat-format", "message"));
         }
 
         String message3 = message[3];
-        message[3] = plugin.getConfig().getString(message2_config_path, "message")
+        message[3] = message2_config_path
                 .replace("%groupname%",e.getGroupName())
                 .replace("%groupid%",String.valueOf(e.getGroupID()))
                 .replace("%qq%",String.valueOf(e.getSenderID()))
@@ -146,7 +151,6 @@ public class renderGroupMessage {
                 .replace("%regex_nick%", cleanupName(plugin, name, e.getSenderID())) // aplini.cleanup-name
                 .replace("%_reply_%", getReplyVar(plugin, e))
                 .replace("%message%", formatQQID(plugin, message3, e.getGroupID()));
-
 
         return message;
     }
