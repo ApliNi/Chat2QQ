@@ -20,7 +20,7 @@ import static io.github.aplini.chat2qq.utils.Util._setGroupCacheAll;
 import static io.github.aplini.chat2qq.utils.Util.sendToGroup;
 
 public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, TabExecutor {
-    public static Map<Long, Map<Long, String>> group_cache_all;
+    public static Map<Long, Map<Long, String>> group_cache_all = null;
 
     @Override // 加载插件
     public void onLoad() {
