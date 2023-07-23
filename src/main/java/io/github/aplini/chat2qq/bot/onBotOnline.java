@@ -6,6 +6,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerLoadEvent;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static io.github.aplini.chat2qq.Chat2QQ.group_cache_all;
@@ -33,20 +35,25 @@ public class onBotOnline implements Listener {
 
     @EventHandler // 服务器启动完成
     public void onServerLoad(ServerLoadEvent event) {
-        // 无法启动的解决方案
-        if(plugin.getConfig().getBoolean("aplini.player-cache.fix-start.enabled", true)){
-            try {
-                TimeUnit.MILLISECONDS.sleep(plugin.getConfig().getInt("aplini.player-cache.fix-start.await-time", 6400));
+        // 异步
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(() -> {
+            // 无法启动的解决方案
+            if(plugin.getConfig().getBoolean("aplini.player-cache.fix-start.enabled", true)){
+                try {
+                    TimeUnit.MILLISECONDS.sleep(plugin.getConfig().getInt("aplini.player-cache.fix-start.await-time", 6400));
 
-                // 防止重复运行
-                if(!plugin.getConfig().getBoolean("aplini.player-cache.fix-start.prevent-duplication", true) || group_cache_all == null){
-                    getLogger().info("§f[§7Chat2QQ§f] §f群成员缓存程序已通过备用启动方案启动...");
-                    _setGroupCacheAll(plugin);
+                    // 防止重复运行
+                    if(!plugin.getConfig().getBoolean("aplini.player-cache.fix-start.prevent-duplication", true) || group_cache_all == null){
+                        getLogger().info("§f[§7Chat2QQ§f] §f群成员缓存程序已通过备用启动方案启动...");
+                        _setGroupCacheAll(plugin);
+                    }
+
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
                 }
-
-            } catch (InterruptedException ex) {
-                throw new RuntimeException(ex);
             }
-        }
+        });
+        executor.shutdown();
     }
 }
