@@ -7,6 +7,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import static io.github.aplini.chat2qq.utils.Util.sendToGroup;
 
 public class onPlayerMessage implements Listener {
@@ -17,44 +20,52 @@ public class onPlayerMessage implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerChat(AsyncPlayerChatEvent e){
-        if(e.isCancelled()){
-            return;
-        }
 
-        if(!(plugin.getConfig().getBoolean("bot.require-command-to-chat",false))){
-            boolean allowWorld = false;
-            boolean allowPrefix = false;
-            String message = ChatColor.stripColor(e.getMessage());
+        // 异步
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(() -> {
 
-            // 判断玩家所处世界
-            for(String world : plugin.getConfig().getStringList("bot.available-worlds")){
-                if(e.getPlayer().getWorld().getName().equalsIgnoreCase(world)){
-                    allowWorld = true;
-                    break;
-                }
+            if (e.isCancelled()) {
+                return;
             }
-            if(plugin.getConfig().getBoolean("bot.available-worlds-use-as-blacklist", true)) allowWorld = !allowWorld;
 
-            // 判断消息是否带前缀
-            if(plugin.getConfig().getBoolean("bot.requite-special-word-prefix.enabled",true)){
-                for(String prefix : plugin.getConfig().getStringList("bot.requite-special-word-prefix.prefix")){
-                    if(message.startsWith(prefix)){
-                        allowPrefix = true;
-                        message = message.substring(prefix.length());
+            if (!(plugin.getConfig().getBoolean("bot.require-command-to-chat", false))) {
+                boolean allowWorld = false;
+                boolean allowPrefix = false;
+                String message = ChatColor.stripColor(e.getMessage());
+
+                // 判断玩家所处世界
+                for (String world : plugin.getConfig().getStringList("bot.available-worlds")) {
+                    if (e.getPlayer().getWorld().getName().equalsIgnoreCase(world)) {
+                        allowWorld = true;
                         break;
                     }
                 }
-            } else allowPrefix = true;
+                if (plugin.getConfig().getBoolean("bot.available-worlds-use-as-blacklist", true))
+                    allowWorld = !allowWorld;
 
-            // 服务器消息发送到QQ群的格式
-            String formatText = plugin.getConfig().getString("bot.group-chat-format", "message")
-                    .replace("%player%",e.getPlayer().getName())
-                    .replace("%message%", message);
+                // 判断消息是否带前缀
+                if (plugin.getConfig().getBoolean("bot.requite-special-word-prefix.enabled", true)) {
+                    for (String prefix : plugin.getConfig().getStringList("bot.requite-special-word-prefix.prefix")) {
+                        if (message.startsWith(prefix)) {
+                            allowPrefix = true;
+                            message = message.substring(prefix.length());
+                            break;
+                        }
+                    }
+                } else allowPrefix = true;
 
-            if(allowWorld && allowPrefix){
-                plugin.getConfig().getLongList("bot.group-ids").forEach(group -> sendToGroup(plugin, group, formatText));
+                // 服务器消息发送到QQ群的格式
+                String formatText = plugin.getConfig().getString("bot.group-chat-format", "message")
+                        .replace("%player%", e.getPlayer().getName())
+                        .replace("%message%", message);
+
+                if (allowWorld && allowPrefix) {
+                    plugin.getConfig().getLongList("bot.group-ids").forEach(group -> sendToGroup(plugin, group, formatText));
+                }
+
             }
-
-        }
+        });
+        executor.shutdown();
     }
 }
