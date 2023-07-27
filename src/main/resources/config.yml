@@ -330,6 +330,8 @@ aplini:
     enabled: true
     # 在玩家群名片修改时更新内存中的数据
     auto-update: true
+    # 群名片修改时发出日志
+    auto-update-log: true
     # 使用上方 general.group-ids 中配置的群
     use-general-group-ids: true
     # 缓存哪些群, 需要 use-general-group-ids: false

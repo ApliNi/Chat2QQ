@@ -82,9 +82,10 @@
 # 游戏内配置
 # QQ -> MC 的消息
 general:
-  # 处理哪些QQ群的消息
+  # 转发哪些QQ群的消息
   group-ids:
     - 1000000
+    - 1000001
 
   # 群聊天前缀 (聊天需要带有指定前缀才能发送到服务器)
   requite-special-word-prefix:
@@ -104,11 +105,18 @@ general:
   # %message% - 消息内容, 支持预处理模块 aplini.pretreatment
   # %_reply_% - 如果是回复消息..., 配置在 aplini.reply-message 模块
   in-game-chat-format: '§f[§7%nick%§r§f] %_reply_%§7%message%'
+  # 为每个群使用不同的格式, 如果没有则使用上方的 in-game-chat-format
+  special:
+    1000000: '§f[§7主群 %nick%§r§f] %_reply_%§7%message%'
+    1000001: '§7[外群 %nick%] %_reply_%%message%'
 
   # 启用 MiraiMC 内置的QQ绑定
   use-miraimc-bind: false
   # 已绑定玩家的广播消息格式
   bind-chat-format: '§f[§7%nick%§r§f] %_reply_%§7%message%'
+  # 为每个群使用不同的格式, 如果没有则使用上方的 bind-chat-format
+  special-bind:
+    1000000: '§f[§7主群 %nick%§r§f] %_reply_%§7%message%'
 
 
 
@@ -119,6 +127,10 @@ bot:
   # 只能添加一个
   bot-accounts:
     - 2000000
+
+  # 将消息转发到那些QQ群
+  group-ids:
+    - 1000000
 
   # 玩家在以下世界中聊天才会被转发
   available-worlds:
@@ -215,6 +227,12 @@ aplini:
       permission_0: # 成员
       #- list
       #- tps
+
+    # 特殊指令配置
+    special:
+      no-return: # 这些指令始终不输出消息
+      #- plugins
+      #- version
 
 
   ## 2
@@ -385,13 +403,15 @@ aplini:
 
 
   ## 7
-  # [前置] 群成员信息缓存, 测试功能
+  # [前置] 群成员信息缓存
   # ! 需要开启 MiraiMC 配置中的 bot.contact-cache.enable-group-member-list-cache
   player-cache:
     # 在指定机器人登录时运行此程序
     enabled: true
     # 在玩家群名片修改时更新内存中的数据
     auto-update: true
+    # 群名片修改时发出日志
+    auto-update-log: true
     # 使用上方 general.group-ids 中配置的群
     use-general-group-ids: true
     # 缓存哪些群, 需要 use-general-group-ids: false
@@ -401,6 +421,11 @@ aplini:
     # %qq% - 机器人账号
     # %group% - 群号
     mirai-cache-path: "plugins/MiraiMC/MiraiBot/bots/%qq%/cache/contacts/groups/%group%.json"
+    # 在服务器启动完成后等待指定时间再运行一次, 用于修复部分服务器上第一次无法启动
+    fix-start:
+      enabled: true # 使用此方案
+      await-time: 6400 # 等待时间, 毫秒
+      prevent-duplication: true # 如果已经正常运行则取消此任务
 
 
   ## 8
@@ -523,7 +548,8 @@ allow-bStats: true
 - `qchat [名称] <消息>` - 使用自定义名称发送消息到群
 - `qchat <消息>` - 发送消息到群
 - `chat2qq` - 插件主命令 & 帮助信息
-    - `chat2qq setgroupcacheall` - 重新创建群成员缓存
+    - `chat2qq setgroupcacheall` - 重建群成员缓存数据
+    - `chat2qq outgroupcacheall` - 打印群成员缓存数据
 
 plugin.yml
 ```yaml

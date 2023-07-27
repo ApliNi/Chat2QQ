@@ -146,7 +146,8 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
                 sender.sendMessage("指令列表: ");
                 sender.sendMessage("  - /qchat [名称] <消息> §7- 发送一条消息到QQ群中");
                 sender.sendMessage("  - /chat2qq reload §7- 重载配置");
-                sender.sendMessage("  - /chat2qq setgroupcacheall §7- 重新运行群成员缓存程序");
+                sender.sendMessage("  - /chat2qq setgroupcacheall §7- 重建群成员缓存数据");
+                sender.sendMessage("  - /chat2qq outgroupcacheall §7- 打印群成员缓存数据");
                 return true;
             }
             else if(args[0].equalsIgnoreCase("reload")){
@@ -172,6 +173,14 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
                 _setGroupCacheAll(this);
                 return true;
             }
+            else if(args[0].equalsIgnoreCase("outgroupcacheall")){
+                if(! sender.hasPermission("chat2qq.command.chat2qq")){
+                    sender.sendMessage("§f[§7Chat2QQ§f] §7没有权限");
+                    return false;
+                }
+                sender.sendMessage("§f[§7Chat2QQ§f] §7群成员缓存: \n" + group_cache_all);
+                return true;
+            }
         }
         return false;
     }
@@ -184,6 +193,7 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
                 List<String> list = new ArrayList<>();
                 list.add("reload"); // 重载配置
                 list.add("setgroupcacheall"); // 启动群成员缓存
+                list.add("outgroupcacheall"); // 打印群成员缓存数据
                 return list;
             }
         }

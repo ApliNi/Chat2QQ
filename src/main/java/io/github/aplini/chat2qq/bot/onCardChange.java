@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static io.github.aplini.chat2qq.utils.Util.isGroupInConfig;
+import static org.bukkit.Bukkit.getLogger;
 
 public class onCardChange implements Listener {
     private final Chat2QQ plugin;
@@ -20,7 +21,6 @@ public class onCardChange implements Listener {
 
     @EventHandler // 成员群名片修改
     public void onMiraiMemberCardChangeEvent(MiraiMemberCardChangeEvent e) {
-
         // 异步
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> {
@@ -29,7 +29,6 @@ public class onCardChange implements Listener {
                 // 如果这是已配置的机器人
                 if (plugin.getConfig().getLongList("bot.bot-accounts").contains(e.getBotID())) {
                     long groupID = e.getGroupID();
-
                     // 如果这个群在配置中
                     if (isGroupInConfig(plugin, "aplini.player-cache", groupID)) {
                         // 获取散列表
@@ -43,7 +42,12 @@ public class onCardChange implements Listener {
                                     name = String.valueOf(e.getMemberID());
                                 }
                             }
-                            group_cache.put(groupID, name);
+
+                            if(plugin.getConfig().getBoolean("aplini.player-cache.auto-update-log", true)){
+                                getLogger().info("[Chat2QQ] 群名片修改 "+ groupID +"."+ e.getMemberID() +": "+ e.getOldNick() +" -> "+ e.getNewNick());
+                            }
+
+                            group_cache.put(e.getMemberID(), name);
                         }
                     }
                 }
