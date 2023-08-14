@@ -183,7 +183,7 @@ public class onGroupCommandMessage implements Listener {
     public String mergeCommandMessage(_Commander Sender){
         StringBuilder text = new StringBuilder();
 
-        if(Sender.message.size() != 0){
+        if(!Sender.message.isEmpty()){
             for(String line : Sender.message){
                 text.append(pretreatment(plugin, "aplini.pretreatment-command-message", line +"\n"));
             }

@@ -204,6 +204,10 @@ aplini:
       - prefix: '[文件]'
         to_replace: '[文件] '
 
+      # 转发消息使用前缀, 在群中使用 # 前缀将改变消息格式
+      - regular: '^\s*(?:#|＃)'
+        to_regular: '§7> §f'
+
       # 示例: 取消发送包含此内容的消息
       #- contain: '此内容'
       #  send: false

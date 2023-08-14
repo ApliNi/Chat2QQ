@@ -29,6 +29,11 @@ public class onPlayerMessage implements Listener {
                 return;
             }
 
+            // 检查权限
+            if(!e.getPlayer().hasPermission("chat2qq.command.qchat_sign")){
+                return;
+            }
+
             if (!(plugin.getConfig().getBoolean("bot.require-command-to-chat", false))) {
                 boolean allowWorld = false;
                 boolean allowPrefix = false;
@@ -41,8 +46,9 @@ public class onPlayerMessage implements Listener {
                         break;
                     }
                 }
-                if (plugin.getConfig().getBoolean("bot.available-worlds-use-as-blacklist", true))
+                if (plugin.getConfig().getBoolean("bot.available-worlds-use-as-blacklist", true)){
                     allowWorld = !allowWorld;
+                }
 
                 // 判断消息是否带前缀
                 if (plugin.getConfig().getBoolean("bot.requite-special-word-prefix.enabled", true)) {
