@@ -30,7 +30,7 @@ public class onPlayerMessage implements Listener {
             }
 
             // 检查权限
-            if(!e.getPlayer().hasPermission("chat2qq.command.qchat_sign")){
+            if(!e.getPlayer().hasPermission("chat2qq.chat.requite")){
                 return;
             }
 

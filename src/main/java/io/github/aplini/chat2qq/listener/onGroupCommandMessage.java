@@ -156,7 +156,7 @@ public class onGroupCommandMessage implements Listener {
 
 
                             // "运行无返回指令"
-                            if (!plugin.getConfig().getString("aplini.run-command.message-no-out", "").equals("")) {
+                            if (!plugin.getConfig().getString("aplini.run-command.message-no-out", "").isEmpty()) {
                                 sendToGroup(plugin, e.getGroupID(), plugin.getConfig().getString("aplini.run-command.message-no-out", "message-no-out"));
                             }
                         }
@@ -170,7 +170,7 @@ public class onGroupCommandMessage implements Listener {
             }
 
             // 指令没有运行成功 && 设置了未命中消息
-            if (!runOK && !plugin.getConfig().getString("aplini.run-command.message-miss", "").equals("")) {
+            if (!runOK && !plugin.getConfig().getString("aplini.run-command.message-miss", "").isEmpty()) {
                 // 发送消息
                 sendToGroup(plugin, e.getGroupID(), plugin.getConfig().getString("aplini.run-command.message-miss"));
             }

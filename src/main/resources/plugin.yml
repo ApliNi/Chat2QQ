@@ -15,9 +15,15 @@ commands:
   chat2qq:
     description: Chat2QQ 插件主命令
 permissions:
-  chat2qq.command.qchat_sign:
+  chat2qq.chat.requite:
     description: 允许使用前缀符号转发消息到QQ群
     default: true
+  chat2qq.join.silent:
+    description: 允许悄悄加入服务器
+    default: false
+  chat2qq.quit.silent:
+    description: 允许悄悄离开服务器
+    default: false
   chat2qq.command.qchat:
     description: 允许使用 /qchat
     default: op
@@ -27,9 +33,3 @@ permissions:
   chat2qq:.command.setgroupcacheall:
     description: 允许使用 /chat2qq setgroupcacheall
     default: op
-  chat2qq.join.silent:
-    description: 允许悄悄加入服务器
-    default: false
-  chat2qq.quit.silent:
-    description: 允许悄悄离开服务器
-    default: false
