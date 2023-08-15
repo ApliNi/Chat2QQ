@@ -284,6 +284,10 @@ aplini:
       - prefix: '[文件]'
         to_replace: '[文件] '
 
+      # 转发消息使用前缀, 在群中使用 # 前缀将改变消息格式
+      - regular: '^\s*(?:#|＃)'
+        to_regular: '§7> §f'
+
       # 示例: 取消发送包含此内容的消息
       #- contain: '此内容'
       #  send: false
@@ -557,21 +561,35 @@ commands:
   qchat:
     description: 发送聊天消息到QQ群
     permission: chat2qq.command.qchat
+
   chat2qq:
     description: Chat2QQ 插件主命令
+
 permissions:
+  chat2qq.qq.receive:
+    description: 允许收到来自QQ群的消息
+    default: true
+
+  chat2qq.chat.requite:
+    description: 允许使用前缀符号转发消息到QQ群
+    default: true
+
   chat2qq.join.silent:
     description: 允许悄悄加入服务器
     default: false
+
   chat2qq.quit.silent:
     description: 允许悄悄离开服务器
     default: false
+
   chat2qq.command.qchat:
     description: 允许使用 /qchat
     default: op
+
   chat2qq.command.chat2qq:
     description: 允许使用 /chat2qq
     default: op
+
   chat2qq:.command.setgroupcacheall:
     description: 允许使用 /chat2qq setgroupcacheall
     default: op
