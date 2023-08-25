@@ -78,12 +78,15 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
             }
 
             if(args.length == 0){
-                sender.sendMessage("/qchat [name] <message>");
+                sender.sendMessage("/qchat <message>");
                 return false;
             }
 
-            String name;
+            String name = "";
             StringBuilder message = new StringBuilder();
+            // 获取消息内容
+            Arrays.stream(args).forEach(arg -> message.append(arg).append(" "));
+            String formatText;
 
             // 是否为玩家
             if(sender instanceof Player){
@@ -92,45 +95,29 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
                 if(getConfig().getStringList("blacklist.player").contains(name)){
                     return false;
                 }
-                // 获取消息内容
-                Arrays.stream(args).forEach(arg -> message.append(arg).append(" "));
-            }else{
-                // 使用填充名称
-                if(getConfig().getBoolean("aplini.qchat.use-fill-name", false)){
-                    name = getConfig().getString("aplini.qchat.fill-name", "console");
-                    Arrays.stream(args).forEach(arg -> message.append(arg).append(" "));
-                }else{
-                    if(args.length == 1){ // 未设定自定义名称
-                        name = getConfig().getString("aplini.qchat.fill-name", "console");
-                        Arrays.stream(args).forEach(arg -> message.append(arg).append(" "));
-                    }else{
-                        name = args[0];
-                        for(int i = 1; i < args.length; i++){
-                            message.append(args[i]).append(" ");
-                        }
-                    }
+                // 黑名单. 关键词
+                if(getConfig().getStringList("blacklist.word").stream().anyMatch(t -> message.toString().contains(t))){
+                    return false;
                 }
+                // 消息格式
+                formatText = getConfig().getString("aplini.qchat.player.qq-format", "qq-format")
+                        .replace("%name%", name)
+                        .replace("%message%", message);
+            }else{
+                // 消息格式
+                formatText = getConfig().getString("aplini.qchat.console.qq-format", "qq-format")
+                        .replace("%message%", message);
             }
-
-            // 黑名单. 关键词
-            if(getConfig().getStringList("blacklist.word").stream().anyMatch(t -> message.toString().contains(t))){
-                return false;
-            }
-
-            // 消息格式
-            String formatText = getConfig().getString("aplini.qchat.qq-format", "qq-format")
-                    .replace("%name%", name)
-                    .replace("%message%", message);
 
             // 发送到群
             getConfig().getLongList(
-                    getConfig().getBoolean("aplini.qchat.use-general-group-ids", true)? "general.group-ids" : "aplini.qchat.group-ids")
+                            getConfig().getBoolean("aplini.qchat.use-general-group-ids", true)? "general.group-ids" : "aplini.qchat.group-ids")
                     .forEach(gid -> sendToGroup(this, gid, formatText));
 
             // 广播到服务器
-            if(getConfig().getBoolean("aplini.qchat.mc-broadcast", true)){
+            if(getConfig().getBoolean("aplini.qchat.player.mc-broadcast", true)){
                 Bukkit.broadcastMessage(
-                        getConfig().getString("aplini.qchat.mc-format", "mc-format")
+                        getConfig().getString("aplini.qchat.player.mc-format", "mc-format")
                                 .replace("%name%", name)
                                 .replace("%message%", message)
                 );
@@ -144,7 +131,7 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
                 sender.sendMessage("§7     |               ");
                 sender.sendMessage("§f[§7Chat2QQ§f] §7https://github.com/ApliNi/Chat2QQ");
                 sender.sendMessage("指令列表: ");
-                sender.sendMessage("  - /qchat [名称] <消息> §7- 发送一条消息到QQ群中");
+                sender.sendMessage("  - /qchat <消息> §7- 发送一条消息到QQ群中");
                 sender.sendMessage("  - /chat2qq reload §7- 重载配置");
                 sender.sendMessage("  - /chat2qq setgroupcacheall §7- 重建群成员缓存数据");
                 sender.sendMessage("  - /chat2qq outgroupcacheall §7- 打印群成员缓存数据");
