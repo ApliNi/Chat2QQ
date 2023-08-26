@@ -14,7 +14,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import static io.github.aplini.chat2qq.utils.Util._setGroupCacheAll;
 import static io.github.aplini.chat2qq.utils.Util.sendToGroup;
@@ -82,46 +85,44 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
                 return false;
             }
 
-            String name = "";
-            StringBuilder message = new StringBuilder();
             // 获取消息内容
-            Arrays.stream(args).forEach(arg -> message.append(arg).append(" "));
+            String message = String.join(" ", args);
+
             String formatText;
 
             // 是否为玩家
             if(sender instanceof Player){
-                name = ((Player) sender).getDisplayName();
+                String name = ((Player) sender).getDisplayName();
                 // 黑名单. 玩家名
                 if(getConfig().getStringList("blacklist.player").contains(name)){
                     return false;
                 }
                 // 黑名单. 关键词
-                if(getConfig().getStringList("blacklist.word").stream().anyMatch(t -> message.toString().contains(t))){
+                if(getConfig().getStringList("blacklist.word").stream().anyMatch(message :: contains)){
                     return false;
                 }
-                // 消息格式
+                // 广播到服务器
+                if(getConfig().getBoolean("aplini.qchat.player.mc-broadcast", true)){
+                    Bukkit.broadcastMessage(
+                            getConfig().getString("aplini.qchat.player.mc-format", "mc-format")
+                                    .replace("%name%", name)
+                                    .replace("%message%", message)
+                    );
+                }
+                // 发送到群的消息格式
                 formatText = getConfig().getString("aplini.qchat.player.qq-format", "qq-format")
                         .replace("%name%", name)
                         .replace("%message%", message);
             }else{
-                // 消息格式
+                // 发送到群的消息格式
                 formatText = getConfig().getString("aplini.qchat.console.qq-format", "qq-format")
                         .replace("%message%", message);
             }
 
             // 发送到群
             getConfig().getLongList(
-                            getConfig().getBoolean("aplini.qchat.use-general-group-ids", true)? "general.group-ids" : "aplini.qchat.group-ids")
+                    getConfig().getBoolean("aplini.qchat.use-general-group-ids", true)? "general.group-ids" : "aplini.qchat.group-ids")
                     .forEach(gid -> sendToGroup(this, gid, formatText));
-
-            // 广播到服务器
-            if(getConfig().getBoolean("aplini.qchat.player.mc-broadcast", true)){
-                Bukkit.broadcastMessage(
-                        getConfig().getString("aplini.qchat.player.mc-format", "mc-format")
-                                .replace("%name%", name)
-                                .replace("%message%", message)
-                );
-            }
         }
 
         else if(command.getName().equalsIgnoreCase("chat2qq")){
