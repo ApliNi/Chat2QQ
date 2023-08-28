@@ -7,8 +7,7 @@ import org.bukkit.event.Listener;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.CompletableFuture;
 
 import static io.github.aplini.chat2qq.utils.Util.isGroupInConfig;
 import static org.bukkit.Bukkit.getLogger;
@@ -22,8 +21,7 @@ public class onCardChange implements Listener {
     @EventHandler // 成员群名片修改
     public void onMiraiMemberCardChangeEvent(MiraiMemberCardChangeEvent e) {
         // 异步
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
+        CompletableFuture.runAsync(() -> {
             // 启用群缓存功能 && 自动更新缓存
             if (plugin.getConfig().getBoolean("aplini.player-cache.enabled", true) && plugin.getConfig().getBoolean("aplini.player-cache.auto-update", true)) {
                 // 如果这是已配置的机器人
@@ -53,6 +51,5 @@ public class onCardChange implements Listener {
                 }
             }
         });
-        executor.shutdown();
     }
 }

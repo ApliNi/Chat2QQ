@@ -7,8 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.CompletableFuture;
 
 import static io.github.aplini.chat2qq.utils.Util.sendToGroup;
 
@@ -22,8 +21,7 @@ public class onPlayerMessage implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent e){
 
         // 异步
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
+        CompletableFuture.runAsync(() -> {
 
             if (e.isCancelled()) {
                 return;
@@ -72,6 +70,5 @@ public class onPlayerMessage implements Listener {
 
             }
         });
-        executor.shutdown();
     }
 }

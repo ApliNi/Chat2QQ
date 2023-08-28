@@ -8,8 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,8 +29,7 @@ public class onGroupCommandMessage implements Listener {
     public void onGroupMessageReceive(MiraiGroupMessageEvent e) {
 
         // 异步
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
+        CompletableFuture.runAsync(() -> {
 
             // 是否启用
             if (!plugin.getConfig().getBoolean("aplini.run-command.enabled", false)) {
@@ -151,9 +149,7 @@ public class onGroupCommandMessage implements Listener {
 
                         } else {
 
-//                        Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
                             Bukkit.getScheduler().callSyncMethod(plugin, () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command));
-
 
                             // "运行无返回指令"
                             if (!plugin.getConfig().getString("aplini.run-command.message-no-out", "").isEmpty()) {
@@ -175,7 +171,6 @@ public class onGroupCommandMessage implements Listener {
                 sendToGroup(plugin, e.getGroupID(), plugin.getConfig().getString("aplini.run-command.message-miss"));
             }
         });
-        executor.shutdown();
     }
 
 

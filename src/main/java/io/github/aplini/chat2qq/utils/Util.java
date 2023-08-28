@@ -111,7 +111,7 @@ public class Util {
 
     // 初始化群成员缓存
     public static void _setGroupCacheAll(Plugin plugin) {
-        // 异步
+        // 新线程
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> {
             Map<Long, Map<Long, String>> _group_cache_all = new HashMap<>();
@@ -180,16 +180,10 @@ public class Util {
     // 判断是否为配置中的群
     public static boolean isGroupInConfig(Plugin plugin, String funcConfigString, Long groupID){
         if(plugin.getConfig().getBoolean(funcConfigString +".use-general-group-ids", true)){
-            if(plugin.getConfig().getLongList("general.group-ids").contains(groupID)){
-                return true;
-            }
+            return plugin.getConfig().getLongList("general.group-ids").contains(groupID);
         }else{
-            if(plugin.getConfig().getLongList(funcConfigString +".group-ids").contains(groupID)){
-                return true;
-            }
+            return plugin.getConfig().getLongList(funcConfigString + ".group-ids").contains(groupID);
         }
-
-        return false;
     }
 
     // PAPI

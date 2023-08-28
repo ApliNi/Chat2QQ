@@ -7,8 +7,7 @@ import org.bukkit.event.Listener;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
 
 import static io.github.aplini.chat2qq.utils.Util.*;
@@ -23,8 +22,7 @@ public class onAutoResponseMessage implements Listener {
     public void onGroupMessageReceive(MiraiGroupMessageEvent e) {
 
         // 异步
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
+        CompletableFuture.runAsync(() -> {
 
             // 是否启用
             if (!plugin.getConfig().getBoolean("aplini.auto-response.enabled", true)) {
@@ -81,6 +79,5 @@ public class onAutoResponseMessage implements Listener {
             sendToGroup(plugin, e.getGroupID(), sendMessage);
 
         });
-        executor.shutdown();
     }
 }

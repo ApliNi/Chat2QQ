@@ -6,8 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerLoadEvent;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 import static io.github.aplini.chat2qq.Chat2QQ.group_cache_all;
@@ -36,8 +35,7 @@ public class onBotOnline implements Listener {
     @EventHandler // 服务器启动完成
     public void onServerLoad(ServerLoadEvent event) {
         // 异步
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
+        CompletableFuture.runAsync(() -> {
             // 无法启动的解决方案
             if(plugin.getConfig().getBoolean("aplini.player-cache.fix-start.enabled", true)){
                 try {
@@ -54,6 +52,5 @@ public class onBotOnline implements Listener {
                 }
             }
         });
-        executor.shutdown();
     }
 }

@@ -8,8 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.CompletableFuture;
 
 import static io.github.aplini.chat2qq.utils.renderGroupMessage.renderMessage1;
 import static io.github.aplini.chat2qq.utils.renderGroupMessage.renderMessage2;
@@ -25,8 +24,7 @@ public class onGroupMessage implements Listener {
     public void onGroupMessageReceive(MiraiGroupMessageEvent e) {
 
         // 异步
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
+        CompletableFuture.runAsync(() -> {
             // QQID黑名单
             if (plugin.getConfig().getLongList("blacklist.qq").contains(e.getSenderID())) return;
 
@@ -56,7 +54,6 @@ public class onGroupMessage implements Listener {
             }
 
         });
-        executor.shutdown();
 
     }
 
