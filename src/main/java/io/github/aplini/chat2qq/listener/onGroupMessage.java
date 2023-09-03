@@ -12,7 +12,6 @@ import java.util.concurrent.CompletableFuture;
 
 import static io.github.aplini.chat2qq.utils.renderGroupMessage.renderMessage1;
 import static io.github.aplini.chat2qq.utils.renderGroupMessage.renderMessage2;
-import static org.bukkit.Bukkit.getLogger;
 
 public class onGroupMessage implements Listener {
     private final Chat2QQ plugin;
@@ -38,7 +37,7 @@ public class onGroupMessage implements Listener {
 
                 // 输出到控制台
                 if (plugin.getConfig().getBoolean("aplini.other-format-presets.message-to-log", true)) {
-                    getLogger().info(message[3]);
+                    Bukkit.getConsoleSender().sendMessage(message[3]);
                 }
 
                 // 渲染为JSON消息

@@ -25,7 +25,7 @@ public class onBotOnline implements Listener {
         if(plugin.getConfig().getBoolean("aplini.player-cache.enabled", true)){
             // 如果这是已配置的机器人
             if(plugin.getConfig().getLongList("bot.bot-accounts").contains(e.getBotID())){
-                getLogger().info("§f[§7Chat2QQ§f] §f群成员缓存程序已启动...");
+                getLogger().info("[Chat2QQ] 群成员缓存程序已启动...");
                 _setGroupCacheAll(plugin);
             }
         }
@@ -43,7 +43,7 @@ public class onBotOnline implements Listener {
 
                     // 防止重复运行
                     if(!plugin.getConfig().getBoolean("aplini.player-cache.fix-start.prevent-duplication", true) || group_cache_all == null){
-                        getLogger().info("§f[§7Chat2QQ§f] §f群成员缓存程序已通过备用启动方案启动...");
+                        getLogger().info("[Chat2QQ] 群成员缓存程序已通过备用启动方案启动...");
                         _setGroupCacheAll(plugin);
                     }
 

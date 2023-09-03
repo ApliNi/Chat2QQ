@@ -129,7 +129,7 @@ public class Util {
 
             // 遍历需要缓存的群
             configGroupList.forEach(gid -> {
-                getLogger().info("§f[§7Chat2QQ§f] §f正在缓存群: " + gid);
+                getLogger().info("[Chat2QQ] 正在缓存群: " + gid);
                 // 散列表
                 Map<Long, String> group_cache = new HashMap<>();
 
@@ -171,7 +171,7 @@ public class Util {
 
             Chat2QQ.group_cache_all = _group_cache_all;
 
-            getLogger().info("§f[§7Chat2QQ§f] §f群成员缓存完成!");
+            getLogger().info("[Chat2QQ] 群成员缓存完成!");
 
         });
         executor.shutdown();
