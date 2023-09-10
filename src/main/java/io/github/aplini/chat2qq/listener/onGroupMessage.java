@@ -37,7 +37,7 @@ public class onGroupMessage implements Listener {
 
                 // 输出到控制台
                 if (plugin.getConfig().getBoolean("aplini.other-format-presets.message-to-log", true)) {
-                    Bukkit.getConsoleSender().sendMessage(message[3]);
+                    Bukkit.getConsoleSender().sendMessage("[QQ] "+ message[3]);
                 }
 
                 // 渲染为JSON消息
