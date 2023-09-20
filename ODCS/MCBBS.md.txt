@@ -6,6 +6,7 @@ https://github.com/ApliNi/Chat2QQ
 
 ## Chat2QQ+
 
+这个插件专注于实现更好的消息显示, 并以模块的方式集成了一些其他的功能
 
 - **🚧 说明**
   - [ApliNi/Chat2QQ](https://github.com/ApliNi/Chat2QQ) 是包含 [DreamVoid/Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 几乎所有功能的插件, 经过重写并添加了许多功能.
@@ -26,6 +27,75 @@ https://github.com/ApliNi/Chat2QQ
 
 <a href="https://bstats.org/plugin/bukkit/ApliNi-Chat2QQ/17587">![](https://bstats.org/signatures/bukkit/ApliNi-Chat2QQ.svg)</a>
 
+
+<br />
+
+### 更新计划
+
+- [x] 聊天消息转发
+  - [x] 格式化
+  - [x] 多群组支持
+  - [x] 消息预处理功能
+  - [x] 多行文本和长文本显示优化
+  - [x] 引用回复显示优化
+  - [x] 群名片过滤
+  - [x] 艾特显示优化
+  - [x] 用户黑名单
+
+- [x] 事件处理
+  - [x] 玩家加入退出
+
+---
+这些功能在可配置的模块中
+
+- [x] 运行指令
+  - [x] 返回指令输出消息
+  - [x] 更好的等待指令返回
+  - [x] 权限管理
+    - [x] 继承
+  - [x] 指令黑名单
+
+- [x] 从群名片中匹配游戏名称
+
+- [x] 消息预处理
+  - [x] 匹配方式: 前缀 / 包含 / 相等 / 正则
+  - [x] 支持让匹配到的消息完全不发送
+
+- [x] 按行预处理指令的返回消息
+  - [x] 支持(匹配方式)
+
+- [x] 按合并后的完整消息预处理指令返回消息
+  - [x] 支持(匹配方式)
+  - [x] 添加一些特殊的占位符
+
+- [x] 预设的格式调整功能
+  - [x] 删除消息中的格式化字符
+  - [x] 删除消息前后空格和空行
+  - [x] 删除群名片中的格式化代码
+  - [x] 将长文本转换为鼠标悬浮显示文本
+  - [x] 更好的多行消息
+  - [x] 将聊天消息转发到控制台
+
+- [x] 引用回复优化
+  - [x] 格式化
+  - [x] 删除重复的艾特
+
+- [x] `/qchat`
+  - [x] 区分玩家运行指令和控制台运行指令
+
+- [x] 群成员信息缓存 \[前置\]
+  - [x] 自动更新数据
+  - [x] 支持使用外部 Mirai 的缓存文件
+
+- [x] 艾特显示优化
+
+- [x] 事件任务
+  - [x] 群成员加入
+  - [x] 群成员退出
+
+- [x] 自动回复
+  - [x] 支持(匹配方式)
+  - [x] 支持 PAPI
 
 <br />
 
@@ -71,7 +141,7 @@ https://github.com/ApliNi/Chat2QQ
 ![image](https://user-images.githubusercontent.com/59365724/227159083-e8d6b7e7-9ba6-41e8-9562-e7a174f87be5.png)
 
 
-更好的群名片支持
+更好的名称显示
 
 ![image](https://user-images.githubusercontent.com/59365724/227157070-c8fa51ca-b623-4167-a7ef-f02239d84aef.png)
 ![image](https://user-images.githubusercontent.com/59365724/227157097-d6b226e4-2158-4b3b-a36b-db21acfeff2e.png)
@@ -593,7 +663,6 @@ permissions:
     description: 允许使用 /chat2qq setgroupcacheall
     default: op
 ```
-
 
 ---
 
