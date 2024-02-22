@@ -121,11 +121,4 @@ public class _Commander implements CommandSender {
     public void setOp(boolean b) {
 
     }
-
-    // 另一个捕获
-    // sender.spigot().sendMessage(message);
-//    private static class __spigot extends io.github.aplini.chat2qq.utils.__spigot {
-//
-//
-//    }
 }
