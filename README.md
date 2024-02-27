@@ -477,8 +477,10 @@ aplini:
   player-cache:
     # 在指定机器人登录时运行此程序
     enabled: true
-    # 在玩家群名片修改时更新内存中的数据
+    # 在玩家群名片修改时更新缓存
     auto-update: true
+    # 在玩家发送消息时更新缓存
+    auto-update-form-msg: true
     # 群名片修改时发出日志
     auto-update-log: true
     # 使用上方 general.group-ids 中配置的群
@@ -598,9 +600,6 @@ aplini:
 
 
 # <- 至此, 您已经完成了所有配置, 部分功能使用 /chat2qq reload 重载插件即可应用 uwu
-
-# 使用量统计, 我不建议你关闭它
-allow-bStats: true
 
 ```
 

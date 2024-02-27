@@ -114,65 +114,67 @@ public class Util {
         // 新线程
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> {
-            Map<Long, Map<Long, String>> _group_cache_all = new HashMap<>();
+            try {
+                Map<Long, Map<Long, String>> _group_cache_all = new HashMap<>();
 
-            // 获取开启此功能的群
-            List<Long> configGroupList;
-            if (plugin.getConfig().getBoolean("aplini.player-cache.use-general-group-ids", true)) {
-                configGroupList = plugin.getConfig().getLongList("general.group-ids");
-            } else {
-                configGroupList = plugin.getConfig().getLongList("aplini.player-cache.group-ids");
-            }
-
-            // 获取机器人账号
-            Long botID = plugin.getConfig().getLongList("bot.bot-accounts").get(0);
-
-            // 遍历需要缓存的群
-            configGroupList.forEach(gid -> {
-                getLogger().info("[Chat2QQ] 正在缓存群: " + gid);
-                // 散列表
-                Map<Long, String> group_cache = new HashMap<>();
-
-                // 获取群数据
-                JsonArray groupArray;
-                try {
-                    String jsonString = Files.readString(Paths.get(
-                            plugin.getConfig().getString("aplini.player-cache.mirai-cache-path", "plugins/MiraiMC/MiraiBot/bots/%qq%/cache/contacts/groups/%group%.json")
-                                    .replace("%qq%", String.valueOf(botID))
-                                    .replace("%group%", String.valueOf(gid))
-//                                    .replace("/", File.separator) // IDEA说它没用
-                    ));
-                    JsonObject groupJson = new Gson().fromJson(jsonString, JsonObject.class);
-                    groupArray = groupJson.getAsJsonArray("list");
-                } catch (IOException e) {
-                    getLogger().warning("[Chat2QQ] 读取MiraiMC群数据缓存时出错. botID: " + botID + ", groupID: " + gid);
-                    getLogger().warning("[Chat2QQ] 请检查 MiraiMC 的配置 \"bot.contact-cache.enable-group-member-list-cache\" 是否开启");
-
-                    throw new RuntimeException(e);
+                // 获取开启此功能的群
+                List<Long> configGroupList;
+                if (plugin.getConfig().getBoolean("aplini.player-cache.use-general-group-ids", true)) {
+                    configGroupList = plugin.getConfig().getLongList("general.group-ids");
+                } else {
+                    configGroupList = plugin.getConfig().getLongList("aplini.player-cache.group-ids");
                 }
 
-                groupArray.forEach(JsonElement -> {
-                    JsonObject aGroup = (JsonObject) JsonElement;
-                    Long id = aGroup.get("uin").getAsLong();
-                    String name = aGroup.get("nameCard").getAsString();
-                    if (Objects.equals(name, "")) {
-                        if (plugin.getConfig().getBoolean("general.use-nick-if-namecard-null", true)) {
-                            name = aGroup.get("nick").getAsString();
-                        } else {
-                            name = String.valueOf(id);
-                        }
+                // 获取机器人账号
+                Long botID = plugin.getConfig().getLongList("bot.bot-accounts").get(0);
+
+                // 遍历需要缓存的群
+                configGroupList.forEach(gid -> {
+                    getLogger().info("[Chat2QQ] 正在缓存群: " + gid);
+                    // 散列表
+                    Map<Long, String> group_cache = new HashMap<>();
+
+                    // 获取群数据
+                    JsonArray groupArray;
+                    try {
+                        String jsonString = Files.readString(Paths.get(
+                                plugin.getConfig().getString("aplini.player-cache.mirai-cache-path", "plugins/MiraiMC/MiraiBot/bots/%qq%/cache/contacts/groups/%group%.json")
+                                        .replace("%qq%", String.valueOf(botID))
+                                        .replace("%group%", String.valueOf(gid))
+                        ));
+                        JsonObject groupJson = new Gson().fromJson(jsonString, JsonObject.class);
+                        groupArray = groupJson.getAsJsonArray("list");
+                    } catch (IOException e) {
+                        getLogger().warning("[Chat2QQ] 读取MiraiMC群数据缓存时出错. botID: " + botID + ", groupID: " + gid);
+                        getLogger().warning("[Chat2QQ] 请检查 MiraiMC 的配置 \"bot.contact-cache.enable-group-member-list-cache\" 是否开启");
+
+                        throw new RuntimeException(e);
                     }
-                    group_cache.put(id, name);
+
+                    groupArray.forEach(JsonElement -> {
+                        JsonObject aGroup = (JsonObject) JsonElement;
+                        Long id = aGroup.get("uin").getAsLong();
+                        String name = aGroup.get("nameCard").getAsString();
+                        if (Objects.equals(name, "")) {
+                            if (plugin.getConfig().getBoolean("general.use-nick-if-namecard-null", true)) {
+                                name = aGroup.get("nick").getAsString();
+                            } else {
+                                name = String.valueOf(id);
+                            }
+                        }
+                        group_cache.put(id, name);
+                    });
+
+                    // 添加到all
+                    _group_cache_all.put(gid, group_cache);
                 });
 
-                // 添加到all
-                _group_cache_all.put(gid, group_cache);
-            });
+                Chat2QQ.group_cache_all = _group_cache_all;
 
-            Chat2QQ.group_cache_all = _group_cache_all;
-
-            getLogger().info("[Chat2QQ] 群成员缓存完成!");
-
+                getLogger().info("[Chat2QQ] 群成员缓存完成!");
+            }catch (Exception e){
+                getLogger().warning("[Chat2QQ] 无法读取来自 MiraiMC 插件的缓存文件, 仅可使用基于玩家消息的缓存");
+            }
         });
         executor.shutdown();
     }

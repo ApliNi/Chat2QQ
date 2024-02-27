@@ -14,21 +14,21 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static io.github.aplini.chat2qq.utils.Util._setGroupCacheAll;
 import static io.github.aplini.chat2qq.utils.Util.sendToGroup;
 
 public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, TabExecutor {
-    public static Map<Long, Map<Long, String>> group_cache_all = null;
+    public static Chat2QQ plugin;
+    // Map<群号, Map<QQ号, 名称>>
+    public static Map<Long, Map<Long, String>> group_cache_all = new HashMap<>();
 
     @Override // 加载插件
     public void onLoad() {
-        saveDefaultConfig();
-        reloadConfig();
+        plugin = this;
+        plugin.saveDefaultConfig();
+        plugin.reloadConfig();
     }
 
     @Override // 启用插件
@@ -39,7 +39,7 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
         // 机器人上线
         Bukkit.getPluginManager().registerEvents(new onBotOnline(this), this);
         // 群成员修改名片 :: 群成员缓存
-        Bukkit.getPluginManager().registerEvents(new onCardChange(this), this);
+        Bukkit.getPluginManager().registerEvents(new onCardChange(), this);
 
         // 群成员发送消息
         Bukkit.getPluginManager().registerEvents(new onGroupMessage(this), this);
@@ -68,7 +68,7 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
         }
 
         // bStats
-        if(getConfig().getBoolean("allow-bStats",true)){new Metrics(this, 17587);}
+        new Metrics(this, 17587);
     }
 
     // 指令

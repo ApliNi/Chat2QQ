@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 
 import java.util.concurrent.CompletableFuture;
 
+import static io.github.aplini.chat2qq.bot.onCardChange.updateMemberCardChange;
 import static io.github.aplini.chat2qq.utils.renderGroupMessage.renderMessage1;
 import static io.github.aplini.chat2qq.utils.renderGroupMessage.renderMessage2;
 
@@ -24,6 +25,13 @@ public class onGroupMessage implements Listener {
 
         // 异步
         CompletableFuture.runAsync(() -> {
+            // 自动更新玩家信息缓存
+            if(plugin.getConfig().getBoolean("aplini.player-cache.auto-update", true)){
+                if(plugin.getConfig().getBoolean("aplini.player-cache.auto-update-form-msg", true)){
+                    updateMemberCardChange(e.getBotID(), e.getGroupID(), e.getSenderID(), e.getSenderName(), null);
+                }
+            }
+
             // QQID黑名单
             if (plugin.getConfig().getLongList("blacklist.qq").contains(e.getSenderID())) return;
 
