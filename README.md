@@ -214,6 +214,9 @@ bot:
     prefix:
       - '#'
 
+  # 是否忽略来自其他插件的聊天消息事件取消, 用于修复一些兼容性问题
+  ignoreCancelled: false
+
   # 服务器消息发送到QQ群的格式
   # %player% - 玩家名称
   # %message% - 消息内容

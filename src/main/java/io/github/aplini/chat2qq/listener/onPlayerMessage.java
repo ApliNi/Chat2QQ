@@ -23,7 +23,7 @@ public class onPlayerMessage implements Listener {
         // 异步
         CompletableFuture.runAsync(() -> {
 
-            if (e.isCancelled()) {
+            if(e.isCancelled() && !plugin.getConfig().getBoolean("bot.ignoreCancelled", false)){
                 return;
             }
 
