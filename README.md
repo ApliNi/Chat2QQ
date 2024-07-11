@@ -214,7 +214,7 @@ bot:
     prefix:
       - '#'
 
-  # 是否忽略来自其他插件的聊天消息事件取消, 用于修复一些兼容性问题
+  # 是否转发被其他插件取消过的聊天消息事件, 用于修复一些兼容性问题
   ignoreCancelled: false
 
   # 服务器消息发送到QQ群的格式
@@ -478,7 +478,7 @@ aplini:
   # [前置] 群成员信息缓存
   # ! 需要开启 MiraiMC 配置中的 bot.contact-cache.enable-group-member-list-cache
   player-cache:
-    # 在指定机器人登录时运行此程序
+    # 在机器人登录和服务器启动时运行此程序
     enabled: true
     # 在玩家群名片修改时更新缓存
     auto-update: true
@@ -495,11 +495,6 @@ aplini:
     # %qq% - 机器人账号
     # %group% - 群号
     mirai-cache-path: "plugins/MiraiMC/MiraiBot/bots/%qq%/cache/contacts/groups/%group%.json"
-    # 在服务器启动完成后等待指定时间再运行一次, 用于修复部分服务器上第一次无法启动
-    fix-start:
-      enabled: true # 使用此方案
-      await-time: 6400 # 等待时间, 毫秒
-      prevent-duplication: true # 如果已经正常运行则取消此任务
 
 
   ## 8

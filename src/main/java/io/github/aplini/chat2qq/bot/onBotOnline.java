@@ -9,7 +9,6 @@ import org.bukkit.event.server.ServerLoadEvent;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-import static io.github.aplini.chat2qq.Chat2QQ.group_cache_all;
 import static io.github.aplini.chat2qq.utils.Util._setGroupCacheAll;
 import static org.bukkit.Bukkit.getLogger;
 
@@ -19,12 +18,15 @@ public class onBotOnline implements Listener {
         this.plugin = plugin;
     }
 
+    static boolean alreadyRunning = false;
+
     @EventHandler // 机器人登录
     public void onMiraiBotOnlineEvent(MiraiBotOnlineEvent e) {
         // 启用群缓存功能
         if(plugin.getConfig().getBoolean("aplini.player-cache.enabled", true)){
             // 如果这是已配置的机器人
             if(plugin.getConfig().getLongList("bot.bot-accounts").contains(e.getBotID())){
+                alreadyRunning = true;
                 getLogger().info("[Chat2QQ] 群成员缓存程序已启动...");
                 _setGroupCacheAll(plugin);
             }
@@ -37,19 +39,16 @@ public class onBotOnline implements Listener {
         // 异步
         CompletableFuture.runAsync(() -> {
             // 无法启动的解决方案
-            if(plugin.getConfig().getBoolean("aplini.player-cache.fix-start.enabled", true)){
-                try {
-                    TimeUnit.MILLISECONDS.sleep(plugin.getConfig().getInt("aplini.player-cache.fix-start.await-time", 6400));
+            try {
+                TimeUnit.MILLISECONDS.sleep(1000);
 
-                    // 防止重复运行
-                    if(!plugin.getConfig().getBoolean("aplini.player-cache.fix-start.prevent-duplication", true) || group_cache_all == null){
-                        getLogger().info("[Chat2QQ] 群成员缓存程序已通过备用启动方案启动...");
-                        _setGroupCacheAll(plugin);
-                    }
-
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
+                if(!alreadyRunning){
+                    getLogger().info("[Chat2QQ] 群成员缓存程序已启动...");
+                    _setGroupCacheAll(plugin);
                 }
+
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
             }
         });
     }
