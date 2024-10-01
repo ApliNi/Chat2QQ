@@ -6,8 +6,6 @@ import com.google.gson.JsonObject;
 import io.github.aplini.chat2qq.Chat2QQ;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.dreamvoid.miraimc.api.MiraiBot;
-import me.dreamvoid.miraimc.httpapi.MiraiHttpAPI;
-import me.dreamvoid.miraimc.httpapi.exception.AbnormalStatusException;
 import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
@@ -27,13 +25,7 @@ public class Util {
         try {
             MiraiBot.getBot(botID).getGroup(groupID).sendMessageMirai(message);
         } catch (NoSuchElementException e) {
-            if (MiraiHttpAPI.Bots.containsKey(botID)) {
-                try {
-                    MiraiHttpAPI.INSTANCE.sendGroupMessage(MiraiHttpAPI.Bots.get(botID), groupID, message);
-                } catch (IOException | AbnormalStatusException ex) {
-                    getLogger().warning("[Chat2QQ] 发送消息出现异常: "+ botID +": "+ ex);
-                }
-            } else getLogger().warning("[Chat2QQ] 指定QQ账号不存在: "+ botID);
+            getLogger().warning("[Chat2QQ] 发送消息出现异常: botID="+ botID +" -> groupID="+ groupID +": "+ e);
         }
     }
     // 简化调用
