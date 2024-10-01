@@ -26,7 +26,7 @@ jobs:
       run: mvn clean package
 
     - name: 上传工件
-      uses: actions/upload-artifact@v2.3.1
+      uses: actions/upload-artifact@v4
       with:
         name: "Chat2QQ.jar"
         path: /home/runner/work/Chat2QQ/Chat2QQ/target/Chat2QQ.jar
