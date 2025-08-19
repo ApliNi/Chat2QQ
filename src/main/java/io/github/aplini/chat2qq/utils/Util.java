@@ -102,6 +102,7 @@ public class Util {
 
 
     // 初始化群成员缓存
+    @Deprecated
     public static void _setGroupCacheAll(Plugin plugin) {
         // 新线程
         ExecutorService executor = Executors.newSingleThreadExecutor();

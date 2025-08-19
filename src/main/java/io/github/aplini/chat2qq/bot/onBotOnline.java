@@ -9,9 +9,6 @@ import org.bukkit.event.server.ServerLoadEvent;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-import static io.github.aplini.chat2qq.utils.Util._setGroupCacheAll;
-import static org.bukkit.Bukkit.getLogger;
-
 public class onBotOnline implements Listener {
     private final Chat2QQ plugin;
     public onBotOnline(Chat2QQ plugin){
@@ -27,8 +24,8 @@ public class onBotOnline implements Listener {
             // 如果这是已配置的机器人
             if(plugin.getConfig().getLongList("bot.bot-accounts").contains(e.getBotID())){
                 alreadyRunning = true;
-                getLogger().info("[Chat2QQ] 群成员缓存程序已启动...");
-                _setGroupCacheAll(plugin);
+//                getLogger().info("[Chat2QQ] 群成员缓存程序已启动...");
+//                _setGroupCacheAll(plugin);
             }
         }
     }
@@ -42,10 +39,10 @@ public class onBotOnline implements Listener {
             try {
                 TimeUnit.MILLISECONDS.sleep(1000);
 
-                if(!alreadyRunning){
-                    getLogger().info("[Chat2QQ] 群成员缓存程序已启动...");
-                    _setGroupCacheAll(plugin);
-                }
+//                if(!alreadyRunning){
+//                    getLogger().info("[Chat2QQ] 群成员缓存程序已启动...");
+//                    _setGroupCacheAll(plugin);
+//                }
 
             } catch (InterruptedException ex) {
                 throw new RuntimeException(ex);

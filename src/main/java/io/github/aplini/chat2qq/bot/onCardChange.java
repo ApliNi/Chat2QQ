@@ -5,6 +5,7 @@ import me.dreamvoid.miraimc.bukkit.event.group.member.MiraiMemberCardChangeEvent
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -67,6 +68,14 @@ public class onCardChange implements Listener {
             }
 
             group_cache.put(qq, name);
+
+            // 保存缓存文件
+            Chat2QQ.temp.set("group_cache_all", Chat2QQ.group_cache_all);
+            try {
+                Chat2QQ.temp.save(Chat2QQ.tempFile);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 }

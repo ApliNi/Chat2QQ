@@ -9,14 +9,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.*;
 
-import static io.github.aplini.chat2qq.utils.Util._setGroupCacheAll;
 import static io.github.aplini.chat2qq.utils.Util.sendToGroup;
 
 public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, TabExecutor {
@@ -24,11 +26,23 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
     // Map<群号, Map<QQ号, 名称>>
     public static Map<Long, Map<Long, String>> group_cache_all = new HashMap<>();
 
+    public static File tempFile = new File("./plugins/Chat2QQ/temp.yml");
+    public static FileConfiguration temp;
+
     @Override // 加载插件
     public void onLoad() {
         plugin = this;
         plugin.saveDefaultConfig();
         plugin.reloadConfig();
+
+        // 加载 temp.yml
+        temp = YamlConfiguration.loadConfiguration(tempFile);
+
+
+        if(getConfig().getBoolean("aplini.player-cache.enabled", true) && temp.get("group_cache_all") != null){
+            group_cache_all = (Map<Long, Map<Long, String>>) temp.get("group_cache_all");
+            getLogger().info("[Chat2QQ] 读取群成员缓存");
+        }
     }
 
     @Override // 启用插件
@@ -157,8 +171,12 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
                     sender.sendMessage("§f[§7Chat2QQ§f] §7此功能未开启: aplini.player-cache.enabled");
                     return false;
                 }
-                sender.sendMessage("§f[§7Chat2QQ§f] §f群成员缓存程序已启动");
-                _setGroupCacheAll(this);
+                sender.sendMessage("§f[§7Chat2QQ§f] §f重新读取群成员缓存");
+                temp = YamlConfiguration.loadConfiguration(tempFile);
+                if(temp.get("group_cache_all") != null){
+                    group_cache_all = (Map<Long, Map<Long, String>>) temp.get("group_cache_all");
+                    getLogger().info("[Chat2QQ] 读取群成员缓存");
+                }
                 return true;
             }
             else if(args[0].equalsIgnoreCase("outgroupcacheall")){
