@@ -491,10 +491,6 @@ aplini:
     # 缓存哪些群, 需要 use-general-group-ids: false
     group-ids:
       - 1000000
-    # MiraiMC 群缓存文件路径, 如果你修改了插件目录相关的配置, 才需要修改它
-    # %qq% - 机器人账号
-    # %group% - 群号
-    mirai-cache-path: "plugins/MiraiMC/MiraiBot/bots/%qq%/cache/contacts/groups/%group%.json"
 
 
   ## 8
