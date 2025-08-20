@@ -20,6 +20,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static io.github.aplini.chat2qq.utils.Util.sendToGroup;
@@ -38,32 +40,36 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
         plugin.saveDefaultConfig();
         plugin.reloadConfig();
 
-        // 加载 temp.yml
+        readTempData();
+    }
+
+    public static void readTempData() {
         temp = YamlConfiguration.loadConfiguration(tempFile);
-
-        getLogger().info("[Chat2QQ] ");
-        getLogger().info(temp.toString());
-        getLogger().info(Objects.requireNonNull(temp.get("group_cache_all")).toString());
-
-        if(getConfig().getBoolean("aplini.player-cache.enabled", true) && temp.get("group_cache_all") != null){
+        if(plugin.getConfig().getBoolean("aplini.player-cache.enabled", true) && temp.get("group_cache_all") != null){
             ConfigurationSection outerSection = temp.getConfigurationSection("group_cache_all");
             for (String groupIdStr : outerSection.getKeys(false)) {
                 ConfigurationSection playerSection = outerSection.getConfigurationSection(groupIdStr);
                 Map<Long, String> playerMap = playerSection.getKeys(false).stream().collect(Collectors.toMap(Long::parseLong, playerSection::getString));
                 group_cache_all.put(Long.parseLong(groupIdStr), playerMap);
             }
-            getLogger().info("[Chat2QQ] 读取群成员缓存");
-            getLogger().info(group_cache_all.toString());
         }
     }
 
+    public static boolean saveTempLock = false;
     public static void saveTempData() {
-        temp.set("group_cache_all", group_cache_all);
-        try {
-            temp.save(tempFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        if(saveTempLock) return;
+        saveTempLock = true;
+        CompletableFuture.runAsync(() -> {
+            try {
+                TimeUnit.MILLISECONDS.sleep(3000);
+                temp.set("group_cache_all", group_cache_all);
+                temp.save(tempFile);
+            } catch (InterruptedException | IOException ex) {
+                throw new RuntimeException(ex);
+            } finally {
+                saveTempLock = false;
+            }
+        });
     }
 
     @Override // 启用插件

@@ -5,13 +5,13 @@ import me.dreamvoid.miraimc.bukkit.event.group.member.MiraiMemberCardChangeEvent
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import static io.github.aplini.chat2qq.Chat2QQ.plugin;
+import static io.github.aplini.chat2qq.Chat2QQ.saveTempData;
 import static io.github.aplini.chat2qq.utils.Util.isGroupInConfig;
 import static org.bukkit.Bukkit.getLogger;
 
@@ -70,12 +70,7 @@ public class onCardChange implements Listener {
             group_cache.put(qq, name);
 
             // 保存缓存文件
-            Chat2QQ.temp.set("group_cache_all", Chat2QQ.group_cache_all);
-            try {
-                Chat2QQ.temp.save(Chat2QQ.tempFile);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            saveTempData();
         });
     }
 }
