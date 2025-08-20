@@ -144,6 +144,7 @@ aplini:
     group:
       # permission_<int> 是 MiraiMC 获取到的权限数字, 以后更新了其他权限只需要以此格式添加即可使用
       permission_2: # 群主
+        #- ___ALL_COMMAND___
         #- chat2qq
       permission_1: # 管理员
         #- spark
