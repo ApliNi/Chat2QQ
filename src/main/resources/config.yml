@@ -80,7 +80,7 @@ bot:
   player-join-message: '%player% 进入服务器'
   # 退出
   player-quit-message: '%player% 离开服务器'
-  # 防刷屏, 在此时间内多次进出服务器不会发送消息
+  # 防刷屏, 在此时间内多次进出服务器不会发送消息 (秒
   player-join-quit-message-interval: 0
 
 
