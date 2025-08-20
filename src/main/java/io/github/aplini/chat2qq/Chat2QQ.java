@@ -9,6 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -17,7 +18,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static io.github.aplini.chat2qq.utils.Util.sendToGroup;
 
@@ -38,10 +41,28 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
         // 加载 temp.yml
         temp = YamlConfiguration.loadConfiguration(tempFile);
 
+        getLogger().info("[Chat2QQ] ");
+        getLogger().info(temp.toString());
+        getLogger().info(Objects.requireNonNull(temp.get("group_cache_all")).toString());
 
         if(getConfig().getBoolean("aplini.player-cache.enabled", true) && temp.get("group_cache_all") != null){
-            group_cache_all = (Map<Long, Map<Long, String>>) temp.get("group_cache_all");
+            ConfigurationSection outerSection = temp.getConfigurationSection("group_cache_all");
+            for (String groupIdStr : outerSection.getKeys(false)) {
+                ConfigurationSection playerSection = outerSection.getConfigurationSection(groupIdStr);
+                Map<Long, String> playerMap = playerSection.getKeys(false).stream().collect(Collectors.toMap(Long::parseLong, playerSection::getString));
+                group_cache_all.put(Long.parseLong(groupIdStr), playerMap);
+            }
             getLogger().info("[Chat2QQ] 读取群成员缓存");
+            getLogger().info(group_cache_all.toString());
+        }
+    }
+
+    public static void saveTempData() {
+        temp.set("group_cache_all", group_cache_all);
+        try {
+            temp.save(tempFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -148,7 +169,6 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
                 sender.sendMessage("指令列表: ");
                 sender.sendMessage("  - /qchat <消息> §7- 发送一条消息到QQ群中");
                 sender.sendMessage("  - /chat2qq reload §7- 重载配置");
-                sender.sendMessage("  - /chat2qq setgroupcacheall §7- 重建群成员缓存数据");
                 sender.sendMessage("  - /chat2qq outgroupcacheall §7- 打印群成员缓存数据");
                 return true;
             }
@@ -159,24 +179,6 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
                 }
                 reloadConfig();
                 sender.sendMessage("§f[§7Chat2QQ§f] §7已重载配置");
-                return true;
-            }
-            else if(args[0].equalsIgnoreCase("setgroupcacheall")){
-                if(! sender.hasPermission("chat2qq.command.setgroupcacheall")){
-                    sender.sendMessage("§f[§7Chat2QQ§f] §7没有权限");
-                    return false;
-                }
-                // 未开启此功能
-                if(! getConfig().getBoolean("aplini.player-cache.enabled", true)){
-                    sender.sendMessage("§f[§7Chat2QQ§f] §7此功能未开启: aplini.player-cache.enabled");
-                    return false;
-                }
-                sender.sendMessage("§f[§7Chat2QQ§f] §f重新读取群成员缓存");
-                temp = YamlConfiguration.loadConfiguration(tempFile);
-                if(temp.get("group_cache_all") != null){
-                    group_cache_all = (Map<Long, Map<Long, String>>) temp.get("group_cache_all");
-                    getLogger().info("[Chat2QQ] 读取群成员缓存");
-                }
                 return true;
             }
             else if(args[0].equalsIgnoreCase("outgroupcacheall")){
@@ -198,7 +200,6 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
             if (args.length == 1) {
                 List<String> list = new ArrayList<>();
                 list.add("reload"); // 重载配置
-                list.add("setgroupcacheall"); // 启动群成员缓存
                 list.add("outgroupcacheall"); // 打印群成员缓存数据
                 return list;
             }
