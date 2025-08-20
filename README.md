@@ -602,7 +602,6 @@ aplini:
 
 - `qchat <消息>` - 发送消息到群, 详细配置在 `aplini.qchat`
 - `chat2qq` - 插件主命令 & 帮助信息
-    - `chat2qq setgroupcacheall` - 重建群成员缓存数据
     - `chat2qq outgroupcacheall` - 打印群成员缓存数据
 
 plugin.yml
@@ -638,9 +637,5 @@ permissions:
 
   chat2qq.command.chat2qq:
     description: 允许使用 /chat2qq
-    default: op
-
-  chat2qq:.command.setgroupcacheall:
-    description: 允许使用 /chat2qq setgroupcacheall
     default: op
 ```
