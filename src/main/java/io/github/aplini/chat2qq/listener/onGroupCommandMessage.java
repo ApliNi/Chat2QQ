@@ -1,13 +1,17 @@
 package io.github.aplini.chat2qq.listener;
 
 import io.github.aplini.chat2qq.Chat2QQ;
-import io.github.aplini.chat2qq.utils._Commander;
 import me.dreamvoid.miraimc.bukkit.event.message.passive.MiraiGroupMessageEvent;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -37,7 +41,7 @@ public class onGroupCommandMessage implements Listener {
             }
 
             // 是否为设置的QQ群
-            if (!plugin.getConfig().getLongList("aplini.run-command.qq-group").contains(e.getGroupID())) {
+            if (!plugin.getConfig().getLongList("aplini.run-command.qq-group").contains((Long) e.getGroupID())) {
                 return;
             }
 
@@ -92,13 +96,17 @@ public class onGroupCommandMessage implements Listener {
                             Pattern isNull = Pattern.compile(plugin.getConfig().getString("aplini.run-command.return-isNull", "^\\s*$"), Pattern.DOTALL);
                             // 循环判断指令返回是否为空, 总计等待时间
                             int sleepTime = plugin.getConfig().getInt("aplini.run-command.return-sleep-min", 14);
+
                             // 指令输出
                             String text;
 
-                            _Commander Sender = new _Commander();
+                            List<String> output = new ArrayList<>();
+                            CommandSender capturingSender = Bukkit.createCommandSender(component -> {
+                                output.add(PlainTextComponentSerializer.plainText().serialize(component));
+                            });
 
                             try {
-                                Bukkit.getScheduler().callSyncMethod(plugin, () -> Bukkit.dispatchCommand(Sender, command));
+                                Bukkit.getScheduler().callSyncMethod(plugin, () -> (Boolean) Bukkit.dispatchCommand(capturingSender, command));
 
                                 // 等待指令运行
                                 TimeUnit.MILLISECONDS.sleep(plugin.getConfig().getInt("aplini.run-command.return-sleep-min", 14));
@@ -106,7 +114,7 @@ public class onGroupCommandMessage implements Listener {
                                 // 循环判断指令返回是否为空
                                 while (true) {
                                     // 输出不为空或换行
-                                    text = mergeCommandMessage(Sender);
+                                    text = mergeCommandMessage(output);
                                     if (!isNull.matcher(text).matches()) {
                                         break;
                                     }
@@ -149,7 +157,7 @@ public class onGroupCommandMessage implements Listener {
 
                         } else {
 
-                            Bukkit.getScheduler().callSyncMethod(plugin, () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command));
+                            Bukkit.getScheduler().callSyncMethod(plugin, () -> (Boolean) Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command));
 
                             // "运行无返回指令"
                             if (!plugin.getConfig().getString("aplini.run-command.message-no-out", "").isEmpty()) {
@@ -175,16 +183,12 @@ public class onGroupCommandMessage implements Listener {
 
 
     // 合并指令输出为多行字符串
-    public String mergeCommandMessage(_Commander Sender){
-        StringBuilder text = new StringBuilder();
-
-        if(!Sender.message.isEmpty()){
-            for(String line : Sender.message){
-                text.append(pretreatment(plugin, "aplini.pretreatment-command-message", line +"\n"));
-            }
+    public String mergeCommandMessage(List<String> output){
+        StringJoiner joiner = new StringJoiner("\n");
+        for (String line : output) {
+            joiner.add(pretreatment(plugin, "aplini.pretreatment-command-message", line));
         }
-
-        return text.toString();
+        return joiner.toString();
     }
 
 }

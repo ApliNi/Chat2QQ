@@ -1,5 +1,6 @@
 package io.github.aplini.chat2qq.utils;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -52,6 +53,11 @@ public class _Commander implements CommandSender {
     public Spigot spigot() {
         return new __spigot(message);
 //        return Bukkit.getConsoleSender().spigot();
+    }
+
+    @Override
+    public @NotNull Component name() {
+        return null;
     }
 
     @Override
