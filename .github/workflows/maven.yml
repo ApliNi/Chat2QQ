@@ -19,7 +19,7 @@ jobs:
     - name: 设置 JDK
       uses: actions/setup-java@v2
       with:
-        java-version: '17'
+        java-version: '21'
         distribution: 'zulu'
 
     - name: 构建
