@@ -183,7 +183,7 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
 
             // 发送到群
             getConfig().getLongList(
-                    getConfig().getBoolean("aplini.qchat.use-general-group-ids", true)? "general.group-ids" : "aplini.qchat.group-ids")
+                            getConfig().getBoolean("aplini.qchat.use-general-group-ids", true)? "general.group-ids" : "aplini.qchat.group-ids")
                     .forEach(gid -> sendToGroup(this, gid, formatText));
         }
 
