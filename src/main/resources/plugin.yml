@@ -3,14 +3,11 @@ main: io.github.aplini.chat2qq.Chat2QQ
 version: '${project.version}'
 api-version: 1.18
 folia-supported: true
-prefix: MiraiMC
+prefix: Chat2QQ
 author: ApliNi
 
 softdepend:
   - PlaceholderAPI
-
-depend:
-  - MiraiMC
 
 commands:
   qchat:

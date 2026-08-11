@@ -1,4 +1,11 @@
 
+OneBot:
+  # 连接配置
+  host: "ws://127.0.0.1:3003"
+  token: "xxx"
+  # 断开连接时自动重连等待时间 (秒)
+  retry-time: 10
+
 # 游戏内配置
 # QQ -> MC 的消息
 general:
@@ -29,16 +36,6 @@ general:
   special:
     1000000: '§f[§7主群 %nick%§r§f] %_reply_%§7%message%'
     1000001: '§7[外群 %nick%] %_reply_%%message%'
-
-  # 启用 MiraiMC 内置的QQ绑定
-  use-miraimc-bind: false
-  # 已绑定玩家的广播消息格式
-  bind-chat-format: '§f[§7%nick%§r§f] %_reply_%§7%message%'
-  # 为每个群使用不同的格式, 如果没有则使用上方的 bind-chat-format
-  special-bind:
-    1000000: '§f[§7主群 %nick%§r§f] %_reply_%§7%message%'
-
-
 
 # 机器人配置
 # MC -> QQ 的消息
@@ -116,8 +113,6 @@ aplini:
     command-prefix: '/'
     # 指令最大长度 (不包括指令前缀)
     command-max-length: 255
-    # 获取指令的正则表达式, 当第一个捕获组的内容与指令白名单中的匹配时则允许运行 (不带斜杠或前缀)
-    regex-command-main: '^([^ ]+)'
     # 判断指令返回为空的正则, 匹配多行文本. (经过 pretreatment-command-message 处理后)
     return-isNull: '^\s*$'
     # 是否将主命令转换为小写再执行
@@ -127,9 +122,9 @@ aplini:
     return: true
     # 等待指令运行多长时间再将结果发送到QQ群 (毫秒), 需要开启 run-command.return
     # 如果你遇到了一些提前输出类似 "正在运行...请稍等" 消息的插件, 可以在 pretreatment-command-message 中配置完全删除这条消息. 然后 return-sleep-min 保持不变 :)
-    return-sleep-min: 14 # 最小等待时间
-    return-sleep-max: 5346 # 最大等待时间, 如果一些长耗时指令没有输出请增大此值
-    return-sleep-sampling-interval: 172 # 输出内容检查间隔, 如果经常执行长耗时指令可以增大此值
+    return-sleep-min: 150 # 最小等待时间
+    return-sleep-max: 5500 # 最大等待时间, 如果一些长耗时指令没有输出请增大此值
+    return-sleep-sampling-interval: 200 # 输出内容检查间隔, 如果经常执行长耗时指令可以增大此值
     # 是否将指令的输出打印到控制台和日志
     return-log: true
 
@@ -140,15 +135,15 @@ aplini:
 
     # 设置各组可执行的主命令白名单 (不带斜杠或前缀)
     # 权限更高的用户将可以使用更低的用户的指令
+    # 支持匹配命令参数
     # 如果添加一条 ___ALL_COMMAND___ 作为指令, 则表示此组可以使用所有指令, 此功能请勿随意使用 !
     group:
-      # permission_<int> 是 MiraiMC 获取到的权限数字, 以后更新了其他权限只需要以此格式添加即可使用
-      permission_2: # 群主
+      owner: # 群主
         #- ___ALL_COMMAND___
         #- chat2qq
-      permission_1: # 管理员
-        #- spark
-      permission_0: # 成员
+      admin: # 管理员
+        #- spark tps
+      member: # 成员
         #- list
         #- tps
 
@@ -327,9 +322,7 @@ aplini:
 
   ## 7
   # [前置] 群成员信息缓存
-  # ! 需要开启 MiraiMC 配置中的 bot.contact-cache.enable-group-member-list-cache
   player-cache:
-    # 在机器人登录和服务器启动时运行此程序
     enabled: true
     # 在玩家群名片修改时更新缓存
     auto-update: true

@@ -1,7 +1,7 @@
 package io.github.aplini.chat2qq.listener;
 
 import io.github.aplini.chat2qq.Chat2QQ;
-import me.dreamvoid.miraimc.bukkit.event.message.passive.MiraiGroupMessageEvent;
+import io.github.aplini.chat2qq.onebot.event.OneBotGroupMessageEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -19,7 +19,7 @@ public class onAutoResponseMessage implements Listener {
     }
 
     @EventHandler
-    public void onGroupMessageReceive(MiraiGroupMessageEvent e) {
+    public void onGroupMessageReceive(OneBotGroupMessageEvent e) {
 
         // 异步
         CompletableFuture.runAsync(() -> {

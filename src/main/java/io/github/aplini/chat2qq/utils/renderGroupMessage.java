@@ -1,10 +1,9 @@
 package io.github.aplini.chat2qq.utils;
 
-import me.dreamvoid.miraimc.api.MiraiMC;
-import me.dreamvoid.miraimc.bukkit.event.message.passive.MiraiGroupMessageEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
+import io.github.aplini.chat2qq.onebot.event.OneBotGroupMessageEvent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.plugin.Plugin;
 
 import static io.github.aplini.chat2qq.utils.Util.*;
@@ -32,7 +31,7 @@ public class renderGroupMessage {
 
 
     // 回复消息
-    public static String getReplyVar(Plugin plugin, MiraiGroupMessageEvent e) {
+    public static String getReplyVar(Plugin plugin, OneBotGroupMessageEvent e) {
         if(e.getQuoteReplyMessage() != null){
             return plugin.getConfig().getString("aplini.reply-message.var", "[reply] ")
                     .replace("%c_name%", cleanupName(
@@ -47,7 +46,7 @@ public class renderGroupMessage {
 
 
     // 可读的消息
-    public static String [] renderMessage1(Plugin plugin, MiraiGroupMessageEvent e) {
+    public static String [] renderMessage1(Plugin plugin, OneBotGroupMessageEvent e) {
 
         String [] message = new String [4];
         message[0] = ""; // 消息类型
@@ -101,7 +100,7 @@ public class renderGroupMessage {
 
         // 预处理
         message[2] = _renderMessage(plugin, message[2]);
-        if(message[2].equals("")){
+        if(message[2].isEmpty()){
             message[0] = "no";
             return message;
         }
@@ -132,15 +131,8 @@ public class renderGroupMessage {
 
 
         // 消息模板路径
-        String message2_config_path;
-        // Mirai 内置QQ绑定
-        if(plugin.getConfig().getBoolean("general.use-miraimc-bind",false) && MiraiMC.getBind(e.getSenderID()) != null){
-            message2_config_path = plugin.getConfig().getString("general.special-bind."+ e.getGroupID(),
-                    plugin.getConfig().getString("general.bind-chat-format", "message"));
-        }else{
-            message2_config_path = plugin.getConfig().getString("general.special."+ e.getGroupID(),
-                    plugin.getConfig().getString("general.in-game-chat-format", "message"));
-        }
+        String message2_config_path = plugin.getConfig().getString("general.special."+ e.getGroupID(),
+                plugin.getConfig().getString("general.in-game-chat-format", "message"));
 
         String message3 = message[3];
         message[3] = message2_config_path
@@ -156,15 +148,17 @@ public class renderGroupMessage {
     }
 
     // JSON消息
-    public static TextComponent renderMessage2(Plugin plugin, String [] message, MiraiGroupMessageEvent e) {
+    public static Component renderMessage2(Plugin plugin, String [] message, OneBotGroupMessageEvent e) {
 
         // 转换为JSON文本
-        TextComponent formatText = new TextComponent(message[3]);
+        Component formatText = LegacyComponentSerializer.legacySection().deserialize(message[3]);
 
         // 预设的格式调整功能. 聊天消息过长时转换为悬浮文本
         if(message[0].equals("lm")){
             // 设置悬浮文本
-            formatText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(message[2])));
+            formatText = formatText.hoverEvent(HoverEvent.showText(
+                    LegacyComponentSerializer.legacySection().deserialize(message[2])
+            ));
         }
 
         // 如果是回复消息
@@ -179,7 +173,9 @@ public class renderGroupMessage {
                     .replace("%message%", formatQQID(plugin, _renderMessage(plugin, e.getQuoteReplyMessage()), e.getGroupID()))
                     .replace("%main_message%", message[2]); // 跳过消息过长部分
             // 设置悬浮文本
-            formatText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(replyMessage)));
+            formatText = formatText.hoverEvent(HoverEvent.showText(
+                    LegacyComponentSerializer.legacySection().deserialize(replyMessage)
+            ));
         }
 
         return formatText;

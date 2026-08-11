@@ -1,3 +1,6 @@
+
+.omp-temp/
+
 # User-specific stuff
 .idea/
 

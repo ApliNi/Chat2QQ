@@ -1,7 +1,7 @@
 package io.github.aplini.chat2qq.bot;
 
 import io.github.aplini.chat2qq.Chat2QQ;
-import me.dreamvoid.miraimc.bukkit.event.group.member.MiraiMemberCardChangeEvent;
+import io.github.aplini.chat2qq.onebot.event.OneBotMemberCardChangeEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -18,7 +18,7 @@ import static org.bukkit.Bukkit.getLogger;
 public class onCardChange implements Listener {
 
     @EventHandler // 成员群名片修改
-    public void onMiraiMemberCardChangeEvent(MiraiMemberCardChangeEvent e) {
+    public void onOneBotMemberCardChangeEvent(OneBotMemberCardChangeEvent e) {
         if(plugin.getConfig().getBoolean("aplini.player-cache.auto-update", true)){
             updateMemberCardChange(e.getBotID(), e.getGroupID(), e.getMemberID(), e.getNewNick(), e.getMemberNick());
         }
@@ -56,6 +56,10 @@ public class onCardChange implements Listener {
                 }
             }else{
                 name = name1;
+            }
+            // 名片与昵称均不可用时保留原缓存值, 避免清空已缓存名称
+            if (name == null || name.isEmpty()) {
+                return;
             }
 
             String oldName = group_cache.get(qq);

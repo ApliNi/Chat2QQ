@@ -1,9 +1,10 @@
 package io.github.aplini.chat2qq;
 
-import io.github.aplini.chat2qq.bot.onBotOnline;
 import io.github.aplini.chat2qq.bot.onCardChange;
 import io.github.aplini.chat2qq.listener.*;
-import io.github.aplini.chat2qq.utils.Metrics;
+import io.github.aplini.chat2qq.onebot.OneBotClient;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -77,8 +78,6 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
 
         // 注册事件
 
-        // 机器人上线
-        Bukkit.getPluginManager().registerEvents(new onBotOnline(this), this);
         // 群成员修改名片 :: 群成员缓存
         Bukkit.getPluginManager().registerEvents(new onCardChange(), this);
 
@@ -110,6 +109,28 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
 
         // bStats
         new Metrics(this, 17587);
+
+        // 检查 run-command 模块是否仍在使用旧数值权限配置
+        for (int i = 0; i <= 2; i++) {
+            String oldKey = "aplini.run-command.group.permission_" + i;
+            if (getConfig().isList(oldKey) && !getConfig().getStringList(oldKey).isEmpty()) {
+                getLogger().warning("[Chat2QQ] 检测到旧权限配置 " + oldKey + ", 建议迁移为 aplini.run-command.group.owner/admin/member 等原生字符串角色名");
+            }
+        }
+
+        // OneBot 客户端
+        OneBotClient.INSTANCE = new OneBotClient();
+        OneBotClient.INSTANCE.connect(this,
+                getConfig().getString("OneBot.host", "ws://127.0.0.1:3003"),
+                getConfig().getString("OneBot.token", ""),
+                getConfig().getInt("OneBot.retry-time", 10));
+    }
+
+    @Override // 禁用插件
+    public void onDisable() {
+        if (OneBotClient.INSTANCE != null) {
+            OneBotClient.INSTANCE.closeClient();
+        }
     }
 
     // 指令
@@ -144,11 +165,11 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
                 }
                 // 广播到服务器
                 if(getConfig().getBoolean("aplini.qchat.player.mc-broadcast", true)){
-                    Bukkit.broadcastMessage(
+                    Bukkit.broadcast(LegacyComponentSerializer.legacySection().deserialize(
                             getConfig().getString("aplini.qchat.player.mc-format", "mc-format")
                                     .replace("%name%", name)
                                     .replace("%message%", message)
-                    );
+                    ));
                 }
                 // 发送到群的消息格式
                 formatText = getConfig().getString("aplini.qchat.player.qq-format", "qq-format")
@@ -184,6 +205,18 @@ public class Chat2QQ extends JavaPlugin implements Listener, CommandExecutor, Ta
                     return false;
                 }
                 reloadConfig();
+
+                // 断开旧连接，使用新配置重新连接 OneBot
+                if (OneBotClient.INSTANCE != null) {
+                    OneBotClient.INSTANCE.closeClient();
+                }
+                OneBotClient.INSTANCE = new OneBotClient();
+                OneBotClient.INSTANCE.connect(
+                        this,
+                        getConfig().getString("OneBot.host", "ws://127.0.0.1:3003"),
+                        getConfig().getString("OneBot.token", ""),
+                        getConfig().getInt("OneBot.retry-time", 10));
+
                 sender.sendMessage("§f[§7Chat2QQ§f] §7已重载配置");
                 return true;
             }

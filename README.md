@@ -4,8 +4,7 @@
 
 - **🚧 说明**
   - [ApliNi/Chat2QQ](https://github.com/ApliNi/Chat2QQ) 是包含 [DreamVoid/Chat2QQ](https://github.com/DreamVoid/Chat2QQ) 几乎所有功能的插件, 经过重写并添加了许多功能.
-  - 如果你有任何想法请点击 [`Issues`](https://github.com/ApliNi/Chat2QQ/issues), 打开一个功能请求. 如果我能做到就会去实现出来.  
-  - 如果您使用默认配置, 那么还需要开启 MiraiMC 插件配置中的 `bot.contact-cache.enable-group-member-list-cache`, 才能保证软件正常运行.  
+  - v2 版本无需 MiraiMC 等依赖插件, 可直接连接 OneBot 服务.
 <p></p>
 
 - **📦 下载**
@@ -20,78 +19,6 @@
 
 
 <a href="https://bstats.org/plugin/bukkit/ApliNi-Chat2QQ/17587">![](https://bstats.org/signatures/bukkit/ApliNi-Chat2QQ.svg)</a>
-
-
-<br />
-
-### 更新计划
-
-- [x] 聊天消息转发
-  - [x] 格式化
-  - [x] 多群组支持
-  - [x] 消息预处理功能
-  - [x] 多行文本和长文本显示优化
-  - [x] 引用回复显示优化
-  - [x] 群名片过滤
-  - [x] 艾特显示优化
-  - [x] 用户黑名单
-
-- [x] 事件处理
-  - [x] 玩家加入退出
-
----
-这些功能在可配置的模块中
-
-- [x] 运行指令
-  - [x] 返回指令输出消息
-  - [x] 更好的等待指令返回
-  - [x] 权限管理
-    - [x] 继承
-  - [x] 指令黑名单
-
-- [x] 从群名片中匹配游戏名称
-
-- [x] 消息预处理
-  - [x] 匹配方式: 前缀 / 包含 / 相等 / 正则
-  - [x] 支持让匹配到的消息完全不发送
-
-- [x] 按行预处理指令的返回消息
-  - [x] 支持(匹配方式)
-
-- [x] 按合并后的完整消息预处理指令返回消息
-  - [x] 支持(匹配方式)
-  - [x] 添加一些特殊的占位符
-
-- [x] 预设的格式调整功能
-  - [x] 删除消息中的格式化字符
-  - [x] 删除消息前后空格和空行
-  - [x] 删除群名片中的格式化代码
-  - [x] 将长文本转换为鼠标悬浮显示文本
-  - [x] 更好的多行消息
-  - [x] 将聊天消息转发到控制台
-
-- [x] 引用回复优化
-  - [x] 格式化
-  - [x] 删除重复的艾特
-
-- [x] `/qchat`
-  - [x] 区分玩家运行指令和控制台运行指令
-
-- [x] 群成员信息缓存 \[前置\]
-  - [x] 自动更新数据
-  - [x] 支持使用外部 Mirai 的缓存文件
-
-- [x] 艾特显示优化
-
-- [x] 事件任务
-  - [x] 群成员加入
-  - [x] 群成员退出
-
-- [x] 自动回复
-  - [x] 支持(匹配方式)
-  - [x] 支持 PAPI
-
-<br />
 
 
 ### ✨ 图片
@@ -149,6 +76,13 @@
 ### 完整配置和功能
 ```yaml
 
+OneBot:
+  # 连接配置
+  host: "ws://127.0.0.1:3003"
+  token: "xxx"
+  # 断开连接时自动重连等待时间 (秒)
+  retry-time: 10
+
 # 游戏内配置
 # QQ -> MC 的消息
 general:
@@ -180,16 +114,6 @@ general:
     1000000: '§f[§7主群 %nick%§r§f] %_reply_%§7%message%'
     1000001: '§7[外群 %nick%] %_reply_%%message%'
 
-  # 启用 MiraiMC 内置的QQ绑定
-  use-miraimc-bind: false
-  # 已绑定玩家的广播消息格式
-  bind-chat-format: '§f[§7%nick%§r§f] %_reply_%§7%message%'
-  # 为每个群使用不同的格式, 如果没有则使用上方的 bind-chat-format
-  special-bind:
-    1000000: '§f[§7主群 %nick%§r§f] %_reply_%§7%message%'
-
-
-
 # 机器人配置
 # MC -> QQ 的消息
 bot:
@@ -204,7 +128,7 @@ bot:
 
   # 玩家在以下世界中聊天才会被转发
   available-worlds:
-    #- world
+  #- world
   # 将以上配置作为黑名单, 玩家不在以上世界中聊天才会被转发
   available-worlds-use-as-blacklist: true
 
@@ -266,8 +190,6 @@ aplini:
     command-prefix: '/'
     # 指令最大长度 (不包括指令前缀)
     command-max-length: 255
-    # 获取指令的正则表达式, 当第一个捕获组的内容与指令白名单中的匹配时则允许运行 (不带斜杠或前缀)
-    regex-command-main: '^([^ ]+)'
     # 判断指令返回为空的正则, 匹配多行文本. (经过 pretreatment-command-message 处理后)
     return-isNull: '^\s*$'
     # 是否将主命令转换为小写再执行
@@ -290,23 +212,23 @@ aplini:
 
     # 设置各组可执行的主命令白名单 (不带斜杠或前缀)
     # 权限更高的用户将可以使用更低的用户的指令
+    # 支持匹配命令参数
     # 如果添加一条 ___ALL_COMMAND___ 作为指令, 则表示此组可以使用所有指令, 此功能请勿随意使用 !
     group:
-      # permission_<int> 是 MiraiMC 获取到的权限数字, 以后更新了其他权限只需要以此格式添加即可使用
-      permission_2: # 群主
-        #- ___ALL_COMMAND___
-        #- chat2qq
-      permission_1: # 管理员
-        #- spark
-      permission_0: # 成员
-        #- list
-        #- tps
+      owner: # 群主
+      #- ___ALL_COMMAND___
+      #- chat2qq
+      admin: # 管理员
+      #- spark tps
+      member: # 成员
+      #- list
+      #- tps
 
     # 特殊指令配置
     special:
       no-return: # 这些指令始终不输出消息
-        #- plugins
-        #- version
+      #- plugins
+      #- version
 
 
   ## 2
@@ -392,9 +314,9 @@ aplini:
     enabled-placeholder: false # 关闭占位符可提高性能
     # 使用方法: 如上
     list:
-      # 示例: 显示指令运行时间, 需要开启占位符
-      #- regular: '([\s\S]+)'
-      #  to_regular: '$1\n  - 运行耗时: %time%ms'
+    # 示例: 显示指令运行时间, 需要开启占位符
+    #- regular: '([\s\S]+)'
+    #  to_regular: '$1\n  - 运行耗时: %time%ms'
 
 
   ## 4
@@ -477,9 +399,7 @@ aplini:
 
   ## 7
   # [前置] 群成员信息缓存
-  # ! 需要开启 MiraiMC 配置中的 bot.contact-cache.enable-group-member-list-cache
   player-cache:
-    # 在机器人登录和服务器启动时运行此程序
     enabled: true
     # 在玩家群名片修改时更新缓存
     auto-update: true
@@ -520,7 +440,7 @@ aplini:
     group-ids:
       - 1000000
 
-    # 每个事件可用的任务不同, 这里列出了所有任务的使用方法:
+      # 每个事件可用的任务不同, 这里列出了所有任务的使用方法:
       # - command: 'command' - 发送指令
 
       # - message-text: '消息' - 向事件来源发送消息, 群 或 好友/私聊
@@ -532,16 +452,16 @@ aplini:
       #   message-text: '消息'
 
     MiraiMemberJoinEvent: # 群成员加入
-      # 可使用: command, message-text, message-group
-      # 一个事件中可添加多个相同或不相同的任务, 就像这样:
-      #- message-text: '欢迎'
-      #- command: 'tps'
-      #- command: 'mspt'
-      #- message-group: 1000000
-      #  message-text: '消息'
+    # 可使用: command, message-text, message-group
+    # 一个事件中可添加多个相同或不相同的任务, 就像这样:
+    #- message-text: '欢迎'
+    #- command: 'tps'
+    #- command: 'mspt'
+    #- message-group: 1000000
+    #  message-text: '消息'
 
     MiraiMemberLeaveEvent: # 成员退出
-      # 可使用: command, message-text, message-group
+    # 可使用: command, message-text, message-group
 
 
   ## 10

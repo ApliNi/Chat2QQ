@@ -1,11 +1,11 @@
 package io.github.aplini.chat2qq.listener;
 
 import io.github.aplini.chat2qq.Chat2QQ;
-import org.bukkit.ChatColor;
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -18,7 +18,7 @@ public class onPlayerMessage implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerChat(AsyncPlayerChatEvent e){
+    public void onPlayerChat(AsyncChatEvent e){
 
         // 异步
         CompletableFuture.runAsync(() -> {
@@ -35,7 +35,7 @@ public class onPlayerMessage implements Listener {
             if (!(plugin.getConfig().getBoolean("bot.require-command-to-chat", false))) {
                 boolean allowWorld = false;
                 boolean allowPrefix = false;
-                String message = ChatColor.stripColor(e.getMessage());
+                String message = PlainTextComponentSerializer.plainText().serialize(e.message());
 
                 // 判断玩家所处世界
                 for (String world : plugin.getConfig().getStringList("bot.available-worlds")) {

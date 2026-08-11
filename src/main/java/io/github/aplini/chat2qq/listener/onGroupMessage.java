@@ -1,8 +1,8 @@
 package io.github.aplini.chat2qq.listener;
 
 import io.github.aplini.chat2qq.Chat2QQ;
-import me.dreamvoid.miraimc.bukkit.event.message.passive.MiraiGroupMessageEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import io.github.aplini.chat2qq.onebot.event.OneBotGroupMessageEvent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,14 +21,14 @@ public class onGroupMessage implements Listener {
     }
 
     @EventHandler
-    public void onGroupMessageReceive(MiraiGroupMessageEvent e) {
+    public void onGroupMessageReceive(OneBotGroupMessageEvent e) {
 
         // 异步
         CompletableFuture.runAsync(() -> {
             // 自动更新玩家信息缓存
             if(plugin.getConfig().getBoolean("aplini.player-cache.auto-update", true)){
                 if(plugin.getConfig().getBoolean("aplini.player-cache.auto-update-form-msg", true)){
-                    updateMemberCardChange(e.getBotID(), e.getGroupID(), e.getSenderID(), e.getSenderName(), null);
+                    updateMemberCardChange(e.getBotID(), e.getGroupID(), e.getSenderID(), e.getSenderNameCard(), e.getSenderName());
                 }
             }
 
@@ -49,12 +49,12 @@ public class onGroupMessage implements Listener {
                 }
 
                 // 渲染为JSON消息
-                TextComponent formatText = renderMessage2(plugin, message, e);
+                Component formatText = renderMessage2(plugin, message, e);
 
                 // 广播给具有 chat2qq.qq.receive 权限的玩家
                 for(Player player : Bukkit.getOnlinePlayers()){
                     if(player.hasPermission("chat2qq.qq.receive")){
-                        player.spigot().sendMessage(formatText);
+                        player.sendMessage(formatText);
                     }
                 }
 //                getServer().spigot().broadcast(formatText);
