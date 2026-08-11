@@ -199,9 +199,9 @@ aplini:
     return: true
     # 等待指令运行多长时间再将结果发送到QQ群 (毫秒), 需要开启 run-command.return
     # 如果你遇到了一些提前输出类似 "正在运行...请稍等" 消息的插件, 可以在 pretreatment-command-message 中配置完全删除这条消息. 然后 return-sleep-min 保持不变 :)
-    return-sleep-min: 14 # 最小等待时间
-    return-sleep-max: 5346 # 最大等待时间, 如果一些长耗时指令没有输出请增大此值
-    return-sleep-sampling-interval: 172 # 输出内容检查间隔, 如果经常执行长耗时指令可以增大此值
+    return-sleep-min: 150 # 最小等待时间
+    return-sleep-max: 5500 # 最大等待时间, 如果一些长耗时指令没有输出请增大此值
+    return-sleep-sampling-interval: 200 # 输出内容检查间隔, 如果经常执行长耗时指令可以增大此值
     # 是否将指令的输出打印到控制台和日志
     return-log: true
 
